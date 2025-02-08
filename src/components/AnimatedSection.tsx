@@ -1,15 +1,23 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
+import { HTMLMotionProps, motion, Variants } from 'framer-motion';
+import { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from 'react';
 
-const fadeIn = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
+const fadeIn: Variants = {
+  initial: { 
+    opacity: 0, 
+    y: 20,
+    transition: { duration: 0.6 }
+  },
+  animate: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.6 }
+  }
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
+  initial: {},
   animate: {
     transition: {
       staggerChildren: 0.1
@@ -17,34 +25,51 @@ const staggerContainer = {
   }
 };
 
-const serviceCard = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 },
-  whileHover: { scale: 1.03, transition: { duration: 0.2 } }
+const serviceCard: Variants = {
+  initial: { 
+    opacity: 0, 
+    y: 20,
+    transition: { duration: 0.5 }
+  },
+  animate: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5 }
+  },
+  whileHover: { 
+    scale: 1.03, 
+    transition: { duration: 0.2 } 
+  }
 };
 
-interface AnimatedSectionProps {
+interface AnimatedSectionProps extends HTMLMotionProps<"section"> {
   children: ReactNode;
   className?: string;
-  variants?: any;
+  variants?: Variants;
   isContainer?: boolean;
 }
 
-export function AnimatedSection({ children, className = "", variants = fadeIn, isContainer = false }: AnimatedSectionProps) {
+export function AnimatedSection({ children, className = "", variants = fadeIn, isContainer = false, ...props }: AnimatedSectionProps) {
   return (
     <motion.section
       className={className}
       initial="initial"
       animate="animate"
       variants={isContainer ? staggerContainer : variants}
+      {...props}
     >
       {children}
     </motion.section>
   );
 }
 
-export function AnimatedElement({ children, className = "", variants = fadeIn, ...props }: AnimatedSectionProps) {
+interface AnimatedElementProps extends HTMLMotionProps<"div"> {
+  children: ReactNode;
+  className?: string;
+  variants?: Variants;
+}
+
+export function AnimatedElement({ children, className = "", variants = fadeIn, ...props }: AnimatedElementProps) {
   return (
     <motion.div
       className={className}
@@ -56,47 +81,69 @@ export function AnimatedElement({ children, className = "", variants = fadeIn, .
   );
 }
 
-export function AnimatedButton({ children, className = "", onClick }: { children: ReactNode; className?: string; onClick?: () => void }) {
+interface AnimatedButtonProps extends HTMLMotionProps<"button"> {
+  children: ReactNode;
+  className?: string;
+}
+
+export function AnimatedButton({ children, className = "", onClick, ...props }: AnimatedButtonProps) {
   return (
     <motion.button
       className={className}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+      whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
       onClick={onClick}
+      {...props}
     >
       {children}
     </motion.button>
   );
 }
 
-export function AnimatedServiceCard({ children, className = "" }: { children: ReactNode; className?: string }) {
+interface AnimatedCardProps extends HTMLMotionProps<"div"> {
+  children: ReactNode;
+  className?: string;
+}
+
+export function AnimatedServiceCard({ children, className = "", ...props }: AnimatedCardProps) {
   return (
     <motion.div
       className={className}
       variants={serviceCard}
       whileHover="whileHover"
+      {...props}
     >
       {children}
     </motion.div>
   );
 }
 
-export function AnimatedForm({ children, className = "" }: { children: ReactNode; className?: string }) {
+interface AnimatedFormProps extends HTMLMotionProps<"form"> {
+  children: ReactNode;
+  className?: string;
+}
+
+export function AnimatedForm({ children, className = "", ...props }: AnimatedFormProps) {
   return (
     <motion.form
       className={className}
       variants={fadeIn}
+      {...props}
     >
       {children}
     </motion.form>
   );
 }
 
-export function AnimatedInput({ className = "", ...props }: { className?: string; [key: string]: any }) {
+interface AnimatedInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  className?: string;
+}
+
+export function AnimatedInput({ className = "", ...props }: AnimatedInputProps) {
   return (
     <motion.div
       className="mb-4"
-      whileHover={{ scale: 1.01 }}
+      whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
     >
       <input
         className={className}
@@ -106,11 +153,15 @@ export function AnimatedInput({ className = "", ...props }: { className?: string
   );
 }
 
-export function AnimatedTextArea({ className = "", ...props }: { className?: string; [key: string]: any }) {
+interface AnimatedTextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  className?: string;
+}
+
+export function AnimatedTextArea({ className = "", ...props }: AnimatedTextAreaProps) {
   return (
     <motion.div
       className="mb-4"
-      whileHover={{ scale: 1.01 }}
+      whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
     >
       <textarea
         className={className}
