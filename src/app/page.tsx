@@ -27,12 +27,29 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">Our Services</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {services.map((service) => (
-              <div key={service.id} className="bg-white p-6 rounded-lg shadow-sm">
-                <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
-                <p className="text-gray-600">{service.description}</p>
-              </div>
-            ))}
+            {services.length > 0 ? (
+              services.map((service) => (
+                <div key={service.id} className="bg-white p-6 rounded-lg shadow-sm">
+                  <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
+                  <p className="text-gray-600">{service.description}</p>
+                </div>
+              ))
+            ) : (
+              <>
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <h3 className="text-xl font-semibold mb-4">Content Writing</h3>
+                  <p className="text-gray-600">Engaging blog posts, articles, and website content that connects with your audience.</p>
+                </div>
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <h3 className="text-xl font-semibold mb-4">Copywriting</h3>
+                  <p className="text-gray-600">Persuasive copy that drives action and converts readers into customers.</p>
+                </div>
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <h3 className="text-xl font-semibold mb-4">Technical Writing</h3>
+                  <p className="text-gray-600">Clear and concise documentation, guides, and technical content.</p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -43,11 +60,22 @@ export default async function Home() {
           <h2 className="text-3xl font-bold text-center mb-8">
             {aboutContent?.heading || 'About Us'}
           </h2>
-          {aboutContent?.description.map((paragraph, index) => (
-            <p key={index} className="text-gray-600 text-lg text-center mb-6">
-              {paragraph}
-            </p>
-          ))}
+          {aboutContent?.description ? (
+            aboutContent.description.map((paragraph, index) => (
+              <p key={index} className="text-gray-600 text-lg text-center mb-6 last:mb-0">
+                {paragraph}
+              </p>
+            ))
+          ) : (
+            <>
+              <p className="text-gray-600 text-lg text-center mb-6">
+                We are a team of passionate writers dedicated to delivering high-quality content that helps businesses grow and engage their audience.
+              </p>
+              <p className="text-gray-600 text-lg text-center">
+                With years of experience across various industries, we understand what it takes to create content that resonates and delivers results.
+              </p>
+            </>
+          )}
         </div>
       </section>
 
