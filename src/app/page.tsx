@@ -384,7 +384,7 @@ export default async function Home() {
                 </div>
               </div>
               <Image
-                src="/job-search-strategy.jpg"
+                src="/job-search-strategy.png"
                 alt="Job search strategy planning and execution dashboard"
                 width={2432}
                 height={1442}
