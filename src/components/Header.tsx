@@ -66,27 +66,28 @@ export function Header() {
   const [isVisible, setIsVisible] = useState(true);
   const [isAtTop, setIsAtTop] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const controlNavbar = () => {
-      if (typeof window !== 'undefined') {
-        const currentScrollY = window.scrollY;
-        
-        // Set isAtTop state
-        setIsAtTop(currentScrollY < 100);
-        
-        // Control navbar visibility
-        if (currentScrollY < 100) {
-          setIsVisible(true);
-        } else {
-          setIsVisible(currentScrollY < lastScrollY);
-        }
-
-        setLastScrollY(currentScrollY);
+      const currentScrollY = window.scrollY;
+      
+      // Set isAtTop state
+      setIsAtTop(currentScrollY < 100);
+      
+      // Control navbar visibility
+      if (currentScrollY < 100) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(currentScrollY < lastScrollY);
       }
+
+      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener('scroll', controlNavbar);
+    controlNavbar(); // Initial check
     return () => window.removeEventListener('scroll', controlNavbar);
   }, [lastScrollY]);
 
@@ -96,7 +97,7 @@ export function Header() {
     const element = document.getElementById(targetId);
     
     if (element) {
-      const headerOffset = 80; // Height of your fixed header
+      const headerOffset = 80;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -107,6 +108,22 @@ export function Header() {
     }
     setMobileMenuOpen(false);
   };
+
+  // Return a simpler version during SSR
+  if (!mounted) {
+    return (
+      <header className="fixed inset-x-0 top-0 z-50 bg-transparent">
+        <nav className="flex items-center justify-between p-6 lg:px-8">
+          <div className="flex lg:flex-1">
+            <a href="#" className="-m-1.5 p-1.5">
+              <span className="sr-only">Srinidhi Narayana</span>
+              <span className="text-xl font-semibold text-gray-900">SN</span>
+            </a>
+          </div>
+        </nav>
+      </header>
+    );
+  }
 
   return (
     <header 
@@ -238,15 +255,7 @@ export function Header() {
                   </a>
                 ))}
               </div>
-              <div className="py-6">
-                <a
-                  href="#contact"
-                  onClick={(e) => handleScroll(e, '#contact')}
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                >
-                  Contact
-                </a>
-              </div>
+     
             </div>
           </div>
         </DialogPanel>
