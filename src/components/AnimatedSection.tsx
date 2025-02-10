@@ -37,7 +37,8 @@ const serviceCard: Variants = {
     transition: { duration: 0.5 }
   },
   whileHover: { 
-    scale: 1.03, 
+    y: -4,
+    boxShadow: '0px 4px 24px rgba(255, 182, 47, 0.24)',
     transition: { duration: 0.2 } 
   }
 };
@@ -69,7 +70,12 @@ interface AnimatedElementProps extends HTMLMotionProps<"div"> {
   variants?: Variants;
 }
 
-export function AnimatedElement({ children, className = "", variants = fadeIn, ...props }: AnimatedElementProps) {
+export function AnimatedElement({ 
+  children, 
+  className = "", 
+  variants = fadeIn,
+  ...props 
+}: AnimatedElementProps) {
   return (
     <motion.div
       className={className}
@@ -108,7 +114,7 @@ interface AnimatedCardProps extends HTMLMotionProps<"div"> {
 export function AnimatedServiceCard({ children, className = "", ...props }: AnimatedCardProps) {
   return (
     <motion.div
-      className={className}
+      className={`${className} transition-shadow duration-200`}
       variants={serviceCard}
       whileHover="whileHover"
       {...props}

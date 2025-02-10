@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  h1 {
+    @apply text-[48px] font-semibold tracking-tight text-gray-900;
+  }
+
+  h2 {
+    @apply text-[36px] font-semibold text-gray-900;
+  }
+
+  h3 {
+    @apply text-[24px] font-semibold text-gray-900;
+  }
+
+  p {
+    @apply text-[17px] font-normal text-gray-600 leading-relaxed;
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-4;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
