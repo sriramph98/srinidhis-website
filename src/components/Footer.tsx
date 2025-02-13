@@ -1,33 +1,38 @@
 'use client';
 
+import { type FooterContent } from '@/utils/airtable';
 import { motion } from 'framer-motion';
 import { FaInstagram, FaLinkedin, FaThreads } from 'react-icons/fa6';
 import { MdEmail } from 'react-icons/md';
 
-const socialLinks = [
-  {
-    icon: FaLinkedin,
-    href: 'https://www.linkedin.com/in/',
-    label: 'LinkedIn'
-  },
-  {
-    icon: FaInstagram,
-    href: 'https://www.instagram.com//',
-    label: 'Instagram'
-  },
-  {
-    icon: FaThreads,
-    href: 'https://www.threads.net',
-    label: 'Threads'
-  },
-  {
-    icon: MdEmail,
-    href: 'mailto:',
-    label: 'Email'
-  }
-];
+interface FooterProps {
+  content?: FooterContent | null;
+}
 
-export function Footer() {
+export function Footer({ content }: FooterProps) {
+  const socialLinks = [
+    {
+      icon: FaLinkedin,
+      href: content?.socialLinks.linkedin || '#',
+      label: 'LinkedIn'
+    },
+    {
+      icon: FaInstagram,
+      href: content?.socialLinks.instagram || '#',
+      label: 'Instagram'
+    },
+    {
+      icon: FaThreads,
+      href: content?.socialLinks.threads || '#',
+      label: 'Threads'
+    },
+    {
+      icon: MdEmail,
+      href: content?.socialLinks.email ? `mailto:${content.socialLinks.email}` : '#',
+      label: 'Email'
+    }
+  ].filter(link => link.href !== '#'); // Only show links that are configured
+
   return (
     <footer className="w-full bg-white py-8">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4">
@@ -38,7 +43,7 @@ export function Footer() {
           transition={{ duration: 0.5 }}
           className="text-lg font-medium text-gray-900"
         >
-          Srinidhi Narayana
+          {content?.name || 'Srinidhi Narayana'}
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

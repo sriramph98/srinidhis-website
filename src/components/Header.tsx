@@ -7,6 +7,18 @@ import { useEffect, useState } from 'react';
 
 const services = [
   {
+    name: 'Writing Services',
+    description: 'Professional writing services for resumes and cover letters',
+    href: '#services',
+    icon: function DocumentIcon() {
+      return (
+        <svg className="size-6 text-gray-600 group-hover:text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      );
+    }
+  },
+  {
     name: 'LinkedIn Profile Optimization',
     description: 'Stand out to recruiters and hiring managers',
     href: '#linkedin-optimization',
@@ -31,20 +43,8 @@ const services = [
     }
   },
   {
-    name: 'Job Search Strategy',
-    description: 'Navigate your job search effectively',
-    href: '#job-search',
-    icon: function SearchIcon() {
-      return (
-        <svg className="size-6 text-gray-600 group-hover:text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      );
-    }
-  },
-  {
-    name: '1:1 Coaching',
-    description: 'Personalized career guidance and support',
+    name: 'Customer Success & Job Search',
+    description: '1:1 coaching and job search strategy',
     href: '#coaching',
     icon: function CoachingIcon() {
       return (
@@ -54,6 +54,18 @@ const services = [
       );
     }
   },
+  {
+    name: 'Job Strategy',
+    description: 'Navigate your job search effectively',
+    href: '#job-search',
+    icon: function SearchIcon() {
+      return (
+        <svg className="size-6 text-gray-600 group-hover:text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      );
+    }
+  }
 ];
 
 const navigation = [
@@ -65,31 +77,42 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isAtTop, setIsAtTop] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
     const controlNavbar = () => {
       const currentScrollY = window.scrollY;
       
       // Set isAtTop state
       setIsAtTop(currentScrollY < 100);
       
-      // Control navbar visibility
-      if (currentScrollY < 100) {
+      // Show navbar when scrolling up or at top
+      if (currentScrollY < lastScrollY || currentScrollY < 100) {
         setIsVisible(true);
-      } else {
-        setIsVisible(currentScrollY < lastScrollY);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
       }
 
-      setLastScrollY(currentScrollY);
+      lastScrollY = currentScrollY;
+      ticking = false;
     };
 
-    window.addEventListener('scroll', controlNavbar);
-    controlNavbar(); // Initial check
-    return () => window.removeEventListener('scroll', controlNavbar);
-  }, [lastScrollY]);
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          controlNavbar();
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -97,6 +120,7 @@ export function Header() {
     const element = document.getElementById(targetId);
     
     if (element) {
+      setIsVisible(true); // Force navbar to stay visible
       const headerOffset = 80;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -127,8 +151,8 @@ export function Header() {
 
   return (
     <header 
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        isVisible ? 'translate-y-0' : '-translate-y-full'
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-in-out transform ${
+        isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
       } ${isAtTop ? 'bg-transparent' : 'bg-white/80 backdrop-blur-sm shadow-sm'}`}
     >
       <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">

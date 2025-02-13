@@ -7,11 +7,13 @@ const fadeIn: Variants = {
   initial: { 
     opacity: 0, 
     y: 20,
+    filter: 'blur(10px)',
     transition: { duration: 0.6 }
   },
   animate: { 
     opacity: 1, 
     y: 0,
+    filter: 'blur(0px)',
     transition: { duration: 0.6 }
   }
 };
@@ -20,7 +22,7 @@ const staggerContainer: Variants = {
   initial: {},
   animate: {
     transition: {
-      staggerChildren: 0.1
+      staggerChildren: 0.2
     }
   }
 };
@@ -29,15 +31,18 @@ const serviceCard: Variants = {
   initial: { 
     opacity: 0, 
     y: 20,
+    filter: 'blur(10px)',
     transition: { duration: 0.5 }
   },
   animate: { 
     opacity: 1, 
     y: 0,
+    filter: 'blur(0px)',
     transition: { duration: 0.5 }
   },
   whileHover: { 
     y: -4,
+    filter: 'blur(0px)',
     boxShadow: '0px 4px 24px rgba(255, 182, 47, 0.24)',
     transition: { duration: 0.2 } 
   }
@@ -55,7 +60,8 @@ export function AnimatedSection({ children, className = "", variants = fadeIn, i
     <motion.section
       className={className}
       initial="initial"
-      animate="animate"
+      whileInView="animate"
+      viewport={{ once: true, margin: "-100px" }}
       variants={isContainer ? staggerContainer : variants}
       {...props}
     >
