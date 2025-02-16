@@ -1,31 +1,31 @@
 import {
-  AnimatedElement,
-  AnimatedSection,
-  AnimatedServiceCard
+    AnimatedElement,
+    AnimatedSection,
+    AnimatedServiceCard
 } from '@/components/AnimatedSection';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { ImageCarousel } from '@/components/ImageCarousel';
 import {
-  clearCache,
-  getCachedCoachingSection,
-  getCachedFooterContent,
-  getCachedHeroContent,
-  getCachedHowItWorksSection,
-  getCachedJobSearchSection,
-  getCachedLinkedInSection,
-  getCachedPricingSection,
-  getCachedResumeSection,
-  getCachedWhyMeSection,
-  getCachedWritingSection,
-  type AirtableAttachment,
-  type CoachingFeature,
-  type HowItWorksFeature,
-  type JobSearchFeature,
-  type LinkedInFeature,
-  type ResumeFeature,
-  type WhyMeFeature,
-  type WritingFeature
+    clearCache,
+    getCachedCoachingSection,
+    getCachedFooterContent,
+    getCachedHeroContent,
+    getCachedHowItWorksSection,
+    getCachedJobSearchSection,
+    getCachedLinkedInSection,
+    getCachedPricingSection,
+    getCachedResumeSection,
+    getCachedWhyMeSection,
+    getCachedWritingSection,
+    type AirtableAttachment,
+    type CoachingFeature,
+    type HowItWorksFeature,
+    type JobSearchFeature,
+    type LinkedInFeature,
+    type ResumeFeature,
+    type WhyMeFeature,
+    type WritingFeature
 } from '@/utils/airtable';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
@@ -404,7 +404,7 @@ export default async function Home() {
               {pricingContent?.description || 'Select a package that best suits your career goals. Each plan is designed to help you stand out in the job market and accelerate your career growth.'}
             </p>
           </AnimatedElement>
-          <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
+          <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-8 lg:max-w-4xl lg:grid-cols-2 lg:gap-x-8">
             {(pricingContent?.tiers || []).map((tier) => (
               <AnimatedElement key={tier.id}>
                 <div
@@ -416,7 +416,7 @@ export default async function Home() {
                 >
                   <h3
                     id={tier.id}
-                    className={classNames(tier.featured ? 'text-yellow-600' : 'text-yellow-600', 'text-base/7 font-semibold')}
+                    className={classNames(tier.featured ? 'text-yellow-600' : 'text-gray-900', 'text-base/7 font-semibold')}
                   >
                     {tier.name}
                   </h3>

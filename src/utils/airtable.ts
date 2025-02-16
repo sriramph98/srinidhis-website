@@ -380,14 +380,15 @@ export async function getPricingSection(): Promise<{
   tiers: PricingTier[];
 } | null> {
   try {
-    const tableExists = await validateTable("Pricing");
-    if (!tableExists) return null;
+    const headerTableExists = await validateTable("PricingHeader");
+    if (!headerTableExists) return null;
 
-    const records = await base("Pricing").select().all();
-    if (records.length === 0) return null;
+    const tiersTableExists = await validateTable("PricingTiers");
+    if (!tiersTableExists) return null;
 
     // Get the header content from PricingHeader table
     const headerRecords = await base("PricingHeader").select().all();
+    if (headerRecords.length === 0) return null;
     const headerRecord = headerRecords[0];
 
     // Get all tier records from PricingTiers table
