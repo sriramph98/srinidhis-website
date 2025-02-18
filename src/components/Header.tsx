@@ -1,5 +1,6 @@
 'use client';
 
+import type { SocialLink } from '@/utils/airtable';
 import { Dialog, DialogPanel, Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -75,7 +76,11 @@ const navigation = [
   { name: 'Pricing', href: '#pricing' },
 ];
 
-export function Header() {
+interface HeaderProps {
+  socialLinks: SocialLink[];
+}
+
+export function Header({ socialLinks }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isAtTop, setIsAtTop] = useState(true);
@@ -135,6 +140,21 @@ export function Header() {
     setMobileMenuOpen(false);
   };
 
+  const getSocialIcon = (platform: string) => {
+    switch (platform.toLowerCase()) {
+      case 'linkedin':
+        return FaLinkedin;
+      case 'instagram':
+        return FaInstagram;
+      case 'threads':
+        return FaThreads;
+      case 'email':
+        return MdEmail;
+      default:
+        return FaLinkedin;
+    }
+  };
+
   // Return a simpler version during SSR
   if (!mounted) {
     return (
@@ -143,7 +163,7 @@ export function Header() {
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Srinidhi Narayana</span>
-              <span className="text-xl font-semibold text-gray-900">SN</span>
+              <span className="text-xl font-semibold text-gray-900">Srinidhi Narayana</span>
             </a>
           </div>
         </nav>
@@ -168,7 +188,7 @@ export function Header() {
             className="-m-1.5 p-1.5"
           >
             <span className="sr-only">Srinidhi Narayana</span>
-            <span className="text-xl font-semibold text-gray-900">SN</span>
+            <span className="text-xl font-semibold text-gray-900">Srinidhi Narayana</span>
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -226,36 +246,21 @@ export function Header() {
           ))}
         </div>
         <div className="hidden lg:flex lg:w-1/4 lg:justify-end lg:gap-x-6">
-          <a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-600 transition-colors hover:text-gray-900"
-          >
-            <FaLinkedin className="h-5 w-5" />
-          </a>
-          <a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-600 transition-colors hover:text-gray-900"
-          >
-            <FaInstagram className="h-5 w-5" />
-          </a>
-          <a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-600 transition-colors hover:text-gray-900"
-          >
-            <FaThreads className="h-5 w-5" />
-          </a>
-          <a
-            href="mailto:contact@example.com"
-            className="text-gray-600 transition-colors hover:text-gray-900"
-          >
-            <MdEmail className="h-5 w-5" />
-          </a>
+          {socialLinks.map((link) => {
+            const Icon = getSocialIcon(link.platform);
+            return (
+              <a
+                key={link.id}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 transition-colors hover:text-gray-900"
+                aria-label={link.label}
+              >
+                <Icon className="h-5 w-5" />
+              </a>
+            );
+          })}
         </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
@@ -272,7 +277,7 @@ export function Header() {
               className="-m-1.5 p-1.5"
             >
               <span className="sr-only">Srinidhi Narayana</span>
-              <span className="text-xl font-semibold text-gray-900">SN</span>
+              <span className="text-xl font-semibold text-gray-900">Srinidhi Narayana</span>
             </a>
             <button
               type="button"
@@ -312,7 +317,28 @@ export function Header() {
                   </a>
                 ))}
               </div>
-     
+              <div className="py-6">
+                <span className="-mx-3 block px-3 py-2 text-base/7 font-semibold text-gray-900">
+                  Contact
+                </span>
+                <div className="mt-2 flex gap-4 px-3">
+                  {socialLinks.map((link) => {
+                    const Icon = getSocialIcon(link.platform);
+                    return (
+                      <a
+                        key={link.id}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-600 transition-colors hover:text-gray-900"
+                        aria-label={link.label}
+                      >
+                        <Icon className="h-6 w-6" />
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
         </DialogPanel>

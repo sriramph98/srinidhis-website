@@ -1,11 +1,10 @@
 import {
     AnimatedElement,
-    AnimatedSection,
-    AnimatedServiceCard
+    AnimatedSection
 } from '@/components/AnimatedSection';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
-import { ImageCarousel } from '@/components/ImageCarousel';
+import { TestimonialCarousel } from '@/components/TestimonialCarousel';
 import {
     clearCache,
     getCachedCoachingSection,
@@ -16,6 +15,7 @@ import {
     getCachedLinkedInSection,
     getCachedPricingSection,
     getCachedResumeSection,
+    getCachedTestimonials,
     getCachedWhyMeSection,
     getCachedWritingSection,
     type AirtableAttachment,
@@ -53,6 +53,7 @@ export default async function Home() {
     jobSearchContent,
     whyMeContent,
     howItWorksContent,
+    testimonials,
     pricingContent,
     writingContent,
     footerContent
@@ -64,6 +65,7 @@ export default async function Home() {
     getCachedJobSearchSection(),
     getCachedWhyMeSection(),
     getCachedHowItWorksSection(),
+    getCachedTestimonials(),
     getCachedPricingSection(),
     getCachedWritingSection(),
     getCachedFooterContent()
@@ -72,7 +74,7 @@ export default async function Home() {
   return (
     <>
       <div className="bg-white">
-        <Header />
+        <Header socialLinks={footerContent?.socialLinks || []} />
         <AnimatedSection className="relative isolate px-6 pt-14 lg:px-8" isContainer>
           <div
             aria-hidden="true"
@@ -89,10 +91,27 @@ export default async function Home() {
           <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
             <AnimatedElement>
               <div className="text-center">
-                <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">
+                <div className="flex flex-col items-center mb-8">
+                  <div className="relative size-24 rounded-full overflow-hidden mb-4 ring-2 ring-yellow-500/20">
+                    {heroContent?.images?.[0]?.url ? (
+                      <Image
+                        src={heroContent.images[0].url}
+                        alt="Profile"
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-yellow-100/50" />
+                    )}
+                  </div>
+                  <h2 className="text-2xl font-medium text-gray-900">
+                    {heroContent?.name || 'Srinidhi Narayana'}
+                  </h2>
+                </div>
+                <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                   {heroContent?.title || 'Land Your Dream Job Faster'}
                 </h1>
-                <p className="mt-8 text-lg font-medium text-pretty text-gray-600 sm:text-xl/8">
+                <p className="mt-6 text-lg leading-8 text-gray-600">
                   {heroContent?.description || 'Optimized Resume, LinkedIn, and Job Search Strategy to help you stand out in the job market and accelerate your career growth.'}
                 </p>
                 <div className="mt-10 flex items-center justify-center gap-x-6">
@@ -163,7 +182,7 @@ export default async function Home() {
         {/* Linkedin Profile Optimisation Section */}
         <AnimatedSection id="linkedin-optimization" className="overflow-hidden bg-white py-24 sm:py-32" isContainer>
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+            <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
               <AnimatedElement>
                 <div className="lg:pt-4 lg:pr-8">
                   <div className="lg:max-w-lg">
@@ -257,30 +276,28 @@ export default async function Home() {
               </AnimatedElement>
             </div>
 
-            <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
-              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2">
-                {coachingContent?.features?.filter((feature): feature is CoachingFeature => feature.type === 'coaching').map((feature, index) => (
-                  <AnimatedServiceCard key={index} className="relative group">
-                    {feature.images?.[0]?.url && (
-                      <div className="relative h-80 w-full overflow-hidden rounded-xl bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
-                        <Image
-                          src={feature.images[0].url}
-                          alt={feature.title}
-                          fill
-                          className="object-cover object-center"
-                        />
-                      </div>
-                    )}
-                    <h3 className="mt-6 text-base font-semibold text-yellow-600">
-                      <a href={feature.title ? '#' + feature.title.toLowerCase().replace(/\s+/g, '-') : '#'}>
-                        <span className="absolute inset-0" />
-                        {feature.title}
-                      </a>
-                    </h3>
-                    <p className="text-lg text-gray-600">{feature.description}</p>
-                  </AnimatedServiceCard>
-                ))}
-              </div>
+            <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+              {coachingContent?.features?.filter((feature): feature is CoachingFeature => feature.type === 'coaching').map((feature, index) => (
+                <AnimatedElement key={index}>
+                  <div className="lg:pr-8">
+                    <div className="lg:max-w-lg">
+                      <h3 className="text-base/7 font-semibold text-yellow-600">{feature.title}</h3>
+                      <p className="mt-6 text-lg/8 text-gray-600">{feature.description}</p>
+                    </div>
+                  </div>
+                  {feature.images?.[0]?.url && (
+                    <div className="relative mt-8">
+                      <Image
+                        src={feature.images[0].url}
+                        alt={feature.title}
+                        width={2432}
+                        height={1442}
+                        className="w-full h-auto rounded-xl shadow-xl ring-1 ring-gray-400/10"
+                      />
+                    </div>
+                  )}
+                </AnimatedElement>
+              ))}
             </div>
           </div>
         </AnimatedSection>
@@ -288,7 +305,7 @@ export default async function Home() {
         {/* Job search strategy Section */}
         <AnimatedSection id="job-search" className="overflow-hidden bg-white py-24 sm:py-32" isContainer>
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+            <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
               <AnimatedElement>
                 <div className="lg:pt-4 lg:pr-8">
                   <div className="lg:max-w-lg">
@@ -333,43 +350,55 @@ export default async function Home() {
 
         {/* Why choose me? Section */}
         <AnimatedSection id="why-me" className="py-24 bg-white" isContainer>
-          <div className="container">
-            <AnimatedElement>
-              <h2 className="mb-16 text-center">{whyMeContent?.title || 'Why choose me?'}</h2>
-            </AnimatedElement>
-            <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-              <div className="flex flex-col gap-8">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl lg:text-center">
+              <AnimatedElement>
+                <h2 className="text-base/7 font-semibold text-yellow-600">{whyMeContent?.subtitle || 'Why Choose Me?'}</h2>
+                <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
+                  {whyMeContent?.title || 'Experience & Expertise'}
+                </p>
+                <p className="mt-6 text-lg/8 text-gray-600">
+                  {whyMeContent?.description}
+                </p>
+              </AnimatedElement>
+            </div>
+            <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+              <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
                 {whyMeContent?.features?.filter((feature): feature is WhyMeFeature => feature.type === 'whyMe').map((feature, index) => (
                   <AnimatedElement key={index}>
-                    <div className="bg-gray-50/50 rounded-lg border border-gray-100 p-8">
-                      <p>{feature.description}</p>
+                    <div className="relative pl-16">
+                      <dt className="text-base/7 font-semibold text-gray-900">
+                        <div className="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg bg-yellow-500">
+                          <svg className="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={feature.icon || "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"} />
+                          </svg>
+                        </div>
+                        {feature.title}
+                      </dt>
+                      <dd className="mt-2 text-base/7 text-gray-600">{feature.description}</dd>
                     </div>
                   </AnimatedElement>
                 ))}
-              </div>
-              <AnimatedElement>
-                <div className="h-[calc(100%+4rem)] -my-8 relative aspect-auto rounded-lg overflow-hidden">
-                  <ImageCarousel 
-                    images={whyMeContent?.images?.map((img: AirtableAttachment) => img?.url).filter((url): url is string => !!url) || []} 
-                  />
-                </div>
-              </AnimatedElement>
+              </dl>
             </div>
           </div>
         </AnimatedSection>
 
         {/* How it works? Section */}
         <AnimatedSection id="how-it-works" className="py-24 bg-white" isContainer>
-          <div className="container">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <AnimatedElement>
-              <h2 className="mb-16 text-center">{howItWorksContent?.title || 'How it works?'}</h2>
+              <h2 className="text-base/7 font-semibold text-yellow-600">{howItWorksContent?.subtitle || 'Process'}</h2>
+              <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
+                {howItWorksContent?.title || 'How it works?'}
+              </p>
             </AnimatedElement>
-            <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            <div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
               {howItWorksContent?.features?.filter((feature): feature is HowItWorksFeature => feature.type === 'howItWorks').map((feature, index) => (
                 <AnimatedElement key={index}>
-                  <div className="bg-gray-50/50 rounded-lg border border-gray-100 p-8 h-full">
+                  <div className="flex flex-col h-full bg-gray-50/50 rounded-lg border border-gray-100 p-8">
                     <h3 className="text-yellow-500 font-semibold mb-4">{feature.title}</h3>
-                    <p className="mb-4">{feature.description}</p>
+                    <p className="flex-grow mb-4">{feature.description}</p>
                     {feature.subtitle && (
                       <p className="text-gray-500 text-sm">{feature.subtitle}</p>
                     )}
@@ -377,6 +406,19 @@ export default async function Home() {
                 </AnimatedElement>
               ))}
             </div>
+          </div>
+        </AnimatedSection>
+
+        {/* Testimonials Section */}
+        <AnimatedSection className="py-24 sm:py-32" isContainer>
+          <div className="mx-auto max-w-7xl">
+            <div className="text-center mb-16">
+              <h2 className="text-base/7 font-semibold text-yellow-600">Testimonials</h2>
+              <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
+                What Others Say
+              </p>
+            </div>
+            <TestimonialCarousel testimonials={testimonials} />
           </div>
         </AnimatedSection>
 
@@ -444,6 +486,8 @@ export default async function Home() {
                   </ul>
                   <a
                     href={tier.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-describedby={tier.id}
                     className={classNames(
                       tier.featured
@@ -452,7 +496,7 @@ export default async function Home() {
                       'mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10',
                     )}
                   >
-                    Get started today
+                    {tier.buttonText}
                   </a>
                 </div>
               </AnimatedElement>

@@ -34,8 +34,11 @@ export interface StandardFeature extends BaseFeature {
   subtitle?: string;
 }
 
-export interface WhyMeFeature extends BaseFeature {
+export interface WhyMeFeature extends StandardFeature {
   type: "whyMe";
+  title: string;
+  description: string;
+  icon?: string;
 }
 
 export interface CoachingFeature extends StandardFeature {
@@ -48,6 +51,7 @@ export interface JobSearchFeature extends StandardFeature {
 
 export interface HowItWorksFeature extends StandardFeature {
   type: "howItWorks";
+  order: number;
 }
 
 export interface WritingFeature extends StandardFeature {
@@ -78,6 +82,7 @@ export interface Section {
   description: string;
   features?: Feature[];
   images?: AirtableAttachment[];
+  name?: string;
 }
 
 export interface PricingTier {
@@ -87,6 +92,7 @@ export interface PricingTier {
   description: string;
   features: string[];
   href: string;
+  buttonText: string;
   featured: boolean;
 }
 
@@ -114,6 +120,8 @@ export async function getHeroContent(): Promise<Section | null> {
       title: record.get("Title") as string,
       subtitle: record.get("Subtitle") as string,
       description: record.get("Description") as string,
+      name: record.get("Name") as string,
+      images: record.get("ProfileImage") as AirtableAttachment[],
     };
   } catch (error) {
     console.error("Error fetching hero content:", error);
@@ -326,15 +334,18 @@ export async function getWhyMeSection(): Promise<Section | null> {
     const featureRecords = await base("WhyMeFeatures").select().all();
     const features = featureRecords.map((feature) => ({
       type: "whyMe" as const,
+      title: feature.get("Title") as string,
       description: feature.get("Description") as string,
+      icon: feature.get("Icon") as string,
     }));
 
     return {
       id: record.id,
       title: record.get("Title") as string,
+      subtitle: record.get("Subtitle") as string,
       description: record.get("Description") as string,
       features,
-      images: record.get("CarouselImages") as AirtableAttachment[],
+      images: record.get("Images") as AirtableAttachment[],
     };
   } catch (error) {
     console.error("Error fetching why me section:", error);
@@ -353,19 +364,25 @@ export async function getHowItWorksSection(): Promise<Section | null> {
     const record = records[0];
 
     // Fetch steps from HowItWorksSteps table
-    const stepRecords = await base("HowItWorksSteps").select().all();
+    const stepRecords = await base("HowItWorksSteps")
+      .select({
+        sort: [{ field: "Order", direction: "asc" }],
+      })
+      .all();
+
     const features = stepRecords.map((step) => ({
       type: "howItWorks" as const,
       title: step.get("Title") as string,
       description: step.get("Description") as string,
       subtitle: step.get("Subtitle") as string,
+      order: (step.get("Order") as number) || 0,
     }));
 
     return {
       id: record.id,
       title: record.get("Title") as string,
       description: "", // Add empty description to satisfy the type
-      features,
+      features: features.sort((a, b) => a.order - b.order),
     };
   } catch (error) {
     console.error("Error fetching how it works section:", error);
@@ -402,6 +419,7 @@ export async function getPricingSection(): Promise<{
         .split("\n")
         .filter((f) => f.trim()),
       href: record.get("Link") as string,
+      buttonText: (record.get("ButtonText") as string) || "Get started today",
       featured: record.get("Featured") as boolean,
     }));
 
@@ -490,14 +508,36 @@ export function clearCache() {
   cache = {};
 }
 
+export interface SocialLink {
+  id: string;
+  platform: string;
+  url: string;
+  icon: string;
+  label: string;
+}
+
 export interface FooterContent {
   name: string;
-  socialLinks: {
-    linkedin?: string;
-    instagram?: string;
-    threads?: string;
-    email?: string;
-  };
+  socialLinks: SocialLink[];
+}
+
+export async function getSocialLinks(): Promise<SocialLink[]> {
+  try {
+    const tableExists = await validateTable("SocialLinks");
+    if (!tableExists) return [];
+
+    const records = await base("SocialLinks").select().all();
+    return records.map((record) => ({
+      id: record.id,
+      platform: record.get("Platform") as string,
+      url: record.get("URL") as string,
+      icon: record.get("Icon") as string,
+      label: record.get("Label") as string,
+    }));
+  } catch (error) {
+    console.error("Error fetching social links:", error);
+    return [];
+  }
 }
 
 export async function getFooterContent(): Promise<FooterContent | null> {
@@ -509,14 +549,11 @@ export async function getFooterContent(): Promise<FooterContent | null> {
     if (records.length === 0) return null;
 
     const record = records[0];
+    const socialLinks = await getSocialLinks();
+
     return {
       name: record.get("Name") as string,
-      socialLinks: {
-        linkedin: record.get("LinkedIn") as string,
-        instagram: record.get("Instagram") as string,
-        threads: record.get("Threads") as string,
-        email: record.get("Email") as string,
-      },
+      socialLinks,
     };
   } catch (error) {
     console.error("Error fetching footer content:", error);
@@ -526,4 +563,38 @@ export async function getFooterContent(): Promise<FooterContent | null> {
 
 export async function getCachedFooterContent() {
   return getCachedData("footer", getFooterContent);
+}
+
+// Add these interfaces after the other interfaces
+export interface Testimonial {
+  id: string;
+  quote: string;
+  authorName: string;
+  authorTitle: string;
+  authorImage: AirtableAttachment[];
+}
+
+// Add this function with the other getter functions
+export async function getTestimonials(): Promise<Testimonial[]> {
+  try {
+    const tableExists = await validateTable("Testimonials");
+    if (!tableExists) return [];
+
+    const records = await base("Testimonials").select().all();
+    return records.map((record) => ({
+      id: record.id,
+      quote: record.get("Quote") as string,
+      authorName: record.get("AuthorName") as string,
+      authorTitle: record.get("AuthorTitle") as string,
+      authorImage: record.get("AuthorImage") as AirtableAttachment[],
+    }));
+  } catch (error) {
+    console.error("Error fetching testimonials:", error);
+    return [];
+  }
+}
+
+// Add the cached version
+export async function getCachedTestimonials() {
+  return getCachedData("testimonials", getTestimonials);
 }
