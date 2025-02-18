@@ -4,6 +4,8 @@ import { Dialog, DialogPanel, Popover, PopoverButton, PopoverPanel } from '@head
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
+import { FaInstagram, FaLinkedin, FaThreads } from 'react-icons/fa6';
+import { MdEmail } from 'react-icons/md';
 
 const services = [
   {
@@ -156,7 +158,7 @@ export function Header() {
       } ${isAtTop ? 'bg-transparent' : 'bg-white/80 backdrop-blur-sm shadow-sm'}`}
     >
       <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
-        <div className="flex lg:flex-1">
+        <div className="flex lg:w-1/4">
           <a 
             href="#" 
             onClick={(e) => {
@@ -179,7 +181,7 @@ export function Header() {
             <Bars3Icon aria-hidden="true" className="h-6 w-6" />
           </button>
         </div>
-        <div className="hidden lg:flex lg:gap-x-12">
+        <div className="hidden lg:flex lg:w-1/2 lg:justify-center lg:gap-x-12">
           <Popover className="relative">
             <PopoverButton className="inline-flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
               <span>Services</span>
@@ -223,7 +225,38 @@ export function Header() {
             </a>
           ))}
         </div>
-     
+        <div className="hidden lg:flex lg:w-1/4 lg:justify-end lg:gap-x-6">
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 transition-colors hover:text-gray-900"
+          >
+            <FaLinkedin className="h-5 w-5" />
+          </a>
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 transition-colors hover:text-gray-900"
+          >
+            <FaInstagram className="h-5 w-5" />
+          </a>
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 transition-colors hover:text-gray-900"
+          >
+            <FaThreads className="h-5 w-5" />
+          </a>
+          <a
+            href="mailto:contact@example.com"
+            className="text-gray-600 transition-colors hover:text-gray-900"
+          >
+            <MdEmail className="h-5 w-5" />
+          </a>
+        </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-50" />
