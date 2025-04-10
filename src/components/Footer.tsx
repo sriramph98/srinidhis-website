@@ -1,6 +1,6 @@
 'use client';
 
-import type { FooterContent } from '@/utils/airtable';
+import type { FooterContent } from '@/utils/types';
 import { FaInstagram, FaLinkedin, FaThreads } from 'react-icons/fa6';
 import { MdEmail } from 'react-icons/md';
 

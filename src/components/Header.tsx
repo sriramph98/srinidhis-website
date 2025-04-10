@@ -1,6 +1,6 @@
 'use client';
 
-import type { SocialLink } from '@/utils/airtable';
+import type { SocialLink } from '@/utils/types';
 import { Dialog, DialogPanel, Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';

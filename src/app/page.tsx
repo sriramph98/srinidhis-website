@@ -18,7 +18,6 @@ import {
     getCachedTestimonials,
     getCachedWhyMeSection,
     getCachedWritingSection,
-    type AirtableAttachment,
     type CoachingFeature,
     type HowItWorksFeature,
     type JobSearchFeature,
@@ -26,7 +25,7 @@ import {
     type ResumeFeature,
     type WhyMeFeature,
     type WritingFeature
-} from '@/utils/airtable';
+} from '@/utils/data';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 
@@ -93,15 +92,15 @@ export default async function Home() {
               <div className="text-center">
                 <div className="flex flex-col items-center mb-8">
                   <div className="relative size-24 rounded-full overflow-hidden mb-4 ring-2 ring-yellow-500/20">
-                    {heroContent?.images?.[0]?.url ? (
+                    {heroContent?.profileImage?.[0] && (
                       <Image
-                        src={heroContent.images[0].url}
+                        src={typeof heroContent.profileImage[0] === 'string' 
+                          ? heroContent.profileImage[0] 
+                          : heroContent.profileImage[0].url}
                         alt="Profile"
                         fill
                         className="object-cover"
                       />
-                    ) : (
-                      <div className="w-full h-full bg-yellow-100/50" />
                     )}
                   </div>
                   <h2 className="text-2xl font-medium text-gray-900">
@@ -163,18 +162,19 @@ export default async function Home() {
             </AnimatedElement>
             <AnimatedElement>
               <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8 self-center">
-                {writingContent?.images?.map((image: AirtableAttachment) => (
-                  image?.url && (
+                {writingContent?.images?.map((image, index) => {
+                  const imageSrc = typeof image === 'string' ? image : image?.url;
+                  return imageSrc && (
                     <Image
-                      key={image.id}
-                      src={image.url}
-                      alt={`Writing service example ${image.filename}`}
+                      key={index}
+                      src={imageSrc}
+                      alt={`Writing service example ${index + 1}`}
                       width={400}
                       height={300}
                       className="rounded-lg bg-gray-100 object-cover aspect-[4/3]"
                     />
-                  )
-                ))}
+                  );
+                })}
               </div>
             </AnimatedElement>
           </div>
@@ -210,9 +210,12 @@ export default async function Home() {
                 </div>
               </AnimatedElement>
               <AnimatedElement>
-                {linkedInContent?.images?.[0]?.url && (
+                {console.log('LinkedIn image data:', linkedInContent?.images?.[0])}
+                {linkedInContent?.images?.[0] && (
                   <Image
-                    src={linkedInContent.images[0].url}
+                    src={typeof linkedInContent.images[0] === 'string' 
+                      ? linkedInContent.images[0] 
+                      : linkedInContent.images[0].url}
                     alt="LinkedIn Profile Optimization"
                     width={2432}
                     height={1442}
@@ -277,27 +280,32 @@ export default async function Home() {
             </div>
 
             <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-              {coachingContent?.features?.filter((feature): feature is CoachingFeature => feature.type === 'coaching').map((feature, index) => (
-                <AnimatedElement key={index}>
-                  <div className="lg:pr-8">
-                    <div className="lg:max-w-lg">
-                      <h3 className="text-base/7 font-semibold text-yellow-600">{feature.title}</h3>
-                      <p className="mt-6 text-lg/8 text-gray-600">{feature.description}</p>
+              {coachingContent?.features?.filter((feature): feature is CoachingFeature => feature.type === 'coaching').map((feature, index) => {
+                console.log('Coaching feature image data:', feature.images?.[0]);
+                return (
+                  <AnimatedElement key={index}>
+                    <div className="lg:pr-8">
+                      <div className="lg:max-w-lg">
+                        <h3 className="text-base/7 font-semibold text-yellow-600">{feature.title}</h3>
+                        <p className="mt-6 text-lg/8 text-gray-600">{feature.description}</p>
+                      </div>
                     </div>
-                  </div>
-                  {feature.images?.[0]?.url && (
-                    <div className="relative mt-8">
-                      <Image
-                        src={feature.images[0].url}
-                        alt={feature.title}
-                        width={2432}
-                        height={1442}
-                        className="w-full h-auto rounded-xl shadow-xl ring-1 ring-gray-400/10"
-                      />
-                    </div>
-                  )}
-                </AnimatedElement>
-              ))}
+                    {feature.images?.[0] && (
+                      <div className="relative mt-8">
+                        <Image
+                          src={typeof feature.images[0] === 'string' 
+                            ? feature.images[0] 
+                            : feature.images[0].url}
+                          alt={feature.title}
+                          width={2432}
+                          height={1442}
+                          className="w-full h-auto rounded-xl shadow-xl ring-1 ring-gray-400/10"
+                        />
+                      </div>
+                    )}
+                  </AnimatedElement>
+                );
+              })}
             </div>
           </div>
         </AnimatedSection>
@@ -333,9 +341,11 @@ export default async function Home() {
                 </div>
               </AnimatedElement>
               <AnimatedElement>
-                {jobSearchContent?.images?.[0]?.url && (
+                {jobSearchContent?.images?.[0] && (
                   <Image
-                    src={jobSearchContent.images[0].url}
+                    src={typeof jobSearchContent.images[0] === 'string' 
+                      ? jobSearchContent.images[0] 
+                      : jobSearchContent.images[0].url}
                     alt="Job search strategy planning and execution dashboard"
                     width={2432}
                     height={1442}

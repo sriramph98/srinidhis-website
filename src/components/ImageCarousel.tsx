@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 interface ImageCarouselProps {
-  images: string[];
+  images: (string | { url: string })[];
 }
 
 export function ImageCarousel({ images }: ImageCarouselProps) {
@@ -15,8 +15,11 @@ export function ImageCarousel({ images }: ImageCarouselProps) {
     setIsClient(true);
   }, []);
 
-  // Filter out empty strings and undefined values
-  const validImages = images.filter(Boolean);
+  // Filter out empty strings and undefined values and normalize image sources
+  const validImages = images
+    .filter(Boolean)
+    .map(image => typeof image === 'string' ? image : image.url)
+    .filter(Boolean);
 
   // If no valid images, return null or a placeholder
   if (validImages.length === 0) {
@@ -65,8 +68,8 @@ export function ImageCarousel({ images }: ImageCarouselProps) {
         <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_50%,rgba(255,182,47,0.12)_0%,rgba(255,255,255,0)_100%)]" />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="flex relative w-[60%] gap-12">
-            {validImages.slice(0, 1).map((image, index) => (
-              <ImageComponent key={index} src={image} index={index} />
+            {validImages.slice(0, 1).map((src, index) => (
+              <ImageComponent key={index} src={src} index={index} />
             ))}
           </div>
         </div>
@@ -90,8 +93,8 @@ export function ImageCarousel({ images }: ImageCarouselProps) {
             repeatType: "loop"
           }}
         >
-          {duplicatedImages.map((image, index) => (
-            <ImageComponent key={index} src={image} index={index} />
+          {duplicatedImages.map((src, index) => (
+            <ImageComponent key={index} src={src} index={index} />
           ))}
         </motion.div>
       </div>

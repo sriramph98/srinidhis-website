@@ -1,6 +1,6 @@
 'use client';
 
-import type { Testimonial } from '@/utils/airtable';
+import type { Testimonial } from '@/utils/types';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import AutoPlay from 'embla-carousel-autoplay';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -43,16 +43,16 @@ export function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) 
                 </blockquote>
                 <div className="mt-10 flex flex-col items-center gap-y-4">
                   <div className="size-16 rounded-full overflow-hidden bg-gray-100 ring-2 ring-yellow-500/20">
-                    {testimonial.authorImage?.[0]?.url ? (
+                    {testimonial.authorImage?.[0] && (
                       <Image
-                        src={testimonial.authorImage[0].url}
+                        src={typeof testimonial.authorImage[0] === 'string' 
+                          ? testimonial.authorImage[0] 
+                          : testimonial.authorImage[0].url}
                         alt={testimonial.authorName}
                         width={64}
                         height={64}
                         className="object-cover"
                       />
-                    ) : (
-                      <div className="w-full h-full bg-yellow-100" />
                     )}
                   </div>
                   <div className="text-center">
