@@ -18,11 +18,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-    logging: {
-      level: "verbose",
-    },
-  },
 };
 
 module.exports = nextConfig; 
