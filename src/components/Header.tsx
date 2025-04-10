@@ -1,7 +1,7 @@
 'use client';
 
 import type { SocialLink } from '@/utils/types';
-import { Dialog, DialogPanel, Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
+import { Dialog, Popover } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
@@ -203,12 +203,12 @@ export function Header({ socialLinks }: HeaderProps) {
         </div>
         <div className="hidden lg:flex lg:w-1/2 lg:justify-center lg:gap-x-12">
           <Popover className="relative">
-            <PopoverButton className="inline-flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
+            <Popover.Button className="inline-flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
               <span>Services</span>
-              <ChevronDownIcon aria-hidden="true" className="size-5" />
-            </PopoverButton>
+              <ChevronDownIcon className="size-5 text-gray-400" aria-hidden="true" />
+            </Popover.Button>
 
-            <PopoverPanel className="absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 px-4">
+            <Popover.Panel className="absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 px-4">
               <div className="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                 <div className="p-4">
                   {services.map((item) => (
@@ -231,7 +231,7 @@ export function Header({ socialLinks }: HeaderProps) {
                   ))}
                 </div>
               </div>
-            </PopoverPanel>
+            </Popover.Panel>
           </Popover>
 
           {navigation.map((item) => (
@@ -265,7 +265,7 @@ export function Header({ socialLinks }: HeaderProps) {
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-50" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <a
               href="#"
@@ -341,7 +341,7 @@ export function Header({ socialLinks }: HeaderProps) {
               </div>
             </div>
           </div>
-        </DialogPanel>
+        </Dialog.Panel>
       </Dialog>
     </header>
   );
