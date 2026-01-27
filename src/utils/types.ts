@@ -39,6 +39,14 @@ export interface Section {
   name?: string;
 }
 
+export interface HeroContent {
+  id: string;
+  title: string;
+  description: string;
+  name: string;
+  profileImage: string[];
+}
+
 export interface PricingTier {
   id: string;
   name: string;

@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "createdAt": "2026-01-27T22:16:42.401Z",
+  "workspaces": [
+    {
+      "name": "default",
+      "title": "Srinidhi Website CMS",
+      "basePath": "/",
+      "projectId": "wksee1zw",
+      "dataset": "production",
+      "icon": null,
+      "mediaLibrary": {
+        "enabled": false
+      },
+      "schema": "4d6d6860.create-schema.json",
+      "tools": "d8640c31.create-tools.json"
+    }
+  ],
+  "studioVersion": "5.4.0"
+}

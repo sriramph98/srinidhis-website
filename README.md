@@ -1,5 +1,35 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## 🚀 Sanity CMS Integration
+
+This website now supports **Sanity as a headless CMS** for managing all content and media!
+
+### Quick Setup:
+1. Update `sanity.config.ts` and `sanity.cli.ts` with your project ID
+2. Create a `.env.local` file with your API token (for server-side access)
+3. Follow the detailed guide in `SANITY_SETUP.md`
+
+📚 **Documentation:**
+- `SANITY_SETUP.md` - Complete schema and setup instructions
+- `SANITY_DATABASE_STRUCTURE.md` - Database overview and content guide
+
+### Features:
+✅ Manage all text content via Sanity Studio
+✅ Upload and manage images/media
+✅ Real-time content updates
+✅ Team collaboration support
+✅ No code deployments for content changes
+
+### Sanity Studio (local)
+- Start Studio: `npm run sanity:dev`
+- Build Studio: `npm run sanity:build`
+- Deploy Studio: `npm run sanity:deploy`
+- Seed Example Content: `npm run sanity:seed`
+
+### Preview Drafts
+- Enable: `/api/preview?secret=YOUR_SECRET&slug=/`
+- Disable: `/api/preview/disable?slug=/`
+
 ## Getting Started
 
 First, run the development server:

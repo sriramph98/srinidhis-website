@@ -1,5 +1,6 @@
 import {
   FooterContent,
+  HeroContent,
   PricingTier,
   Section,
   staticData,
@@ -8,6 +9,7 @@ import {
 
 // Define the possible types that can be stored in the cache
 type CacheValue =
+  | HeroContent
   | Section
   | Testimonial[]
   | FooterContent
@@ -19,8 +21,8 @@ type CacheValue =
     }
   | null;
 
-export async function getHeroContent(): Promise<Section | null> {
-  return staticData.Hero[0] || null;
+export async function getHeroContent(): Promise<HeroContent | null> {
+  return (staticData.Hero[0] as HeroContent) || null;
 }
 
 export async function getLinkedInSection(): Promise<Section | null> {

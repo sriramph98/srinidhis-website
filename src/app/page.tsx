@@ -25,7 +25,7 @@ import {
     type ResumeFeature,
     type WhyMeFeature,
     type WritingFeature
-} from '@/utils/data';
+} from '@/utils/data-sanity';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 
