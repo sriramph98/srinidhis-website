@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ 
+const instrumentSans = Instrument_Sans({ 
   subsets: ["latin"],
   display: 'swap',
-  variable: '--font-inter'
+  variable: '--font-instrument-sans'
 });
 
 export const metadata: Metadata = {
@@ -19,8 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body suppressHydrationWarning className={`${inter.className} font-sans`}>{children}</body>
+    <html lang="en" className={instrumentSans.variable}>
+      <body suppressHydrationWarning className={`${instrumentSans.className} font-sans`}>{children}</body>
     </html>
   );
 }

@@ -71,7 +71,7 @@ export default async function Home() {
     <>
       <div className="bg-white">
         <Header socialLinks={footerContent?.socialLinks || []} />
-        <AnimatedSection className="relative isolate px-6 pt-14 lg:px-8" isContainer>
+        <AnimatedSection className="relative isolate px-6 pt-8 lg:px-8" isContainer>
           <div
             aria-hidden="true"
             className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -84,7 +84,7 @@ export default async function Home() {
               className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-yellow-400 to-yellow-600 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
             />
           </div>
-          <div className="mx-auto max-w-2xl py-12 sm:py-16 lg:py-20">
+          <div className="mx-auto max-w-2xl py-8 sm:py-12 lg:py-16">
             <AnimatedElement>
               <div className="text-center">
                 <div className="flex flex-col items-center mb-8">
