@@ -4,11 +4,11 @@ import type { SocialLink } from '@/utils/types';
 import { Dialog, Popover, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import {
-    AcademicCapIcon,
-    Bars3Icon,
-    BriefcaseIcon,
-    DocumentTextIcon,
-    XMarkIcon
+  AcademicCapIcon,
+  Bars3Icon,
+  BriefcaseIcon,
+  DocumentTextIcon,
+  XMarkIcon
 } from '@heroicons/react/24/outline';
 import { Fragment, useEffect, useState } from 'react';
 import { FaInstagram, FaLinkedin, FaThreads } from 'react-icons/fa6';
