@@ -4,6 +4,7 @@ import {
 } from '@/components/AnimatedSection';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { ImageCarousel } from '@/components/ImageCarousel';
 import { TestimonialCarousel } from '@/components/TestimonialCarousel';
 import {
     clearCache,
@@ -87,7 +88,7 @@ export default async function Home() {
               className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-yellow-400 to-yellow-600 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
             />
           </div>
-          <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+          <div className="mx-auto max-w-2xl py-20 sm:py-24 lg:py-28">
             <AnimatedElement>
               <div className="text-center">
                 <div className="flex flex-col items-center mb-8">
@@ -231,35 +232,38 @@ export default async function Home() {
         {/* Resume Writing Section */}
         <AnimatedSection id="resume-writing" className="bg-white py-24 sm:py-32" isContainer>
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl lg:text-center">
+            <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-12 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
               <AnimatedElement>
-                <h2 className="text-base/7 font-semibold text-yellow-600">{resumeContent?.subtitle || 'Professional Resume Writing'}</h2>
-                <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
-                  {resumeContent?.title || 'Stand Out with a Professionally Crafted Resume'}
-                </p>
-                <p className="mt-6 text-lg/8 text-gray-600 whitespace-pre-line">
-                  {resumeContent?.description}
-                </p>
-              </AnimatedElement>
-            </div>
-            <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
-              <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-                {resumeContent?.features?.filter((feature): feature is ResumeFeature => feature.type === 'resume').map((feature, index) => (
-                  <AnimatedElement key={index}>
-                    <div className="relative pl-16">
-                      <dt className="text-base/7 font-semibold text-gray-900">
-                        <div className="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg bg-yellow-500">
-                          <svg className="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div>
+                  <h2 className="text-base/7 font-semibold text-yellow-600">{resumeContent?.subtitle || 'Professional Resume Writing'}</h2>
+                  <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
+                    {resumeContent?.title || 'Stand Out with a Professionally Crafted Resume'}
+                  </p>
+                  <p className="mt-6 text-lg/8 text-gray-600 whitespace-pre-line">
+                    {resumeContent?.description}
+                  </p>
+                  <dl className="mt-10 max-w-xl space-y-8 text-base/7 text-gray-600">
+                    {resumeContent?.features?.filter((feature): feature is ResumeFeature => feature.type === 'resume').map((feature, index) => (
+                      <div key={index} className="relative pl-9">
+                        <dt className="inline font-semibold text-gray-900">
+                          <svg className="absolute top-1 left-1 size-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={feature.icon} />
                           </svg>
-                        </div>
-                        {feature.title}
-                      </dt>
-                      <dd className="mt-2 text-base/7 text-gray-600 whitespace-pre-line">{feature.description}</dd>
-                    </div>
-                  </AnimatedElement>
-                ))}
-              </dl>
+                          {feature.title}
+                        </dt>{' '}
+                        <dd className="inline whitespace-pre-line">{feature.description}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </AnimatedElement>
+              <AnimatedElement>
+                {resumeContent?.images && resumeContent.images.length > 0 && (
+                  <div className="relative h-[600px] w-full">
+                    <ImageCarousel images={resumeContent.images} />
+                  </div>
+                )}
+              </AnimatedElement>
             </div>
           </div>
         </AnimatedSection>
@@ -456,13 +460,13 @@ export default async function Home() {
               {pricingContent?.description || 'Select a package that best suits your career goals. Each plan is designed to help you stand out in the job market and accelerate your career growth.'}
             </p>
           </AnimatedElement>
-          <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-stretch gap-6 sm:mt-20 sm:gap-8 md:max-w-3xl md:grid-cols-2 lg:max-w-7xl lg:grid-cols-3 xl:grid-cols-4">
+          <div className="mx-auto mt-16 flex flex-col sm:mt-20 md:flex-row items-stretch gap-6 sm:gap-8 max-w-7xl px-4">
             {(pricingContent?.tiers || []).map((tier) => (
-              <AnimatedElement key={tier.id} className="flex">
+              <AnimatedElement key={tier.id} className="flex flex-1 min-w-0">
                 <div
                   className={classNames(
                     tier.featured ? 'relative bg-white shadow-2xl' : 'bg-white',
-                    'flex flex-col w-full rounded-3xl p-8 ring-1 ring-gray-900/10 sm:p-10',
+                    'flex flex-col w-full rounded-3xl p-6 ring-1 ring-gray-900/10 sm:p-8 lg:p-10',
                     tier.featured ? 'ring-2 ring-yellow-500' : 'ring-1 ring-gray-200',
                   )}
                 >

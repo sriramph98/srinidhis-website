@@ -42,8 +42,8 @@ export function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) 
                   </p>
                 </blockquote>
                 <div className="mt-10 flex flex-col items-center gap-y-4">
-                  <div className="size-16 rounded-full overflow-hidden bg-gray-100 ring-2 ring-yellow-500/20">
-                    {testimonial.authorImage?.[0] && (
+                  {testimonial.authorImage?.[0] && (
+                    <div className="size-16 rounded-full overflow-hidden ring-2 ring-yellow-500/20">
                       <Image
                         src={typeof testimonial.authorImage[0] === 'string' 
                           ? testimonial.authorImage[0] 
@@ -53,8 +53,8 @@ export function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) 
                         height={64}
                         className="object-cover"
                       />
-                    )}
-                  </div>
+                    </div>
+                  )}
                   <div className="text-center">
                     <div className="font-semibold text-gray-900">
                       {testimonial.authorName}
