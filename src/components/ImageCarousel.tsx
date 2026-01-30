@@ -46,15 +46,16 @@ export function ImageCarousel({ images }: ImageCarouselProps) {
   const ImageComponent = ({ src, index }: { src: string; index: number }) => (
     <div
       key={index}
-      className="flex-none w-full shrink-0 cursor-pointer group"
+      className="flex-none h-full shrink-0 cursor-pointer group"
       onClick={() => window.open(src, '_blank')}
     >
-      <div className="aspect-[3/4] relative">
+      <div className="relative h-full w-auto">
         <Image
           src={src}
           alt={`Slide ${index + 1}`}
-          fill
-          className="object-cover rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-transform duration-300 group-hover:scale-105"
+          width={800}
+          height={600}
+          className="h-full w-auto object-contain rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-transform duration-300 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-lg" />
       </div>

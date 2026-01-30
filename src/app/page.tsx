@@ -12,7 +12,6 @@ import {
     getCachedFooterContent,
     getCachedHeroContent,
     getCachedHowItWorksSection,
-    getCachedJobSearchSection,
     getCachedLinkedInSection,
     getCachedPricingSection,
     getCachedResumeSection,
@@ -21,7 +20,6 @@ import {
     getCachedWritingSection,
     type CoachingFeature,
     type HowItWorksFeature,
-    type JobSearchFeature,
     type LinkedInFeature,
     type ResumeFeature,
     type WhyMeFeature,
@@ -50,7 +48,6 @@ export default async function Home() {
     linkedInContent,
     resumeContent,
     coachingContent,
-    jobSearchContent,
     whyMeContent,
     howItWorksContent,
     testimonials,
@@ -62,7 +59,6 @@ export default async function Home() {
     getCachedLinkedInSection(),
     getCachedResumeSection(),
     getCachedCoachingSection(),
-    getCachedJobSearchSection(),
     getCachedWhyMeSection(),
     getCachedHowItWorksSection(),
     getCachedTestimonials(),
@@ -88,7 +84,7 @@ export default async function Home() {
               className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-yellow-400 to-yellow-600 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
             />
           </div>
-          <div className="mx-auto max-w-2xl py-20 sm:py-24 lg:py-28">
+          <div className="mx-auto max-w-2xl py-12 sm:py-16 lg:py-20">
             <AnimatedElement>
               <div className="text-center">
                 <div className="flex flex-col items-center mb-8">
@@ -310,54 +306,6 @@ export default async function Home() {
                   </AnimatedElement>
                 );
               })}
-            </div>
-          </div>
-        </AnimatedSection>
-
-        {/* Job search strategy Section */}
-        <AnimatedSection id="job-search" className="overflow-hidden bg-white py-24 sm:py-32" isContainer>
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
-              <AnimatedElement>
-                <div className="lg:pt-4 lg:pr-8">
-                  <div className="lg:max-w-lg">
-                    <h2 className="text-base/7 font-semibold text-yellow-600">{jobSearchContent?.subtitle || 'Land Your Dream Role'}</h2>
-                    <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
-                      {jobSearchContent?.title || 'Job Search Strategy and 1:1 Coaching'}
-                    </p>
-                    <p className="mt-6 text-lg/8 text-gray-600 whitespace-pre-line">
-                      {jobSearchContent?.description || 'Navigate your job search with confidence using our proven strategies. We\'ll help you target the right opportunities, optimize your applications, and prepare for interviews effectively.'}
-                    </p>
-                    <dl className="mt-10 max-w-xl space-y-8 text-base/7 text-gray-600 lg:max-w-none">
-                      {jobSearchContent?.features?.filter((feature): feature is JobSearchFeature => feature.type === 'jobSearch').map((feature, index) => (
-                        <div key={index} className="relative pl-9">
-                          <dt className="inline font-semibold text-gray-900">
-                            <svg className="absolute top-1 left-1 size-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={feature.icon || "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"} />
-                            </svg>
-                            {feature.title}
-                          </dt>{' '}
-                          <dd className="inline whitespace-pre-line">{feature.description}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </div>
-                </div>
-              </AnimatedElement>
-              <AnimatedElement>
-                {jobSearchContent?.images?.[0] && (
-                  <Image
-                    src={typeof jobSearchContent.images[0] === 'string' 
-                      ? jobSearchContent.images[0] 
-                      : jobSearchContent.images[0].url}
-                    alt="Job search strategy planning and execution dashboard"
-                    width={2432}
-                    height={1442}
-                    className="w-full h-auto rounded-xl shadow-xl ring-1 ring-gray-400/10"
-                    priority
-                  />
-                )}
-              </AnimatedElement>
             </div>
           </div>
         </AnimatedSection>
