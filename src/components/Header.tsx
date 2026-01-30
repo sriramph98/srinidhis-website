@@ -225,7 +225,7 @@ export function Header({ socialLinks }: HeaderProps) {
                           {item.name}
                           <span className="absolute inset-0" />
                         </a>
-                        <p className="mt-1 text-gray-600">{item.description}</p>
+                        <p className="mt-1 text-gray-600 whitespace-pre-line">{item.description}</p>
                       </div>
                     </div>
                   ))}

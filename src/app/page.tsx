@@ -146,7 +146,7 @@ export default async function Home() {
             <AnimatedElement>
               <div>
                 <h2 className="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">{writingContent?.title}</h2>
-                <p className="mt-4 text-lg text-gray-600">
+                <p className="mt-4 text-lg text-gray-600 whitespace-pre-line">
                   {writingContent?.description}
                 </p>
 
@@ -154,7 +154,7 @@ export default async function Home() {
                   {writingContent?.features?.filter((feature): feature is WritingFeature => feature.type === 'writing').map((feature, index) => (
                     <div key={index} className="border-t border-gray-200 pt-4">
                       <dt className="font-medium text-gray-900">{feature.title}</dt>
-                      <dd className="mt-2 text-sm text-gray-600">{feature.description}</dd>
+                      <dd className="mt-2 text-sm text-gray-600 whitespace-pre-line">{feature.description}</dd>
                     </div>
                   ))}
                 </dl>
@@ -190,7 +190,7 @@ export default async function Home() {
                     <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
                       {linkedInContent?.title || 'LinkedIn Profile Optimization'}
                     </p>
-                    <p className="mt-6 text-lg/8 text-gray-600">
+                    <p className="mt-6 text-lg/8 text-gray-600 whitespace-pre-line">
                       {linkedInContent?.description}
                     </p>
                     <dl className="mt-10 max-w-xl space-y-8 text-base/7 text-gray-600 lg:max-w-none">
@@ -202,7 +202,7 @@ export default async function Home() {
                             </svg>
                             {feature.title}
                           </dt>{' '}
-                          <dd className="inline">{feature.description}</dd>
+                          <dd className="inline whitespace-pre-line">{feature.description}</dd>
                         </div>
                       ))}
                     </dl>
@@ -237,7 +237,7 @@ export default async function Home() {
                 <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
                   {resumeContent?.title || 'Stand Out with a Professionally Crafted Resume'}
                 </p>
-                <p className="mt-6 text-lg/8 text-gray-600">
+                <p className="mt-6 text-lg/8 text-gray-600 whitespace-pre-line">
                   {resumeContent?.description}
                 </p>
               </AnimatedElement>
@@ -255,7 +255,7 @@ export default async function Home() {
                         </div>
                         {feature.title}
                       </dt>
-                      <dd className="mt-2 text-base/7 text-gray-600">{feature.description}</dd>
+                      <dd className="mt-2 text-base/7 text-gray-600 whitespace-pre-line">{feature.description}</dd>
                     </div>
                   </AnimatedElement>
                 ))}
@@ -273,7 +273,7 @@ export default async function Home() {
                 <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
                   {coachingContent?.title || 'Customer Success Consulting'}
                 </p>
-                <p className="mt-6 text-lg/8 text-gray-600">
+                <p className="mt-6 text-lg/8 text-gray-600 whitespace-pre-line">
                   {coachingContent?.description || 'Personalized guidance to accelerate your career growth in Customer Success. Get expert advice on breaking into the field and developing effective strategies.'}
                 </p>
               </AnimatedElement>
@@ -287,7 +287,7 @@ export default async function Home() {
                     <div className="lg:pr-8">
                       <div className="lg:max-w-lg">
                         <h3 className="text-base/7 font-semibold text-yellow-600">{feature.title}</h3>
-                        <p className="mt-6 text-lg/8 text-gray-600">{feature.description}</p>
+                        <p className="mt-6 text-lg/8 text-gray-600 whitespace-pre-line">{feature.description}</p>
                       </div>
                     </div>
                     {feature.images?.[0] && (
@@ -321,7 +321,7 @@ export default async function Home() {
                     <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
                       {jobSearchContent?.title || 'Job Search Strategy and 1:1 Coaching'}
                     </p>
-                    <p className="mt-6 text-lg/8 text-gray-600">
+                    <p className="mt-6 text-lg/8 text-gray-600 whitespace-pre-line">
                       {jobSearchContent?.description || 'Navigate your job search with confidence using our proven strategies. We\'ll help you target the right opportunities, optimize your applications, and prepare for interviews effectively.'}
                     </p>
                     <dl className="mt-10 max-w-xl space-y-8 text-base/7 text-gray-600 lg:max-w-none">
@@ -333,7 +333,7 @@ export default async function Home() {
                             </svg>
                             {feature.title}
                           </dt>{' '}
-                          <dd className="inline">{feature.description}</dd>
+                          <dd className="inline whitespace-pre-line">{feature.description}</dd>
                         </div>
                       ))}
                     </dl>
@@ -367,7 +367,7 @@ export default async function Home() {
                 <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
                   {whyMeContent?.title || 'Experience & Expertise'}
                 </p>
-                <p className="mt-6 text-lg/8 text-gray-600">
+                <p className="mt-6 text-lg/8 text-gray-600 whitespace-pre-line">
                   {whyMeContent?.description}
                 </p>
               </AnimatedElement>
@@ -385,7 +385,7 @@ export default async function Home() {
                         </div>
                         {feature.title}
                       </dt>
-                      <dd className="mt-2 text-base/7 text-gray-600">{feature.description}</dd>
+                      <dd className="mt-2 text-base/7 text-gray-600 whitespace-pre-line">{feature.description}</dd>
                     </div>
                   </AnimatedElement>
                 ))}
@@ -408,7 +408,7 @@ export default async function Home() {
                 <AnimatedElement key={index}>
                   <div className="flex flex-col h-full bg-gray-50/50 rounded-lg border border-gray-100 p-8">
                     <h3 className="text-yellow-500 font-semibold mb-4">{feature.title}</h3>
-                    <p className="flex-grow mb-4">{feature.description}</p>
+                    <p className="flex-grow mb-4 whitespace-pre-line">{feature.description}</p>
                     {feature.subtitle && (
                       <p className="text-gray-500 text-sm">{feature.subtitle}</p>
                     )}
@@ -456,13 +456,13 @@ export default async function Home() {
               {pricingContent?.description || 'Select a package that best suits your career goals. Each plan is designed to help you stand out in the job market and accelerate your career growth.'}
             </p>
           </AnimatedElement>
-          <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-8 lg:max-w-4xl lg:grid-cols-2 lg:gap-x-8">
+          <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-stretch gap-6 sm:mt-20 sm:gap-8 md:max-w-3xl md:grid-cols-2 lg:max-w-7xl lg:grid-cols-3 xl:grid-cols-4">
             {(pricingContent?.tiers || []).map((tier) => (
-              <AnimatedElement key={tier.id}>
+              <AnimatedElement key={tier.id} className="flex">
                 <div
                   className={classNames(
                     tier.featured ? 'relative bg-white shadow-2xl' : 'bg-white',
-                    'rounded-3xl p-8 ring-1 ring-gray-900/10 sm:p-10',
+                    'flex flex-col w-full rounded-3xl p-8 ring-1 ring-gray-900/10 sm:p-10',
                     tier.featured ? 'ring-2 ring-yellow-500' : 'ring-1 ring-gray-200',
                   )}
                 >
@@ -473,16 +473,16 @@ export default async function Home() {
                     {tier.name}
                   </h3>
                   <p className="mt-4 flex items-baseline gap-x-2">
-                    <span className="text-5xl font-semibold tracking-tight text-gray-900">
+                    <span className="text-4xl sm:text-5xl font-semibold tracking-tight text-gray-900">
                       {tier.price}
                     </span>
                   </p>
-                  <p className="mt-6 text-base/7 text-gray-600">
+                  <p className="mt-6 text-base/7 text-gray-600 whitespace-pre-line">
                     {tier.description}
                   </p>
                   <ul
                     role="list"
-                    className="mt-8 space-y-3 text-sm/6 text-gray-600 sm:mt-10"
+                    className="mt-8 space-y-3 text-sm/6 text-gray-600 flex-grow"
                   >
                     {tier.features.map((feature) => (
                       <li key={feature} className="flex gap-x-3">
@@ -503,7 +503,7 @@ export default async function Home() {
                       tier.featured
                         ? 'bg-yellow-500 text-white shadow-xs hover:bg-yellow-400 focus-visible:outline-yellow-500'
                         : 'text-yellow-600 ring-1 ring-yellow-200 ring-inset hover:ring-yellow-300 focus-visible:outline-yellow-600',
-                      'mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10',
+                      'mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2',
                     )}
                   >
                     {tier.buttonText}
