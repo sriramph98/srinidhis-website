@@ -16,18 +16,27 @@ export interface Testimonial {
   quote: string;
   authorName: string;
   authorTitle: string;
-  authorImage: string[];
+  authorImage: (string | { url: string })[];
 }
 
 export interface StandardFeature {
   title: string;
   description: string;
   icon?: string;
-  images?: string[];
+  images?: (string | { url: string })[];
   subtitle?: string;
   type?: string;
   order?: number;
 }
+
+// Feature type aliases for type safety
+export type LinkedInFeature = StandardFeature & { type: "linkedin" };
+export type ResumeFeature = StandardFeature & { type: "resume" };
+export type CoachingFeature = StandardFeature & { type: "coaching" };
+export type JobSearchFeature = StandardFeature & { type: "jobSearch" };
+export type WhyMeFeature = StandardFeature & { type: "whyMe" };
+export type HowItWorksFeature = StandardFeature & { type: "howItWorks" };
+export type WritingFeature = StandardFeature & { type: "writing" };
 
 export interface Section {
   id: string;
@@ -35,7 +44,7 @@ export interface Section {
   subtitle?: string;
   description: string;
   features?: StandardFeature[];
-  images?: string[];
+  images?: (string | { url: string })[];
   name?: string;
 }
 
@@ -44,7 +53,7 @@ export interface HeroContent {
   title: string;
   description: string;
   name: string;
-  profileImage: string[];
+  profileImage: (string | { url: string })[];
 }
 
 export interface PricingTier {

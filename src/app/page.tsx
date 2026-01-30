@@ -16,6 +16,7 @@ import {
     getCachedPricingSection,
     getCachedResumeSection,
     getCachedTestimonials,
+    getCachedTestimonialsSection,
     getCachedWhyMeSection,
     getCachedWritingSection,
     type CoachingFeature,
@@ -28,19 +29,21 @@ import {
 import { CheckIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 
-// This ensures the page is dynamically rendered
-export const revalidate = 0;
+// Speed up development by caching for 60 seconds
+export const revalidate = 60;
 
-// This ensures the page is not cached
-export const dynamic = 'force-dynamic';
+// Use auto mode for better performance
+export const dynamic = 'auto';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default async function Home() {
-  // Clear the cache on each page load to ensure fresh data
-  clearCache();
+  // Only clear cache in production for fresh data
+  if (process.env.NODE_ENV === 'production') {
+    clearCache();
+  }
 
   // Fetch all section content in parallel
   const [
@@ -50,6 +53,7 @@ export default async function Home() {
     coachingContent,
     whyMeContent,
     howItWorksContent,
+    testimonialsSection,
     testimonials,
     pricingContent,
     writingContent,
@@ -61,6 +65,7 @@ export default async function Home() {
     getCachedCoachingSection(),
     getCachedWhyMeSection(),
     getCachedHowItWorksSection(),
+    getCachedTestimonialsSection(),
     getCachedTestimonials(),
     getCachedPricingSection(),
     getCachedWritingSection(),
@@ -71,7 +76,58 @@ export default async function Home() {
     <>
       <div className="bg-white">
         <Header socialLinks={footerContent?.socialLinks || []} />
-        <AnimatedSection className="relative isolate px-6 pt-8 lg:px-8" isContainer>
+        <section className="relative bg-white px-6 pt-32 pb-24 sm:pt-40 sm:pb-32 lg:px-8">
+          <div className="mx-auto max-w-3xl">
+            <AnimatedElement>
+              {/* Fixed height container to prevent layout shift */}
+              <div className="flex flex-col items-center text-center min-h-[520px] sm:min-h-[480px]">
+                {/* Profile Image - fixed size */}
+                <div className="mb-6 flex-shrink-0">
+                  <div className="relative size-20 sm:size-24 rounded-full overflow-hidden bg-gray-100">
+                    {heroContent?.profileImage?.[0] && (
+                      <Image
+                        src={typeof heroContent.profileImage[0] === 'string' 
+                          ? heroContent.profileImage[0] 
+                          : heroContent.profileImage[0].url}
+                        alt={heroContent?.name || 'Profile'}
+                        width={96}
+                        height={96}
+                        className="object-cover w-full h-full"
+                        priority
+                      />
+                    )}
+                  </div>
+                </div>
+
+                {/* Name */}
+                <h2 className="mb-6 text-base font-medium text-gray-600">
+                  {heroContent?.name || 'Srinidhi Narayana'}
+                </h2>
+
+                {/* Main Title - fixed height to prevent shift */}
+                <h1 className="mb-6 text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-gray-900 max-w-2xl">
+                  {heroContent?.title || 'Land Your Dream Job Faster'}
+                </h1>
+
+                {/* Description */}
+                <p className="mb-10 text-lg sm:text-xl text-gray-600 leading-relaxed max-w-2xl">
+                  {heroContent?.description || 'Optimized Resume, LinkedIn, and Job Search Strategy to help you stand out in the job market and accelerate your career growth.'}
+                </p>
+
+                {/* CTA Button - 44px minimum touch target, hover only on pointer devices */}
+                <div className="flex-shrink-0">
+                  <a
+                    href="#pricing"
+                    className="inline-flex items-center justify-center min-h-[44px] min-w-[140px] px-6 py-3 text-base font-medium text-white bg-gray-900 rounded-full transition-colors duration-150 ease hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2 active:scale-95"
+                  >
+                    Get started
+                  </a>
+                </div>
+              </div>
+            </AnimatedElement>
+          </div>
+
+          {/* Background Blobs */}
           <div
             aria-hidden="true"
             className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -83,43 +139,6 @@ export default async function Home() {
               }}
               className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-yellow-400 to-yellow-600 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
             />
-          </div>
-          <div className="mx-auto max-w-2xl py-8 sm:py-12 lg:py-16">
-            <AnimatedElement>
-              <div className="text-center">
-                <div className="flex flex-col items-center mb-8">
-                  <div className="relative size-24 rounded-full overflow-hidden mb-4 ring-2 ring-yellow-500/20">
-                    {heroContent?.profileImage?.[0] && (
-                      <Image
-                        src={typeof heroContent.profileImage[0] === 'string' 
-                          ? heroContent.profileImage[0] 
-                          : heroContent.profileImage[0].url}
-                        alt="Profile"
-                        fill
-                        className="object-cover"
-                      />
-                    )}
-                  </div>
-                  <h2 className="text-2xl font-medium text-gray-900">
-                    {heroContent?.name || 'Srinidhi Narayana'}
-                  </h2>
-                </div>
-                <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                  {heroContent?.title || 'Land Your Dream Job Faster'}
-                </h1>
-                <p className="mt-6 text-lg leading-8 text-gray-600">
-                  {heroContent?.description || 'Optimized Resume, LinkedIn, and Job Search Strategy to help you stand out in the job market and accelerate your career growth.'}
-                </p>
-                <div className="mt-10 flex items-center justify-center gap-x-6">
-                  <a
-                    href="#pricing"
-                    className="rounded-md bg-yellow-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-yellow-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500"
-                  >
-                    Get started
-                  </a>
-                </div>
-              </div>
-            </AnimatedElement>
           </div>
           <div
             aria-hidden="true"
@@ -133,7 +152,7 @@ export default async function Home() {
               className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-yellow-400 to-yellow-600 opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
             />
           </div>
-        </AnimatedSection>
+        </section>
       </div>
 
       <main className="bg-white">
@@ -207,7 +226,6 @@ export default async function Home() {
                 </div>
               </AnimatedElement>
               <AnimatedElement>
-                {console.log('LinkedIn image data:', linkedInContent?.images?.[0])}
                 {linkedInContent?.images?.[0] && (
                   <Image
                     src={typeof linkedInContent.images[0] === 'string' 
@@ -280,9 +298,7 @@ export default async function Home() {
             </div>
 
             <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-              {coachingContent?.features?.filter((feature): feature is CoachingFeature => feature.type === 'coaching').map((feature, index) => {
-                console.log('Coaching feature image data:', feature.images?.[0]);
-                return (
+              {coachingContent?.features?.filter((feature): feature is CoachingFeature => feature.type === 'coaching').map((feature, index) => (
                   <AnimatedElement key={index}>
                     <div className="lg:pr-8">
                       <div className="lg:max-w-lg">
@@ -304,8 +320,7 @@ export default async function Home() {
                       </div>
                     )}
                   </AnimatedElement>
-                );
-              })}
+              ))}
             </div>
           </div>
         </AnimatedSection>
@@ -347,23 +362,44 @@ export default async function Home() {
         </AnimatedSection>
 
         {/* How it works? Section */}
-        <AnimatedSection id="how-it-works" className="py-24 bg-white" isContainer>
+        <AnimatedSection id="how-it-works" className="py-24 bg-gradient-to-b from-white to-yellow-50/30" isContainer>
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <AnimatedElement>
-              <h2 className="text-base/7 font-semibold text-yellow-600">{howItWorksContent?.subtitle || 'Process'}</h2>
-              <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
-                {howItWorksContent?.title || 'How it works?'}
-              </p>
-            </AnimatedElement>
-            <div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+            <div className="text-center">
+              <AnimatedElement>
+                <h2 className="text-base/7 font-semibold text-yellow-600">{howItWorksContent?.subtitle || 'Process'}</h2>
+                <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
+                  {howItWorksContent?.title || 'How it works?'}
+                </p>
+              </AnimatedElement>
+            </div>
+            <div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-6 sm:mt-20 sm:gap-8 md:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
               {howItWorksContent?.features?.filter((feature): feature is HowItWorksFeature => feature.type === 'howItWorks').map((feature, index) => (
                 <AnimatedElement key={index}>
-                  <div className="flex flex-col h-full bg-gray-50/50 rounded-lg border border-gray-100 p-8">
-                    <h3 className="text-yellow-500 font-semibold mb-4">{feature.title}</h3>
-                    <p className="flex-grow mb-4 whitespace-pre-line">{feature.description}</p>
-                    {feature.subtitle && (
-                      <p className="text-gray-500 text-sm">{feature.subtitle}</p>
-                    )}
+                  <div className="group relative flex flex-col h-full bg-white rounded-2xl border border-gray-200 p-8 shadow-sm transition-all duration-200 ease-out hover:shadow-xl hover:border-yellow-200 hover:-translate-y-1 will-change-transform active:scale-[0.97]">
+                    {/* Step Number Badge */}
+                    <div className="absolute -top-4 left-8">
+                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 text-white font-bold text-sm shadow-lg ring-4 ring-white">
+                        {index + 1}
+                      </div>
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="mt-4">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-yellow-600 transition-colors duration-200 ease-out">
+                        {feature.title}
+                      </h3>
+                      <p className="flex-grow text-base leading-7 text-gray-600 whitespace-pre-line mb-4">
+                        {feature.description}
+                      </p>
+                      {feature.subtitle && (
+                        <p className="text-sm text-gray-500 italic mt-auto pt-4 border-t border-gray-100">
+                          {feature.subtitle}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Decorative Corner Accent */}
+                    <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-br from-yellow-400/5 to-yellow-600/10 rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-out" />
                   </div>
                 </AnimatedElement>
               ))}
@@ -372,17 +408,22 @@ export default async function Home() {
         </AnimatedSection>
 
         {/* Testimonials Section */}
-        <AnimatedSection className="py-24 sm:py-32" isContainer>
-          <div className="mx-auto max-w-7xl">
-            <div className="text-center mb-16">
-              <h2 className="text-base/7 font-semibold text-yellow-600">Testimonials</h2>
-              <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
-                What Others Say
-              </p>
-            </div>
+        <section id="testimonials" className="py-24 sm:py-32 bg-white scroll-mt-20">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <AnimatedElement>
+              {/* Fixed height header to prevent layout shift */}
+              <div className="text-center mb-20 min-h-[120px] flex flex-col items-center justify-center">
+                <p className="text-sm font-medium text-gray-500 mb-3">
+                  {testimonialsSection?.subtitle || "Testimonials"}
+                </p>
+                <h2 className="text-3xl sm:text-4xl font-medium text-gray-900">
+                  {testimonialsSection?.title || "What Others Say"}
+                </h2>
+              </div>
+            </AnimatedElement>
             <TestimonialCarousel testimonials={testimonials} />
           </div>
-        </AnimatedSection>
+        </section>
 
         {/* Pricing Section */}
         <AnimatedSection id="pricing" className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8" isContainer>

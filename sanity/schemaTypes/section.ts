@@ -8,6 +8,7 @@ const sectionTypes = [
   { title: "Why Me", value: "WhyMe" },
   { title: "How It Works", value: "HowItWorks" },
   { title: "Writing", value: "Writing" },
+  { title: "Testimonials", value: "Testimonials" },
 ];
 
 export const section = defineType({

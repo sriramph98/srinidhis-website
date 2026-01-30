@@ -33,11 +33,12 @@ function handleFetchError(error: any, context: string) {
 
 async function fetchSingleton<T>(
   query: string,
-  params?: Record<string, any>
+  params?: Record<string, any>,
 ): Promise<T | null> {
   try {
-    const client = getSanityClient({ preview: draftMode().isEnabled });
-    return await client.fetch<T>(query, params);
+    const draft = await draftMode();
+    const client = getSanityClient({ preview: draft.isEnabled });
+    return await client.fetch<T>(query, params || {});
   } catch (error) {
     return handleFetchError(error, query);
   }
@@ -45,11 +46,12 @@ async function fetchSingleton<T>(
 
 async function fetchMany<T>(
   query: string,
-  params?: Record<string, any>
+  params?: Record<string, any>,
 ): Promise<T[]> {
   try {
-    const client = getSanityClient({ preview: draftMode().isEnabled });
-    return await client.fetch<T[]>(query, params);
+    const draft = await draftMode();
+    const client = getSanityClient({ preview: draft.isEnabled });
+    return await client.fetch<T[]>(query, params || {});
   } catch (error) {
     handleFetchError(error, query);
     return [];
@@ -78,7 +80,7 @@ export async function getHeroContent(): Promise<HeroContent | null> {
       description,
       name,
       "profileImage": profileImage.asset->url
-    }`
+    }`,
   );
 
   if (!hero) return null;
@@ -98,7 +100,7 @@ export async function getHeroContent(): Promise<HeroContent | null> {
 async function getSectionWithFeatures(
   sectionType: string,
   featureType: string,
-  cacheKey: string
+  cacheKey: string,
 ): Promise<Section | null> {
   const cached = getCachedData<Section>(cacheKey);
   if (cached) return cached;
@@ -117,7 +119,7 @@ async function getSectionWithFeatures(
       description,
       "images": images[].asset->url
     }`,
-    { sectionType }
+    { sectionType },
   );
 
   if (!section) return null;
@@ -138,7 +140,7 @@ async function getSectionWithFeatures(
       order,
       "images": images[].asset->url
     }`,
-    { featureType }
+    { featureType },
   );
 
   const result: Section = {
@@ -198,7 +200,7 @@ export async function getHowItWorksSection(): Promise<Section | null> {
       title,
       subtitle,
       description
-    }`
+    }`,
   );
 
   if (!section) return null;
@@ -216,7 +218,7 @@ export async function getHowItWorksSection(): Promise<Section | null> {
       subtitle,
       icon,
       order
-    }`
+    }`,
   );
 
   const result: Section = {
@@ -261,7 +263,7 @@ export async function getPricingSection(): Promise<{
       title,
       subtitle,
       description
-    }`
+    }`,
   );
 
   if (!header) return null;
@@ -285,7 +287,7 @@ export async function getPricingSection(): Promise<{
       href,
       buttonText,
       featured
-    }`
+    }`,
   );
 
   const tiers: PricingTier[] = tiersData.map((tier) => {
@@ -319,6 +321,16 @@ export async function getPricingSection(): Promise<{
   return result;
 }
 
+export async function getTestimonialsSection(): Promise<Section | null> {
+  const cacheKey = "testimonials-section";
+  const cached = getCachedData<Section>(cacheKey);
+  if (cached) return cached;
+
+  const result = await getSectionWithFeatures("Testimonials");
+  setCachedData(cacheKey, result);
+  return result;
+}
+
 export async function getTestimonials(): Promise<Testimonial[]> {
   const cacheKey = "testimonials";
   const cached = getCachedData<Testimonial[]>(cacheKey);
@@ -337,7 +349,7 @@ export async function getTestimonials(): Promise<Testimonial[]> {
       authorName,
       authorTitle,
       "authorImage": authorImage.asset->url
-    }`
+    }`,
   );
 
   const testimonials: Testimonial[] = data.map((item) => ({
@@ -358,7 +370,7 @@ export async function getFooterContent(): Promise<FooterContent | null> {
   if (cached) return cached;
 
   const footer = await fetchSingleton<{ name?: string }>(
-    `*[_type == "footer"][0]{ name }`
+    `*[_type == "footer"][0]{ name }`,
   );
 
   if (!footer) return null;
@@ -376,7 +388,7 @@ export async function getFooterContent(): Promise<FooterContent | null> {
       url,
       icon,
       label
-    }`
+    }`,
   );
 
   const socialLinks: SocialLink[] = linksData.map((link) => ({
@@ -423,6 +435,10 @@ export async function getCachedWhyMeSection() {
 
 export async function getCachedHowItWorksSection() {
   return await getHowItWorksSection();
+}
+
+export async function getCachedTestimonialsSection() {
+  return await getTestimonialsSection();
 }
 
 export async function getCachedTestimonials() {

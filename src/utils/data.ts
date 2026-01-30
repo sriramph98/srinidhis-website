@@ -139,6 +139,10 @@ export async function getWritingSection(): Promise<Section | null> {
   };
 }
 
+export async function getTestimonialsSection(): Promise<Section | null> {
+  return staticData.TestimonialsSection?.[0] || null;
+}
+
 export async function getTestimonials(): Promise<Testimonial[]> {
   return staticData.Testimonials;
 }
@@ -207,6 +211,14 @@ export async function getCachedHowItWorksSection() {
   const cacheKey = "howItWorks";
   if (!cache.has(cacheKey)) {
     cache.set(cacheKey, await getHowItWorksSection());
+  }
+  return cache.get(cacheKey);
+}
+
+export async function getCachedTestimonialsSection() {
+  const cacheKey = "testimonialsSection";
+  if (!cache.has(cacheKey)) {
+    cache.set(cacheKey, await getTestimonialsSection());
   }
   return cache.get(cacheKey);
 }
