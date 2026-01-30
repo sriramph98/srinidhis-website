@@ -33,7 +33,7 @@ function handleFetchError(error: any, context: string) {
 
 async function fetchSingleton<T>(
   query: string,
-  params?: Record<string, any>,
+  params?: Record<string, any>
 ): Promise<T | null> {
   try {
     const client = getSanityClient({ preview: draftMode().isEnabled });
@@ -45,7 +45,7 @@ async function fetchSingleton<T>(
 
 async function fetchMany<T>(
   query: string,
-  params?: Record<string, any>,
+  params?: Record<string, any>
 ): Promise<T[]> {
   try {
     const client = getSanityClient({ preview: draftMode().isEnabled });
@@ -78,7 +78,7 @@ export async function getHeroContent(): Promise<HeroContent | null> {
       description,
       name,
       "profileImage": profileImage.asset->url
-    }`,
+    }`
   );
 
   if (!hero) return null;
@@ -98,7 +98,7 @@ export async function getHeroContent(): Promise<HeroContent | null> {
 async function getSectionWithFeatures(
   sectionType: string,
   featureType: string,
-  cacheKey: string,
+  cacheKey: string
 ): Promise<Section | null> {
   const cached = getCachedData<Section>(cacheKey);
   if (cached) return cached;
@@ -109,34 +109,37 @@ async function getSectionWithFeatures(
     subtitle?: string;
     description?: string;
     images?: string[];
-    features?: Array<{
-      title?: string;
-      description?: string;
-      subtitle?: string;
-      icon?: string;
-      order?: number;
-      images?: string[];
-    }>;
   }>(
     `*[_type == "section" && sectionType == $sectionType][0]{
       _id,
       title,
       subtitle,
       description,
-      "images": images[].asset->url,
-      features[]{
-        title,
-        description,
-        subtitle,
-        icon,
-        order,
-        "images": images[].asset->url
-      }
+      "images": images[].asset->url
     }`,
-    { sectionType },
+    { sectionType }
   );
 
   if (!section) return null;
+
+  const features = await fetchMany<{
+    title?: string;
+    description?: string;
+    subtitle?: string;
+    icon?: string;
+    order?: number;
+    images?: string[];
+  }>(
+    `*[_type == "feature" && featureType == $featureType]{
+      title,
+      description,
+      subtitle,
+      icon,
+      order,
+      "images": images[].asset->url
+    }`,
+    { featureType }
+  );
 
   const result: Section = {
     id: section._id || sectionType.toLowerCase(),
@@ -144,7 +147,7 @@ async function getSectionWithFeatures(
     subtitle: section.subtitle || undefined,
     description: section.description || "",
     images: section.images || [],
-    features: (section.features || []).map((feature) => ({
+    features: features.map((feature) => ({
       title: feature.title || "",
       description: feature.description || "",
       subtitle: feature.subtitle || undefined,
@@ -171,12 +174,68 @@ export async function getCoachingSection(): Promise<Section | null> {
   return getSectionWithFeatures("Coaching", "coaching", "coaching");
 }
 
+export async function getJobSearchSection(): Promise<Section | null> {
+  return getSectionWithFeatures("JobSearch", "jobSearch", "jobSearch");
+}
+
 export async function getWhyMeSection(): Promise<Section | null> {
   return getSectionWithFeatures("WhyMe", "whyMe", "whyMe");
 }
 
 export async function getHowItWorksSection(): Promise<Section | null> {
-  return getSectionWithFeatures("HowItWorks", "howItWorks", "howItWorks");
+  const cacheKey = "howItWorks";
+  const cached = getCachedData<Section>(cacheKey);
+  if (cached) return cached;
+
+  const section = await fetchSingleton<{
+    _id?: string;
+    title?: string;
+    subtitle?: string;
+    description?: string;
+  }>(
+    `*[_type == "section" && sectionType == "HowItWorks"][0]{
+      _id,
+      title,
+      subtitle,
+      description
+    }`
+  );
+
+  if (!section) return null;
+
+  const features = await fetchMany<{
+    title?: string;
+    description?: string;
+    subtitle?: string;
+    icon?: string;
+    order?: number;
+  }>(
+    `*[_type == "feature" && featureType == "howItWorks"]|order(order asc){
+      title,
+      description,
+      subtitle,
+      icon,
+      order
+    }`
+  );
+
+  const result: Section = {
+    id: section._id || "how-it-works",
+    title: section.title || "",
+    subtitle: section.subtitle || undefined,
+    description: section.description || "",
+    features: features.map((feature) => ({
+      title: feature.title || "",
+      description: feature.description || "",
+      subtitle: feature.subtitle || undefined,
+      icon: feature.icon || undefined,
+      order: feature.order || undefined,
+      type: "howItWorks",
+    })),
+  };
+
+  setCachedData(cacheKey, result);
+  return result;
 }
 
 export async function getWritingSection(): Promise<Section | null> {
@@ -193,60 +252,66 @@ export async function getPricingSection(): Promise<{
   const cached = getCachedData<any>(cacheKey);
   if (cached) return cached;
 
-  const pricing = await fetchSingleton<{
+  const header = await fetchSingleton<{
     title?: string;
     subtitle?: string;
     description?: string;
-    tiers?: Array<{
-      name?: string;
-      price?: string;
-      description?: string;
-      features?: string[];
-      href?: string;
-      buttonText?: string;
-      featured?: boolean;
-      order?: number;
-    }>;
   }>(
-    `*[_type == "pricing"][0]{
+    `*[_type == "pricingHeader"][0]{
       title,
       subtitle,
+      description
+    }`
+  );
+
+  if (!header) return null;
+
+  const tiersData = await fetchMany<{
+    _id?: string;
+    name?: string;
+    price?: string;
+    description?: string;
+    features?: string[] | string;
+    href?: string;
+    buttonText?: string;
+    featured?: boolean;
+  }>(
+    `*[_type == "pricingTier"]|order(order asc){
+      _id,
+      name,
+      price,
       description,
-      tiers[]{
-        name,
-        price,
-        description,
-        features,
-        href,
-        buttonText,
-        featured,
-        order
-      }
-    }`,
+      features,
+      href,
+      buttonText,
+      featured
+    }`
   );
 
-  if (!pricing) return null;
+  const tiers: PricingTier[] = tiersData.map((tier) => {
+    let features: string[] = [];
+    if (typeof tier.features === "string") {
+      features = tier.features.split("\n").filter((f) => f.trim());
+    } else if (Array.isArray(tier.features)) {
+      features = tier.features;
+    }
 
-  // Sort tiers by order
-  const sortedTiers = (pricing.tiers || []).sort(
-    (a, b) => (a.order || 0) - (b.order || 0),
-  );
-
-  const tiers: PricingTier[] = sortedTiers.map((tier, index) => ({
-    id: `tier-${index}`,
-    name: tier.name || "",
-    price: tier.price || "",
-    description: tier.description || "",
-    features: tier.features || [],
-    href: tier.href || "/contact",
-    buttonText: tier.buttonText || "Get Started",
-    featured: tier.featured || false,
-  }));
+    return {
+      id: tier._id || "",
+      name: tier.name || "",
+      price: tier.price || "",
+      description: tier.description || "",
+      features,
+      href: tier.href || "/contact",
+      buttonText: tier.buttonText || "Get Started",
+      featured: tier.featured || false,
+    };
+  });
 
   const result = {
-    title: pricing.title || "",
-    subtitle: pricing.subtitle || "",
-    description: pricing.description || "",
+    title: header.title || "",
+    subtitle: header.subtitle || "",
+    description: header.description || "",
     tiers,
   };
 
@@ -265,16 +330,14 @@ export async function getTestimonials(): Promise<Testimonial[]> {
     authorName?: string;
     authorTitle?: string;
     authorImage?: string;
-    order?: number;
   }>(
-    `*[_type == "testimonial"]|order(order asc){
+    `*[_type == "testimonial"]{
       _id,
       quote,
       authorName,
       authorTitle,
-      "authorImage": authorImage.asset->url,
-      order
-    }`,
+      "authorImage": authorImage.asset->url
+    }`
   );
 
   const testimonials: Testimonial[] = data.map((item) => ({
@@ -294,38 +357,33 @@ export async function getFooterContent(): Promise<FooterContent | null> {
   const cached = getCachedData<FooterContent>(cacheKey);
   if (cached) return cached;
 
-  const footer = await fetchSingleton<{
-    name?: string;
-    socialLinks?: Array<{
-      platform?: string;
-      url?: string;
-      label?: string;
-      order?: number;
-    }>;
-  }>(
-    `*[_type == "footer"][0]{
-      name,
-      socialLinks[]{
-        platform,
-        url,
-        label,
-        order
-      }
-    }`,
+  const footer = await fetchSingleton<{ name?: string }>(
+    `*[_type == "footer"][0]{ name }`
   );
 
   if (!footer) return null;
 
-  // Sort social links by order
-  const sortedLinks = (footer.socialLinks || []).sort(
-    (a, b) => (a.order || 0) - (b.order || 0),
+  const linksData = await fetchMany<{
+    _id?: string;
+    platform?: string;
+    url?: string;
+    icon?: string;
+    label?: string;
+  }>(
+    `*[_type == "socialLink"]|order(order asc){
+      _id,
+      platform,
+      url,
+      icon,
+      label
+    }`
   );
 
-  const socialLinks: SocialLink[] = sortedLinks.map((link, index) => ({
-    id: `social-${index}`,
+  const socialLinks: SocialLink[] = linksData.map((link) => ({
+    id: link._id || "",
     platform: link.platform || "",
     url: link.url || "",
-    icon: "",
+    icon: link.icon || "",
     label: link.label || link.platform || "",
   }));
 
@@ -353,6 +411,10 @@ export async function getCachedResumeSection() {
 
 export async function getCachedCoachingSection() {
   return await getCoachingSection();
+}
+
+export async function getCachedJobSearchSection() {
+  return await getJobSearchSection();
 }
 
 export async function getCachedWhyMeSection() {

@@ -2,52 +2,32 @@ import { defineField, defineType } from "sanity";
 
 export const hero = defineType({
   name: "hero",
-  title: "Hero Section",
+  title: "Hero",
   type: "document",
-  groups: [
-    { name: "profile", title: "Profile Info", default: true },
-    { name: "content", title: "Hero Content" },
-  ],
   fields: [
     defineField({
-      name: "name",
-      title: "Your Name",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-      description: "Your full name displayed below profile picture",
-      group: "profile",
-    }),
-    defineField({
-      name: "profileImage",
-      title: "Profile Picture",
-      type: "image",
-      options: { hotspot: true },
-      description: "Your profile photo (circular display)",
-      group: "profile",
-    }),
-    defineField({
       name: "title",
-      title: "Main Headline",
+      title: "Title",
       type: "string",
       validation: (Rule) => Rule.required(),
-      description: "Large hero headline (e.g., 'Land Your Dream Job Faster')",
-      group: "content",
     }),
     defineField({
       name: "description",
       title: "Description",
       type: "text",
-      rows: 3,
       validation: (Rule) => Rule.required(),
-      description: "Supporting text below the headline",
-      group: "content",
+    }),
+    defineField({
+      name: "name",
+      title: "Name",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "profileImage",
+      title: "Profile Image",
+      type: "image",
+      options: { hotspot: true },
     }),
   ],
-  preview: {
-    select: {
-      title: "name",
-      subtitle: "title",
-      media: "profileImage",
-    },
-  },
 });

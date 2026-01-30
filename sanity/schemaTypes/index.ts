@@ -1,14 +1,19 @@
-import { footer } from "./footer";
 import { hero } from "./hero";
-import { pricing } from "./pricing";
 import { section } from "./section";
+import { feature } from "./feature";
+import { pricingHeader } from "./pricingHeader";
+import { pricingTier } from "./pricingTier";
 import { testimonial } from "./testimonial";
+import { footer } from "./footer";
+import { socialLink } from "./socialLink";
 
 export const schemaTypes = [
-  // Core Content
   hero,
   section,
-  pricing,
+  feature,
+  pricingHeader,
+  pricingTier,
   testimonial,
   footer,
+  socialLink,
 ];
