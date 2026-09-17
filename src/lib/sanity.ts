@@ -18,7 +18,7 @@ export function getSanityClient(options: ClientOptions = {}) {
     apiVersion,
     useCdn: preview ? false : process.env.SANITY_USE_CDN !== "false",
     token: preview ? token : undefined,
-    perspective: preview ? "previewDrafts" : "published",
+    perspective: preview ? "drafts" : "published",
     ignoreBrowserTokenWarning: true,
   });
 }
