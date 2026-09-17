@@ -6,6 +6,7 @@ import { schemaTypes } from "./sanity/schemaTypes";
 export default defineConfig({
   name: "default",
   title: "Srinidhi Website CMS",
+  basePath: "/studio",
   projectId: "wksee1zw",
   dataset: "production",
   plugins: [structureTool(), visionTool()],
