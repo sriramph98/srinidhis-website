@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Figtree } from "next/font/google";
+import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-// Free stand-ins for Ben Shih's licensed Acorn (headings) and Roobert (text).
-const display = Bricolage_Grotesque({ subsets: ["latin"], display: "swap", variable: "--font-display-face" });
-const body = Figtree({ subsets: ["latin"], display: "swap", variable: "--font-body" });
+// Fraunces (soft, warm serif) for headings; Plus Jakarta Sans for everything else.
+const display = Fraunces({ subsets: ["latin"], display: "swap", axes: ["SOFT", "opsz"], variable: "--font-display-face" });
+const body = Plus_Jakarta_Sans({ subsets: ["latin"], display: "swap", variable: "--font-body" });
 
 export const metadata: Metadata = {
   title: "Srinidhi Narayana",
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f9f4ed",
+  themeColor: "#f6f2fb",
 };
 
 export default function RootLayout({

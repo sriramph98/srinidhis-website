@@ -25,7 +25,7 @@ function Step({ step, index, total }: { step: StandardFeature; index: number; to
       </span>
 
       <Reveal delay={0.05}>
-        <div className="rounded-[20px] bg-white p-6 shadow-[0_4px_16px_rgb(16_24_40/0.06)] ring-1 ring-black/5 sm:p-8">
+        <div className="rounded-[20px] bg-white p-6 shadow-[0_4px_16px_rgb(69_48_125/0.06)] ring-1 ring-black/5 sm:p-8">
           <p className="text-xs font-medium tracking-[0.08em] text-muted uppercase">
             Step {index + 1} of {total}
           </p>

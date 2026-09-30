@@ -11,10 +11,12 @@ import { FaLinkedin } from 'react-icons/fa6';
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const cardColor: Record<HeroCard['color'], string> = {
-  peach: 'bg-accent',
+  peach: 'bg-peach',
+  blush: 'bg-accent',
   lavender: 'bg-lavender',
   sky: 'bg-sky',
-  mint: 'bg-[#c9f0dd]',
+  mint: 'bg-mint',
+  butter: 'bg-butter',
 };
 
 // Alternating tilt, like cards dropped on a desk; the video sits second.
@@ -71,7 +73,7 @@ function CardFace({ card }: { card: HeroCard }) {
   const link = card.buttonLink ? stegaClean(card.buttonLink) : undefined;
   return (
     <div
-      className={`flex size-full flex-col rounded-[20px] px-6 pt-6 pb-7 shadow-[0_4px_16px_rgb(16_24_40/0.08)] ring-1 ring-black/5 xl:rounded-[24px] xl:px-8 xl:pt-8 xl:pb-9 ${cardColor[stegaClean(card.color)] ?? cardColor.peach}`}
+      className={`flex size-full flex-col rounded-[20px] px-6 pt-6 pb-7 shadow-[0_4px_16px_rgb(69_48_125/0.08)] ring-1 ring-black/5 xl:rounded-[24px] xl:px-8 xl:pt-8 xl:pb-9 ${cardColor[stegaClean(card.color)] ?? cardColor.peach}`}
     >
       <h2 className="font-display text-[26px]/[1] font-semibold tracking-[-0.02em] text-secondary xl:text-[30px]">{card.title}</h2>
       {card.text && <p className="mt-3 text-sm/[1.5] font-medium text-secondary/85 xl:text-[17px]/[1.5]">{card.text}</p>}
@@ -91,7 +93,7 @@ function CardFace({ card }: { card: HeroCard }) {
 // The video card: her intro video once it's uploaded in Sanity, a quiet placeholder until then.
 function VideoFace({ video, name }: { video?: HeroContent['video']; name: string }) {
   return (
-    <div className="relative size-full overflow-hidden rounded-[20px] bg-primary shadow-[0_4px_16px_rgb(16_24_40/0.08)] ring-1 ring-black/5 xl:rounded-[24px]">
+    <div className="relative size-full overflow-hidden rounded-[20px] bg-primary shadow-[0_4px_16px_rgb(69_48_125/0.08)] ring-1 ring-black/5 xl:rounded-[24px]">
       {video ? (
         <video
           src={video.url}
@@ -114,7 +116,7 @@ function VideoFace({ video, name }: { video?: HeroContent['video']; name: string
   );
 }
 
-// Ben Shih-style hero: a white panel with a big two-line greeting, an intro line with
+// Hero: a white panel with a big two-line greeting, an intro line with
 // service chips, and a row of tilted pastel cards with a video in the middle.
 export function Hero({
   content,

@@ -75,7 +75,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
   }[style];
 
   return (
-    <figure className={`flex flex-col rounded-[20px] p-7 shadow-[0_4px_16px_rgb(16_24_40/0.08)] ring-1 ring-black/5 sm:p-8 ${theme.card}`}>
+    <figure className={`flex flex-col rounded-[20px] p-7 shadow-[0_4px_16px_rgb(69_48_125/0.08)] ring-1 ring-black/5 sm:p-8 ${theme.card}`}>
       <header className="flex min-h-8 items-start justify-between gap-4">
         {testimonial.companyLogo ? (
           <Image

@@ -139,9 +139,11 @@ export const hero = defineType({
               options: {
                 list: [
                   { title: "Peach", value: "peach" },
+                  { title: "Blush", value: "blush" },
                   { title: "Lavender", value: "lavender" },
                   { title: "Sky", value: "sky" },
                   { title: "Mint", value: "mint" },
+                  { title: "Butter", value: "butter" },
                 ],
                 layout: "radio",
                 direction: "horizontal",

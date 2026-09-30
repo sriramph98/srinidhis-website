@@ -16,7 +16,7 @@ interface PricingProps {
 export function Pricing({ eyebrow, title, description, tiers }: PricingProps) {
   return (
     <Section id="pricing" tone="ink" className="overflow-hidden">
-      <div aria-hidden="true" className="absolute inset-x-0 top-0 h-[640px] bg-[radial-gradient(45%_40%_at_50%_45%,rgb(245_197_24/0.12),transparent_70%)]" />
+      <div aria-hidden="true" className="absolute inset-x-0 top-0 h-[640px] bg-[radial-gradient(45%_40%_at_50%_45%,rgb(251_211_220/0.14),transparent_70%)]" />
       <Container className="relative">
         <Reveal className="mx-auto max-w-2xl text-center">
           <Eyebrow dark>{eyebrow}</Eyebrow>

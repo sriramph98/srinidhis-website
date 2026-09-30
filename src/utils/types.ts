@@ -89,7 +89,7 @@ export interface HeroCard {
   text?: string;
   buttonText?: string;
   buttonLink?: string;
-  color: 'peach' | 'lavender' | 'sky' | 'mint';
+  color: 'peach' | 'blush' | 'lavender' | 'sky' | 'mint' | 'butter';
 }
 
 export interface PricingTier {

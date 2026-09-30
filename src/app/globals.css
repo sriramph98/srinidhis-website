@@ -1,27 +1,30 @@
 @import "tailwindcss";
 
 /*
- * Design tokens, after benshih.design: warm cream page, white panels, deep-green
- * headings, black buttons, and pastel peach / lavender / sky cards.
+ * Design tokens: a soft pastel palette. Lavender-mist page, white panels,
+ * deep violet for headings and actions, and five pastels for cards and highlights.
  */
 @theme inline {
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-display-face), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-face), ui-serif, Georgia, serif;
 
-  --color-ink: #111111;
-  --color-ink-soft: #2a2a2a;
-  --color-paper: #f9f4ed;
-  --color-primary: #02594e;
-  --color-primary-soft: #0b6e61;
-  --color-secondary: #344054;
-  --color-muted: #4c6763;
-  --color-line: rgb(2 89 78 / 0.12);
-  /* Pastels for cards and highlights; "accent" is the peach. */
-  --color-accent: #ffd6ae;
-  --color-accent-soft: #fff1e3;
-  --color-accent-deep: #02594e;
-  --color-lavender: #d9d6fe;
-  --color-sky: #b2ddff;
+  --color-ink: #1f1a33;
+  --color-ink-soft: #372f55;
+  --color-paper: #f6f2fb;
+  --color-primary: #45307d;
+  --color-primary-soft: #5a43a0;
+  --color-secondary: #3a3550;
+  --color-muted: #625c78;
+  --color-line: rgb(69 48 125 / 0.12);
+  /* Pastels. "accent" is the blush. */
+  --color-accent: #fbd3dc;
+  --color-accent-soft: #fdecf0;
+  --color-accent-deep: #45307d;
+  --color-peach: #ffdcc4;
+  --color-lavender: #ddd5fb;
+  --color-sky: #cfe5fb;
+  --color-mint: #cdeedc;
+  --color-butter: #fbeba8;
 
   --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -44,7 +47,7 @@
     @apply bg-accent text-ink;
   }
 
-  /* Green ring: visible on cream, white panels and pastel cards alike. */
+  /* Violet ring: visible on the page, white panels and pastel cards alike. */
   :focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 3px;
@@ -74,13 +77,13 @@
   }
 }
 
-/* The white panel every section sits in, with Ben-style dot texture. */
+/* The white panel every section sits in, with a faint violet dot texture. */
 @utility surface {
   position: relative;
   border-radius: 20px;
   background-image:
-    radial-gradient(circle, rgb(156 163 175 / 0.16) 1.2px, transparent 1.2px),
+    radial-gradient(circle, rgb(69 48 125 / 0.1) 1.2px, transparent 1.2px),
     linear-gradient(to bottom right, rgb(255 255 255 / 0.9), rgb(255 255 255 / 0.72));
   background-size: 22px 22px, 100% 100%;
-  box-shadow: 0 1px 2px rgb(16 24 40 / 0.03);
+  box-shadow: 0 1px 2px rgb(69 48 125 / 0.04);
 }

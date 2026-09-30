@@ -126,7 +126,7 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
       <nav aria-label="Main" className="fixed inset-x-0 top-6 z-50 hidden justify-center md:flex md:top-8">
         <ul
           role="list"
-          className="relative flex items-center rounded-full bg-white/75 p-2 shadow-[0_8px_24px_-12px_rgb(16_24_40/0.25)] ring-1 ring-black/5 backdrop-blur-md"
+          className="relative flex items-center rounded-full bg-white/75 p-2 shadow-[0_8px_24px_-12px_rgb(69_48_125/0.25)] ring-1 ring-black/5 backdrop-blur-md"
         >
           {navigation.map((item) => {
             const isActive = active === item.name;

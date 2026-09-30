@@ -9,7 +9,7 @@ export function FinalCta({ content, fallbackSecondaryLink }: { content: Section;
   return (
     <section id="get-started" data-tone="ink" className="scroll-mt-24 px-3 py-2.5 sm:px-5 md:px-8 lg:px-10">
       <div className="relative mx-auto max-w-[1200px] overflow-clip rounded-[20px] bg-primary py-20 text-white sm:py-28">
-      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(45%_55%_at_50%_45%,rgb(255_214_174/0.16),transparent_70%)]" />
+      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(45%_55%_at_50%_45%,rgb(251_211_220/0.18),transparent_70%)]" />
       <Container className="relative">
         <Reveal className="mx-auto max-w-4xl text-center">
           <Heading size="lg">{content.title}</Heading>

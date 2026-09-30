@@ -74,7 +74,7 @@ export function isExternal(href: string) {
 
 const buttonVariant = {
   primary: 'bg-ink text-white hover:bg-ink-soft',
-  accent: 'bg-accent text-ink hover:bg-[#ffc995]',
+  accent: 'bg-accent text-ink hover:bg-[#f8bfcc]',
   brand: 'rounded-full! bg-primary text-paper shadow-sm hover:bg-primary-soft',
   light: 'bg-white text-ink hover:bg-paper',
   outline: 'text-current ring-1 ring-inset ring-current/20 hover:bg-current/5',
