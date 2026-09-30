@@ -1,22 +1,27 @@
 @import "tailwindcss";
 
 /*
- * Design tokens. Every colour on the site comes from here:
- * ink (text, dark sections), paper (warm light sections), accent (one yellow),
- * muted (secondary text) and line (hairlines).
+ * Design tokens, after benshih.design: warm cream page, white panels, deep-green
+ * headings, black buttons, and pastel peach / lavender / sky cards.
  */
 @theme inline {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-face), ui-sans-serif, system-ui, sans-serif;
 
-  --color-ink: #0e0e10;
-  --color-ink-soft: #1b1b1f;
-  --color-paper: #f6f3ec;
-  --color-accent: #f5c518;
-  --color-accent-soft: #fbefc0;
-  --color-accent-deep: #8a6a00;
-  --color-muted: #5e5c57;
-  --color-line: rgb(14 14 16 / 0.1);
+  --color-ink: #111111;
+  --color-ink-soft: #2a2a2a;
+  --color-paper: #f9f4ed;
+  --color-primary: #02594e;
+  --color-primary-soft: #0b6e61;
+  --color-secondary: #344054;
+  --color-muted: #4c6763;
+  --color-line: rgb(2 89 78 / 0.12);
+  /* Pastels for cards and highlights; "accent" is the peach. */
+  --color-accent: #ffd6ae;
+  --color-accent-soft: #fff1e3;
+  --color-accent-deep: #02594e;
+  --color-lavender: #d9d6fe;
+  --color-sky: #b2ddff;
 
   --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -31,7 +36,6 @@
 
   body {
     @apply bg-paper text-ink;
-    letter-spacing: -0.011em;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent; /* every control has its own hover/active state */
   }
@@ -40,11 +44,10 @@
     @apply bg-accent text-ink;
   }
 
-  /* Ink ring with a yellow halo: visible on paper, white cards and dark sections alike. */
+  /* Green ring: visible on cream, white panels and pastel cards alike. */
   :focus-visible {
-    outline: 2px solid var(--color-ink);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 6px var(--color-accent);
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
   }
 }
 
@@ -69,4 +72,15 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* The white panel every section sits in, with Ben-style dot texture. */
+@utility surface {
+  position: relative;
+  border-radius: 20px;
+  background-image:
+    radial-gradient(circle, rgb(156 163 175 / 0.16) 1.2px, transparent 1.2px),
+    linear-gradient(to bottom right, rgb(255 255 255 / 0.9), rgb(255 255 255 / 0.72));
+  background-size: 22px 22px, 100% 100%;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 0.03);
 }

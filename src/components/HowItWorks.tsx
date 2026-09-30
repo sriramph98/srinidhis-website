@@ -17,15 +17,15 @@ function Step({ step, index, total }: { step: StandardFeature; index: number; to
     <li ref={ref} className="relative grid grid-cols-[3rem_minmax(0,1fr)] gap-x-5 pb-12 last:pb-0 sm:grid-cols-[3.5rem_minmax(0,1fr)] sm:gap-x-8">
       <span
         aria-hidden="true"
-        className={`relative z-10 flex size-12 items-center justify-center rounded-lg text-sm font-semibold tabular-nums ring-4 ring-paper transition-colors duration-500 sm:size-14 sm:text-base ${
-          reached ? 'bg-accent text-ink' : 'bg-ink text-white'
+        className={`relative z-10 flex size-12 items-center justify-center rounded-lg text-sm font-semibold tabular-nums outline-4 outline-white transition-colors duration-500 sm:size-14 sm:text-base ${
+          reached ? 'bg-primary text-paper' : 'bg-white text-muted ring-1 ring-line'
         }`}
       >
         {pad(index + 1)}
       </span>
 
       <Reveal delay={0.05}>
-        <div className="rounded-lg bg-white p-6 ring-1 ring-line sm:p-8">
+        <div className="rounded-[20px] bg-white p-6 shadow-[0_4px_16px_rgb(16_24_40/0.06)] ring-1 ring-black/5 sm:p-8">
           <p className="text-xs font-medium tracking-[0.08em] text-muted uppercase">
             Step {index + 1} of {total}
           </p>
@@ -69,7 +69,7 @@ export function HowItWorks({ content, ctaText }: { content: SectionContent | nul
           <motion.span
             aria-hidden="true"
             style={{ scaleY: reduceMotion ? 1 : fill }}
-            className="absolute top-6 bottom-6 left-6 w-0.5 origin-top -translate-x-1/2 bg-accent sm:left-7"
+            className="absolute top-6 bottom-6 left-6 w-0.5 origin-top -translate-x-1/2 bg-primary sm:left-7"
           />
           {steps.map((step, index) => (
             <Step key={step.title} step={step} index={index} total={steps.length} />

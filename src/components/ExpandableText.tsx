@@ -1,13 +1,14 @@
 'use client';
 
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { ReactNode, useId, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 // On phones, long copy is clipped with a fade and a "Read more" toggle.
 // From the sm breakpoint up, the full text always shows.
-export function ExpandableText({ children }: { children: ReactNode }) {
+// `id` comes from the text itself so server and browser always agree (useId drifted here).
+export function ExpandableText({ id, children }: { id: string; children: ReactNode }) {
   const [expanded, setExpanded] = useState(false);
-  const regionId = useId();
+  const regionId = `more-${id}`;
 
   return (
     <div>

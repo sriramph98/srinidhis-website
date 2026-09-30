@@ -57,6 +57,13 @@ interface RichTextProps {
   collapseAfter?: number;
 }
 
+// Short, stable id from the text (djb2), for linking the "Read more" button to its region.
+function hash(text: string) {
+  let h = 5381;
+  for (let i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) | 0;
+  return (h >>> 0).toString(36);
+}
+
 export function RichText({ text, className = '', collapseAfter = 320 }: RichTextProps) {
   if (!text?.trim()) return null;
 
@@ -96,5 +103,6 @@ export function RichText({ text, className = '', collapseAfter = 320 }: RichText
   );
 
   // Measure the visible text: in live preview, Sanity appends invisible edit markers.
-  return stegaClean(text).length > collapseAfter ? <ExpandableText>{content}</ExpandableText> : content;
+  const visible = stegaClean(text);
+  return visible.length > collapseAfter ? <ExpandableText id={hash(visible)}>{content}</ExpandableText> : content;
 }

@@ -1,6 +1,7 @@
 import { sanityFetch } from "@/lib/live";
 import {
   FooterContent,
+  HeroCard,
   HeroContent,
   PricingTier,
   Section,
@@ -48,6 +49,12 @@ export async function getHeroContent(): Promise<HeroContent | null> {
     ctaText?: string;
     secondaryCtaText?: string;
     serviceLabels?: string[];
+    greeting?: string;
+    role?: string;
+    intro?: string;
+    cards?: { title?: string; text?: string; buttonText?: string; buttonLink?: string; color?: HeroCard["color"] }[];
+    videoUrl?: string;
+    videoPoster?: string;
   }>(
     `*[_type == "hero"][0]{
       _id,
@@ -57,7 +64,13 @@ export async function getHeroContent(): Promise<HeroContent | null> {
       "profileImage": profileImage.asset->url,
       ctaText,
       secondaryCtaText,
-      serviceLabels
+      serviceLabels,
+      greeting,
+      role,
+      intro,
+      cards[]{ title, text, buttonText, buttonLink, color },
+      "videoUrl": introVideo.asset->url,
+      "videoPoster": introVideoPoster.asset->url
     }`,
   );
 
@@ -72,6 +85,19 @@ export async function getHeroContent(): Promise<HeroContent | null> {
     ctaText: hero.ctaText || undefined,
     secondaryCtaText: hero.secondaryCtaText || undefined,
     serviceLabels: hero.serviceLabels || [],
+    greeting: hero.greeting || undefined,
+    role: hero.role || undefined,
+    intro: hero.intro || undefined,
+    cards: (hero.cards || [])
+      .filter((card) => card.title)
+      .map((card) => ({
+        title: card.title || "",
+        text: card.text || undefined,
+        buttonText: card.buttonText || undefined,
+        buttonLink: card.buttonLink || undefined,
+        color: card.color || "peach",
+      })),
+    video: hero.videoUrl ? { url: hero.videoUrl, poster: hero.videoPoster || undefined } : undefined,
   };
 
   return result;

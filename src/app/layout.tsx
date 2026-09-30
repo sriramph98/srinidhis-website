@@ -1,13 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Bricolage_Grotesque, Figtree } from "next/font/google";
 import "./globals.css";
 
-// Inter is a variable font, so every weight comes from one file.
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
+// Free stand-ins for Ben Shih's licensed Acorn (headings) and Roobert (text).
+const display = Bricolage_Grotesque({ subsets: ["latin"], display: "swap", variable: "--font-display-face" });
+const body = Figtree({ subsets: ["latin"], display: "swap", variable: "--font-body" });
 
 export const metadata: Metadata = {
   title: "Srinidhi Narayana",
@@ -15,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f6f3ec",
+  themeColor: "#f9f4ed",
 };
 
 export default function RootLayout({
@@ -24,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="font-sans">
         <a
           href="#main"

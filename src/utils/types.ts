@@ -77,6 +77,19 @@ export interface HeroContent {
   ctaText?: string;
   secondaryCtaText?: string;
   serviceLabels?: string[];
+  greeting?: string;
+  role?: string;
+  intro?: string;
+  cards: HeroCard[];
+  video?: { url: string; poster?: string };
+}
+
+export interface HeroCard {
+  title: string;
+  text?: string;
+  buttonText?: string;
+  buttonLink?: string;
+  color: 'peach' | 'lavender' | 'sky' | 'mint';
 }
 
 export interface PricingTier {

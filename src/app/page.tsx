@@ -9,7 +9,7 @@ import { Reveal } from '@/components/Reveal';
 import { RichText } from '@/components/RichText';
 import { ServiceSection } from '@/components/ServiceSection';
 import { TestimonialsLove } from '@/components/TestimonialsLove';
-import { Blend, Container, Eyebrow, Heading, Section } from '@/components/ui';
+import { Container, Eyebrow, Heading, Section } from '@/components/ui';
 import { WhyMe } from '@/components/WhyMe';
 import {
   getCoachingSection,
@@ -176,7 +176,6 @@ export default async function Home() {
 
         <HowItWorks content={howItWorksContent} ctaText={heroCta} />
 
-        <Blend to="ink" />
         <Pricing
           eyebrow={pricingContent?.subtitle || 'Pricing & Packages'}
           title={pricingContent?.title || 'Choose the right plan for you'}
@@ -184,11 +183,7 @@ export default async function Home() {
           tiers={pricingContent?.tiers || []}
         />
 
-        <Blend to="paper" />
-
         {leadMagnetContent && <LeadMagnet content={leadMagnetContent} />}
-
-        {finalCtaContent && <Blend to="ink" />}
 
         {finalCtaContent && <FinalCta content={finalCtaContent} fallbackSecondaryLink={linkedInProfile} />}
       </main>

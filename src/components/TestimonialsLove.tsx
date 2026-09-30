@@ -45,7 +45,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
 
   const theme = {
     light: {
-      card: 'bg-white text-ink ring-1 ring-line',
+      card: 'bg-white text-ink',
       quote: 'text-[15px]/7 text-ink/80',
       mark: 'text-accent',
       divider: 'border-line',
@@ -60,21 +60,22 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
       divider: 'border-ink/15',
       muted: 'text-ink/65',
       logo: 'brightness-0',
-      initials: 'bg-ink text-accent',
+      initials: 'bg-white text-primary',
     },
+    // "dark" is kept as the stored value in Sanity; it now renders as the lavender card.
     dark: {
-      card: 'bg-ink text-white',
-      quote: 'text-lg/8 tracking-[-0.015em] text-white',
-      mark: 'text-accent',
-      divider: 'border-white/15',
-      muted: 'text-white/55',
-      logo: 'brightness-0 invert',
-      initials: 'bg-accent text-ink',
+      card: 'bg-lavender text-ink',
+      quote: 'text-lg/8 tracking-[-0.015em] text-ink',
+      mark: 'text-ink/40',
+      divider: 'border-ink/10',
+      muted: 'text-ink/60',
+      logo: 'brightness-0',
+      initials: 'bg-white text-primary',
     },
   }[style];
 
   return (
-    <figure className={`flex flex-col rounded-lg p-7 shadow-[0_24px_60px_-30px_rgb(14_14_16/0.35)] ${theme.card}`}>
+    <figure className={`flex flex-col rounded-[20px] p-7 shadow-[0_4px_16px_rgb(16_24_40/0.08)] ring-1 ring-black/5 sm:p-8 ${theme.card}`}>
       <header className="flex min-h-8 items-start justify-between gap-4">
         {testimonial.companyLogo ? (
           <Image
@@ -252,7 +253,7 @@ export function TestimonialsLove({ eyebrow, title, ribbonText, testimonials, lin
               <HeartIcon aria-hidden="true" className="size-4 text-accent" />
               {eyebrow}
             </p>
-            <h2 className="font-display text-5xl/[1.02] font-semibold tracking-[-0.045em] text-balance text-ink sm:text-6xl/[1.0] lg:text-[5.25rem]/[0.98]">
+            <h2 className="font-display text-5xl/[1.02] font-semibold tracking-[-0.025em] text-balance text-primary sm:text-6xl/[1.0] lg:text-[5.25rem]/[0.98]">
               {title}
             </h2>
           </motion.div>

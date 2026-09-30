@@ -7,6 +7,7 @@ export const hero = defineType({
   groups: [
     { name: "content", title: "Content", default: true },
     { name: "profile", title: "Profile" },
+    { name: "cards", title: "Cards & video" },
   ],
   fields: [
     defineField({
@@ -32,20 +33,43 @@ export const hero = defineType({
     }),
     defineField({
       name: "title",
-      title: "Main Headline",
+      title: "Old Headline (not shown)",
       type: "string",
-      description: "The bold headline text (e.g., 'Career Success Manager')",
-      validation: (Rule) => Rule.required(),
+      description: "No longer shown on the site. The hero now uses Greeting, Role and Intro Line.",
+      hidden: ({ value }) => !value,
       group: "content",
     }),
     defineField({
       name: "description",
-      title: "Description",
+      title: "Old Description (not shown)",
       type: "text",
       rows: 6,
+      description: "No longer shown on the site. The hero now uses Greeting, Role and Intro Line.",
+      hidden: ({ value }) => !value,
+      group: "content",
+    }),
+    defineField({
+      name: "greeting",
+      title: "Greeting",
+      type: "string",
+      description: "First line of the big headline, e.g. “Hi, I’m Srinidhi.”",
+      initialValue: "Hi, I’m Srinidhi.",
+      group: "content",
+    }),
+    defineField({
+      name: "role",
+      title: "Role",
+      type: "string",
+      description: "Second line of the headline, shown with a soft green fade.",
+      initialValue: "Customer Success Career Coach.",
+      group: "content",
+    }),
+    defineField({
+      name: "intro",
+      title: "Intro Line",
+      type: "string",
       description:
-        "Text below the headline. Leave a blank line between paragraphs. Wrap words in **double asterisks** to make them bold.",
-      validation: (Rule) => Rule.required(),
+        "The sentence under the headline. The Service Labels are added after it as clickable chips, e.g. “…with [Resume Writing], [LinkedIn Optimization] and [Coaching].”",
       group: "content",
     }),
     defineField({
@@ -68,8 +92,66 @@ export const hero = defineType({
       title: "Service Labels",
       type: "array",
       of: [{ type: "string" }],
-      description: "Short labels shown under the button (e.g. Resume Writing).",
+      description:
+        "Shown as chips at the end of the Intro Line. Each links to its section (labels mentioning Resume, LinkedIn or Coaching).",
       group: "content",
+    }),
+    defineField({
+      name: "introVideo",
+      title: "Intro Video",
+      type: "file",
+      description: "A short video of you (MP4). Shown in the second card slot; a placeholder shows until you add one.",
+      options: { accept: "video/mp4,video/webm,video/quicktime" },
+      group: "cards",
+    }),
+    defineField({
+      name: "introVideoPoster",
+      title: "Video Cover Image",
+      type: "image",
+      description: "Optional still shown before the video plays.",
+      group: "cards",
+    }),
+    defineField({
+      name: "cards",
+      title: "Cards",
+      type: "array",
+      description: "The tilted cards under the headline (three works best). The video sits between the first and second card.",
+      group: "cards",
+      validation: (Rule) => Rule.max(4),
+      of: [
+        {
+          type: "object",
+          name: "heroCard",
+          fields: [
+            defineField({ name: "title", title: "Title", type: "string", validation: (Rule) => Rule.required() }),
+            defineField({ name: "text", title: "Text", type: "text", rows: 3 }),
+            defineField({ name: "buttonText", title: "Button Text", type: "string" }),
+            defineField({
+              name: "buttonLink",
+              title: "Button Link",
+              type: "string",
+              description: "A section on the page (e.g. #pricing) or a full URL.",
+            }),
+            defineField({
+              name: "color",
+              title: "Colour",
+              type: "string",
+              options: {
+                list: [
+                  { title: "Peach", value: "peach" },
+                  { title: "Lavender", value: "lavender" },
+                  { title: "Sky", value: "sky" },
+                  { title: "Mint", value: "mint" },
+                ],
+                layout: "radio",
+                direction: "horizontal",
+              },
+              initialValue: "peach",
+            }),
+          ],
+          preview: { select: { title: "title", subtitle: "buttonText" } },
+        },
+      ],
     }),
   ],
   preview: {
