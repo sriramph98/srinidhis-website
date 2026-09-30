@@ -11,9 +11,6 @@ import { FaLinkedin } from 'react-icons/fa6';
 type CardStyle = 'light' | 'accent' | 'dark';
 
 const AUTO_STYLES: CardStyle[] = ['light', 'accent', 'light', 'dark'];
-// Small per-card nudges so the columns look hand-placed rather than gridded.
-const NUDGE_X = [0, 7, 14, 21, 5];
-const GAP_Y = [0, 96, 128, 95, 127];
 
 const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
@@ -210,7 +207,6 @@ export function TestimonialsLove({ eyebrow, title, ribbonText, testimonials, lin
   // Visitors can stop the drifting ribbon text; it never moves for reduced-motion users.
   const [ribbonPaused, setRibbonPaused] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const wallRef = useRef<HTMLDivElement>(null);
   const size = useRef({ section: 0, viewport: 0 });
 
   useEffect(() => {
@@ -242,14 +238,6 @@ export function TestimonialsLove({ eyebrow, title, ribbonText, testimonials, lin
   // …and the heading bows out before the last cards leave, so it never reappears behind the button.
   const headingOpacity = useTransform(sectionProgress, (v) => clamp(remaining(v) / (size.current.viewport * 0.5 || 1)));
   const hintOpacity = useTransform(sectionProgress, (v) => clamp(1 - scrolled(v) / 200));
-
-  // Columns drift upward at different speeds for a parallax feel.
-  const { scrollYProgress: wallProgress } = useScroll({ target: wallRef, offset: ['start end', 'end start'] });
-  const slowY = useTransform(wallProgress, [0, 1], [0, reduceMotion ? 0 : -120]);
-  const fastY = useTransform(wallProgress, [0, 1], [0, reduceMotion ? 0 : -360]);
-
-  const columns: Testimonial[][] = [[], []];
-  testimonials.forEach((testimonial, index) => columns[index % 2].push(testimonial));
 
   return (
     <section ref={sectionRef} id="testimonials" className="relative scroll-mt-20 bg-paper">
@@ -288,46 +276,12 @@ export function TestimonialsLove({ eyebrow, title, ribbonText, testimonials, lin
       </div>
 
       <div className="relative z-20 overflow-x-clip px-6 pb-24 md:pb-40">
-        {/* Phones: one simple column */}
-        <div className="mx-auto flex max-w-md flex-col gap-4 md:hidden">
+        {/* One column of cards, stacked top to bottom, scrolling up over the pinned heading. */}
+        <div className="mx-auto flex max-w-xl flex-col gap-6 md:gap-8">
           {testimonials.map((testimonial, index) => (
             <FadeIn key={testimonial.id}>
               <TestimonialCard testimonial={testimonial} index={index} />
             </FadeIn>
-          ))}
-        </div>
-
-        {/* Tablet and up: two staggered parallax columns */}
-        <div
-          ref={wallRef}
-          // Parallax lifts both columns at least as far as the slow one, so pull the content below up to match.
-          style={{ marginBottom: reduceMotion ? 0 : -120 }}
-          className="relative mx-auto hidden max-w-[1320px] items-start justify-center gap-x-10 md:flex lg:gap-x-20"
-        >
-          {columns.map((column, columnIndex) => (
-            <motion.div
-              key={columnIndex}
-              style={{ y: columnIndex === 0 ? slowY : fastY }}
-              className="flex w-[min(386px,45%)] flex-col"
-            >
-              <div style={{ marginTop: columnIndex === 0 ? 0 : 240 }}>
-                {column.map((testimonial, index) => {
-                  const globalIndex = index * 2 + columnIndex;
-                  const nudge = NUDGE_X[index % NUDGE_X.length] * (columnIndex === 0 ? 1 : -1);
-                  return (
-                    <div
-                      key={testimonial.id}
-                      className="relative"
-                      style={{ left: nudge, marginTop: GAP_Y[index % GAP_Y.length] }}
-                    >
-                      <FadeIn delay={index * 0.08}>
-                        <TestimonialCard testimonial={testimonial} index={globalIndex} />
-                      </FadeIn>
-                    </div>
-                  );
-                })}
-              </div>
-            </motion.div>
           ))}
         </div>
 

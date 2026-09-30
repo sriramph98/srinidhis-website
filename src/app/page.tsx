@@ -174,7 +174,7 @@ export default async function Home() {
           linkedInProfile={linkedInProfile}
         />
 
-        <HowItWorks content={howItWorksContent} />
+        <HowItWorks content={howItWorksContent} ctaText={heroCta} />
 
         <Blend to="ink" />
         <Pricing
