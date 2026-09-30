@@ -89,34 +89,42 @@ export function ServiceSection({
   return (
     <Section id={id}>
       <Container>
-        {/* The problem, told as a personal story */}
-        <div className="grid grid-cols-1 items-start gap-x-20 gap-y-12 lg:grid-cols-2">
-          <Reveal>
+        {/* Heading beside the visual, then the story in two columns across the full width. */}
+        <div className="grid grid-cols-1 items-center gap-x-16 gap-y-10 lg:grid-cols-12">
+          <Reveal className="lg:col-span-7">
             <Eyebrow>{content?.subtitle || fallbackEyebrow}</Eyebrow>
             <Heading className="mt-6">{content?.title || fallbackTitle}</Heading>
-            <RichText text={content?.description} className="mt-10 space-y-5 text-lg/8 text-muted" />
           </Reveal>
           {visual === 'carousel' && images.length > 0 ? (
-            <Reveal delay={0.1} className="lg:sticky lg:top-28">
+            <Reveal delay={0.1} className="lg:col-span-5">
               <ImageCarousel images={images} alt="Client feedback" />
             </Reveal>
           ) : (
             firstImage && (
-              <Reveal delay={0.1} className="lg:sticky lg:top-28">
-                <div className="overflow-hidden rounded-lg">
+              <Reveal delay={0.1} className="lg:col-span-5">
+                <div className="overflow-hidden rounded-[20px] shadow-[0_4px_16px_rgb(69_48_125/0.08)] ring-1 ring-black/5">
                   <Image
                     src={firstImage}
                     alt={imageAlt(images[0]) || content?.title || fallbackTitle}
                     width={1600}
                     height={1200}
-                    sizes="(min-width: 1024px) 540px, 100vw"
-                    className="h-auto w-full object-cover transition-transform duration-700 ease-(--ease-out-soft) hover:scale-[1.02]"
+                    sizes="(min-width: 1024px) 460px, 100vw"
+                    className="aspect-[4/3] h-auto w-full object-cover transition-transform duration-700 ease-(--ease-out-soft) hover:scale-[1.02]"
                   />
                 </div>
               </Reveal>
             )
           )}
         </div>
+
+        {content?.description && (
+          <Reveal>
+            <RichText
+              text={content.description}
+              className="mt-14 space-y-5 text-lg/8 text-muted lg:columns-2 lg:gap-16 [&>*]:break-inside-avoid"
+            />
+          </Reveal>
+        )}
 
         {/* What we'll work on */}
         {(content?.intro || features.length > 0) && (
