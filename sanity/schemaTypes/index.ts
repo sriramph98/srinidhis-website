@@ -1,6 +1,7 @@
 import { feature } from "./feature";
 import { footer } from "./footer";
 import { hero } from "./hero";
+import { lead } from "./lead";
 import { pricingHeader } from "./pricingHeader";
 import { pricingTier } from "./pricingTier";
 import { section } from "./section";
@@ -16,4 +17,5 @@ export const schemaTypes = [
   testimonial,
   socialLink,
   footer,
+  lead,
 ];

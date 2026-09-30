@@ -17,6 +17,10 @@ export interface Testimonial {
   authorName: string;
   authorTitle: string;
   authorImage: (string | { url: string })[];
+  company?: string;
+  companyLogo?: string;
+  linkedinUrl?: string;
+  cardStyle?: 'auto' | 'light' | 'accent' | 'dark';
 }
 
 export interface StandardFeature {
@@ -44,8 +48,24 @@ export interface Section {
   subtitle?: string;
   description: string;
   features?: StandardFeature[];
-  images?: (string | { url: string })[];
+  images?: (string | { url: string; alt?: string })[];
   name?: string;
+  intro?: string;
+  journey?: string[];
+  closing?: string;
+  highlightQuote?: string;
+  callouts?: string[];
+  testimonial?: Testimonial;
+  ctaText?: string;
+  ctaLink?: string;
+  secondaryCtaText?: string;
+  secondaryCtaLink?: string;
+  formOptions?: string[];
+  successTitle?: string;
+  successMessage?: string;
+  checklistUrl?: string;
+  bookingUrl?: string;
+  bookingText?: string;
 }
 
 export interface HeroContent {
@@ -54,6 +74,9 @@ export interface HeroContent {
   description: string;
   name: string;
   profileImage: (string | { url: string })[];
+  ctaText?: string;
+  secondaryCtaText?: string;
+  serviceLabels?: string[];
 }
 
 export interface PricingTier {
