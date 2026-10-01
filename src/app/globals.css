@@ -10,7 +10,7 @@
  *            card 20px (panels, cards, images) · full (avatars, badges, dots, chips).
  *   Shadow   card (resting card) · float (nav bar) · popup (dropdown) · button · chip.
  *   Type     Heading sizes (ui.tsx) for every title; text-body / text-small / text-caption
- *            for everything else. Titles are Hedvig Letters Serif, all other text Inter with tight spacing.
+ *            for everything else. Titles are Hedvig Letters Serif, all other text DM Sans with tight spacing.
  */
 @theme inline {
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
