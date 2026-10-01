@@ -12,7 +12,7 @@ interface PricingProps {
   tiers: PricingTier[];
 }
 
-// One horizontal row per plan: what it is and what it costs on the left, what's included on the right.
+// Plans side by side: what it is, what it costs, then what's included.
 export function Pricing({ eyebrow, title, description, tiers }: PricingProps) {
   return (
     <Section id="pricing" tone="brand">
@@ -22,39 +22,34 @@ export function Pricing({ eyebrow, title, description, tiers }: PricingProps) {
           <SectionHeader eyebrow={eyebrow} title={title} description={description} dark align="center" />
         </Reveal>
 
-        <ul role="list" className="mx-auto mt-14 max-w-5xl space-y-4">
+        <ul role="list" className="mt-14 grid grid-cols-1 gap-4 lg:grid-cols-3">
           {tiers.map((tier, index) => (
-            <Reveal as="li" key={tier.id} delay={index * 0.06}>
+            <Reveal as="li" key={tier.id} delay={index * 0.06} className="h-full">
               <div
-                className={`grid grid-cols-1 gap-10 rounded-card bg-white p-6 text-ink shadow-card sm:p-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14 ${
+                className={`flex h-full flex-col rounded-card bg-white p-6 text-ink shadow-card sm:p-8 ${
                   tier.featured ? 'ring-2 ring-accent' : ''
                 }`}
               >
-                <div className="flex flex-col">
-                  <Heading as="h3" size="md" id={tier.id}>
-                    {tier.name}
-                  </Heading>
-                  <RichText text={tier.description} size="small" collapseAfter={Infinity} className="mt-4" />
-                  <div className="mt-10 lg:mt-auto lg:pt-10">
-                    <Heading as="p" size="price">
-                      {tier.price}
-                    </Heading>
-                    <a
-                      href={tier.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-describedby={tier.id}
-                      className={buttonClass({ className: 'mt-6 w-full' })}
-                    >
-                      {tier.href.includes('linkedin.com') && <FaLinkedin aria-hidden="true" className="size-4" />}
-                      {tier.buttonText}
-                    </a>
-                  </div>
-                </div>
-
-                <ul role="list" className="divide-y divide-line border-t border-line text-small lg:border-t-0 lg:border-l lg:pl-14">
+                <Heading as="h3" size="md" id={tier.id}>
+                  {tier.name}
+                </Heading>
+                <RichText text={tier.description} size="small" collapseAfter={Infinity} className="mt-4" />
+                <Heading as="p" size="price" className="mt-8">
+                  {tier.price}
+                </Heading>
+                <a
+                  href={tier.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-describedby={tier.id}
+                  className={buttonClass({ className: 'mt-6 w-full' })}
+                >
+                  {tier.href.includes('linkedin.com') && <FaLinkedin aria-hidden="true" className="size-4" />}
+                  {tier.buttonText}
+                </a>
+                <ul role="list" className="mt-8 divide-y divide-line border-t border-line text-small">
                   {tier.features.map((feature) => (
-                    <li key={feature} className="flex gap-x-3 py-3.5 first:lg:pt-0 last:lg:pb-0">
+                    <li key={feature} className="flex gap-x-3 py-3.5">
                       <CheckIcon aria-hidden="true" className="mt-0.5 size-5 flex-none text-primary" />
                       {feature}
                     </li>

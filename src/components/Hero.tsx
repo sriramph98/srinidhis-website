@@ -182,7 +182,7 @@ export function Hero({
           {/* Cards: a swipeable row on small screens, an overlapping tilted fan from lg up. */}
           <ul
             role="list"
-            className="-mx-6 mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pt-4 pb-6 [scrollbar-width:none] md:-mx-10 md:px-10 lg:mx-0 lg:h-[380px] lg:snap-none lg:items-center lg:justify-start lg:gap-0 lg:overflow-visible lg:p-0 xl:h-[440px]"
+            className="-mx-6 mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pt-4 pb-6 [scrollbar-width:none] md:-mx-10 md:px-10 lg:mx-0 lg:h-[380px] lg:snap-none lg:items-center lg:justify-center lg:gap-0 lg:overflow-visible lg:p-0"
           >
             {slots.map((slot, index) => (
               <motion.li
@@ -190,7 +190,7 @@ export function Hero({
                 initial={reduceMotion ? false : { opacity: 0, y: 40, rotate: 0 }}
                 animate={{ opacity: 1, y: 0, rotate: 0 }}
                 transition={{ duration: 0.9, delay: 0.25 + index * 0.08, ease }}
-                className="relative h-[300px] w-[256px] flex-none snap-start lg:-mr-7 lg:h-[310px] lg:w-[280px] lg:last:mr-0 lg:hover:z-10 xl:-mr-10 xl:h-[386px] xl:w-[350px]"
+                className="relative h-[300px] w-[256px] flex-none snap-start lg:-mr-6 lg:h-[340px] lg:w-[min(25%,280px)] lg:flex-1 lg:last:mr-0 lg:hover:z-10"
               >
                 {/* The tilt lives on an inner wrapper so hover can straighten it without fighting the entrance. */}
                 <div
