@@ -89,10 +89,10 @@ export function ServiceSection({
   return (
     <Section id={id}>
       <Container>
-        {/* Heading beside the visual, then the story in two columns across the full width. */}
+        {/* Title and a short story beside the visual. */}
         <div className="grid grid-cols-1 items-center gap-x-16 gap-y-12 lg:grid-cols-12">
           <Reveal className="lg:col-span-7">
-            <SectionHeader eyebrow={content?.subtitle || fallbackEyebrow} title={content?.title || fallbackTitle} />
+            <SectionHeader eyebrow={content?.subtitle || fallbackEyebrow} title={content?.title || fallbackTitle} description={content?.description} />
           </Reveal>
           {visual === 'carousel' && images.length > 0 ? (
             <Reveal delay={0.1} className="lg:col-span-5">
@@ -115,12 +115,6 @@ export function ServiceSection({
             )
           )}
         </div>
-
-        {content?.description && (
-          <Reveal>
-            <RichText text={content.description} className="mt-14 lg:columns-2 lg:gap-16 [&>*]:break-inside-avoid" />
-          </Reveal>
-        )}
 
         {/* What we'll work on */}
         {(content?.intro || features.length > 0) && (
