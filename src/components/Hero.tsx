@@ -1,14 +1,26 @@
 'use client';
 
-import { Button, Heading, panelGutter } from '@/components/ui';
-import type { HeroContent } from '@/utils/types';
-import { ChatBubbleLeftRightIcon, DocumentTextIcon } from '@heroicons/react/20/solid';
+import { Button, Container, Heading, Section, buttonClass, isExternal } from '@/components/ui';
+import type { HeroCard, HeroContent } from '@/utils/types';
+import { ChatBubbleLeftRightIcon, DocumentTextIcon, PlayIcon } from '@heroicons/react/20/solid';
 import { motion, useReducedMotion } from 'framer-motion';
 import { stegaClean } from 'next-sanity';
 import { Fragment, type ComponentType, type SVGProps } from 'react';
 import { FaLinkedin } from 'react-icons/fa6';
 
 const ease = [0.16, 1, 0.3, 1] as const;
+
+const cardColor: Record<HeroCard['color'], string> = {
+  peach: 'bg-peach',
+  blush: 'bg-accent',
+  lavender: 'bg-lavender',
+  sky: 'bg-sky',
+  mint: 'bg-mint',
+  butter: 'bg-butter',
+};
+
+// Alternating tilt, like cards dropped on a desk; the video sits second.
+const TILT = [6.5, -5, 5, -5, 4];
 
 type Service = { href: string; Icon: ComponentType<SVGProps<SVGSVGElement>> };
 
@@ -57,8 +69,55 @@ function ChipList({ labels }: { labels: string[] }) {
   });
 }
 
-// Full-bleed hero: a Pixar-style looping video of Srinidhi and Zorro fills the whole section (no card), with the
-// greeting top-left, the pitch on the right, and the scene melting into the page at the bottom.
+function CardFace({ card }: { card: HeroCard }) {
+  const link = card.buttonLink ? stegaClean(card.buttonLink) : undefined;
+  return (
+    <div className={`flex size-full flex-col rounded-card p-6 shadow-card xl:p-8 ${cardColor[stegaClean(card.color)] ?? cardColor.peach}`}>
+      <Heading as="h2" size="md">
+        {card.title}
+      </Heading>
+      {card.text && <p className="mt-3 text-small text-secondary">{card.text}</p>}
+      {card.buttonText && link && (
+        <a
+          href={link}
+          {...(isExternal(link) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          className={buttonClass({ variant: 'dark', size: 'sm', className: 'mt-auto w-fit' })}
+        >
+          {card.buttonText}
+        </a>
+      )}
+    </div>
+  );
+}
+
+// The video card: her intro video once it's uploaded in Sanity, a quiet placeholder until then.
+function VideoFace({ video, name }: { video?: HeroContent['video']; name: string }) {
+  return (
+    <div className="relative size-full overflow-hidden rounded-card bg-primary shadow-card">
+      {video ? (
+        <video
+          src={video.url}
+          poster={video.poster}
+          className="size-full object-cover"
+          controls
+          playsInline
+          preload="metadata"
+          aria-label={`Intro video from ${name}`}
+        />
+      ) : (
+        <div className="glow-white flex size-full flex-col items-center justify-center gap-4 text-white">
+          <span className="flex size-14 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/25">
+            <PlayIcon aria-hidden="true" className="size-6 translate-x-px" />
+          </span>
+          <span className="text-small font-medium text-white/75">Intro video coming soon</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Hero: a white panel with a big two-line greeting, an intro line with
+// service chips, and a row of tilted pastel cards with a video in the middle.
 export function Hero({
   content,
   ctaText,
@@ -79,66 +138,71 @@ export function Hero({
   const role = content?.role || 'Customer Success Career Coach.';
   const intro = content?.intro || 'I help Customer Success professionals build a career story that gets noticed, with';
   const labels = content?.serviceLabels ?? [];
+  const cards = content?.cards ?? [];
+
+  // Slots in order: first card, video, then the rest.
+  const slots: ({ kind: 'card'; card: HeroCard } | { kind: 'video' })[] = [
+    ...cards.slice(0, 1).map((card) => ({ kind: 'card' as const, card })),
+    { kind: 'video' },
+    ...cards.slice(1).map((card) => ({ kind: 'card' as const, card })),
+  ];
 
   return (
-    // Slides up under the floating nav bar so the scene reaches the very top of the page.
-    <section className="relative -mt-[4.5rem] flex min-h-[62rem] items-start overflow-hidden sm:min-h-svh">
-      {/* The scene. Subjects live in the bottom-left of the frame, so keep that corner in view when cropping. */}
-      <video
-        aria-label="Illustration of Srinidhi reading in a Toronto park while her dog Zorro plays with butterflies"
-        className="absolute inset-x-0 bottom-0 h-[52%] w-full object-cover object-[10%_bottom] sm:inset-0 sm:h-full sm:object-left-bottom"
-        poster="/hero/hero-poster.jpg"
-        autoPlay={!reduceMotion}
-        muted
-        loop
-        playsInline
-        preload="auto"
-      >
-        <source src="/hero/hero.mp4" type="video/mp4" />
-      </video>
-
-      {/* A light wash so the text stays readable, then a long fade into the page colour so the next section blends in. */}
-      <div aria-hidden="true" className="absolute inset-0 bg-linear-to-b from-paper/55 via-transparent to-transparent max-sm:hidden" />
-      {/* On phones the scene sits under the text, so it fades in from the page colour. */}
-      <div aria-hidden="true" className="absolute inset-x-0 bottom-[calc(52%-6rem)] h-24 bg-linear-to-b from-paper to-transparent sm:hidden" />
-      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[18%] bg-linear-to-t from-paper via-paper/45 to-transparent" />
-
-      <div className={`relative w-full pt-36 pb-12 sm:pt-44 sm:pb-40 ${panelGutter}`}>
-        <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-x-16 gap-y-8 px-6 md:px-10 lg:grid-cols-12 lg:px-14">
-          <motion.div {...rise(0)} className="lg:col-span-5">
+    <div>
+      <Section compact>
+        <Container>
+          <motion.div {...rise(0)}>
             <Heading as="h1" size="xl">
               {greeting}
+              <br />
+              <span className="bg-linear-to-r from-primary to-primary/70 bg-clip-text text-transparent">{role}</span>
             </Heading>
           </motion.div>
 
-          <div className="lg:col-span-6 lg:col-start-7 lg:pt-4">
-            <motion.div {...rise(0.1)}>
-              <Heading as="p" size="lg">
-                <span className="bg-linear-to-r from-primary to-primary/70 bg-clip-text text-transparent">{role}</span>
-              </Heading>
-            </motion.div>
+          <motion.p {...rise(0.1)} className="mt-8 max-w-3xl text-lead">
+            {intro}
+            {labels.length > 0 && (
+              <>
+                {' '}
+                <ChipList labels={labels} />
+              </>
+            )}
+          </motion.p>
 
-            <motion.p {...rise(0.18)} className="mt-6 max-w-xl text-lead">
-              {intro}
-              {labels.length > 0 && (
-                <>
-                  {' '}
-                  <ChipList labels={labels} />
-                </>
-              )}
-            </motion.p>
+          <motion.div {...rise(0.18)} className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <Button href="#pricing">{ctaText}</Button>
+            {content?.secondaryCtaText && (
+              <Button href={secondaryHref} variant="secondary">
+                {content.secondaryCtaText}
+              </Button>
+            )}
+          </motion.div>
 
-            <motion.div {...rise(0.26)} className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button href="#pricing">{ctaText}</Button>
-              {content?.secondaryCtaText && (
-                <Button href={secondaryHref} variant="secondary">
-                  {content.secondaryCtaText}
-                </Button>
-              )}
-            </motion.div>
-          </div>
-        </div>
-      </div>
-    </section>
+          {/* Cards: a swipeable row on small screens, an overlapping tilted fan from lg up. */}
+          <ul
+            role="list"
+            className="-mx-6 mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pt-4 pb-6 [scrollbar-width:none] md:-mx-10 md:px-10 lg:mx-0 lg:h-[380px] lg:snap-none lg:items-center lg:justify-center lg:gap-0 lg:overflow-visible lg:p-0"
+          >
+            {slots.map((slot, index) => (
+              <motion.li
+                key={slot.kind === 'video' ? 'video' : `${slot.card.title}-${index}`}
+                initial={reduceMotion ? false : { opacity: 0, y: 40, rotate: 0 }}
+                animate={{ opacity: 1, y: 0, rotate: 0 }}
+                transition={{ duration: 0.9, delay: 0.25 + index * 0.08, ease }}
+                className="relative h-[300px] w-[256px] flex-none snap-start lg:-mr-6 lg:h-[340px] lg:w-[min(25%,280px)] lg:flex-1 lg:last:mr-0 lg:hover:z-10"
+              >
+                {/* The tilt lives on an inner wrapper so hover can straighten it without fighting the entrance. */}
+                <div
+                  style={{ '--tilt': `${TILT[index % TILT.length]}deg` } as React.CSSProperties}
+                  className="size-full p-0 transition-transform duration-500 ease-(--ease-out-soft) lg:rotate-(--tilt) lg:p-3 lg:hover:-translate-y-2 lg:hover:rotate-0"
+                >
+                  {slot.kind === 'video' ? <VideoFace video={content?.video} name={name} /> : <CardFace card={slot.card} />}
+                </div>
+              </motion.li>
+            ))}
+          </ul>
+        </Container>
+      </Section>
+    </div>
   );
 }
