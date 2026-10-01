@@ -4,6 +4,7 @@ import { Reveal } from '@/components/Reveal';
 import { RichText } from '@/components/RichText';
 import { Container, Heading, Section, SectionHeader, buttonClass } from '@/components/ui';
 import type { Section as SectionContent } from '@/utils/types';
+import { ClipboardDocumentCheckIcon } from '@heroicons/react/24/outline';
 import { ArrowDownTrayIcon, CalendarDaysIcon, CheckCircleIcon } from '@heroicons/react/20/solid';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 
@@ -46,7 +47,7 @@ export function LeadMagnet({ content }: { content: SectionContent }) {
     <Section id="free-checklist">
       <Container className="grid grid-cols-1 items-start gap-x-16 gap-y-12 lg:grid-cols-2">
         <Reveal className="lg:sticky lg:top-28">
-          <SectionHeader eyebrow={content.subtitle} title={content.title} description={content.description} />
+          <SectionHeader icon={ClipboardDocumentCheckIcon} eyebrow={content.subtitle} title={content.title} description={content.description} />
         </Reveal>
 
         <Reveal delay={0.1}>

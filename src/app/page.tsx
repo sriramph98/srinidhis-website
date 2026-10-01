@@ -33,6 +33,20 @@ import type { Section as SectionContent } from '@/utils/types';
 import { SanityLive } from '@/lib/live';
 import { VisualEditing } from 'next-sanity/visual-editing';
 import { draftMode } from 'next/headers';
+import {
+  AcademicCapIcon,
+  DocumentCheckIcon,
+  DocumentTextIcon,
+  EyeIcon,
+  FlagIcon,
+  IdentificationIcon,
+  LanguageIcon,
+  MagnifyingGlassIcon,
+  MapIcon,
+  MicrophoneIcon,
+  PuzzlePieceIcon,
+  ChatBubbleLeftRightIcon,
+} from '@heroicons/react/24/outline';
 import Image from 'next/image';
 
 // SanityLive refreshes the page when content is published; this is only a fallback.
@@ -111,6 +125,7 @@ export default async function Home() {
           id="linkedin-optimization"
           content={linkedIn}
           features={linkedInContent?.features?.filter((f): f is LinkedInFeature => f.type === 'linkedin') ?? []}
+          icon={IdentificationIcon}
           fallbackEyebrow="LinkedIn Profile Optimization"
           fallbackTitle="Your LinkedIn profile should be working for you"
           fallbackCta="Transform My LinkedIn"
@@ -120,6 +135,7 @@ export default async function Home() {
           id="resume-writing"
           content={resume}
           features={resumeContent?.features?.filter((f): f is ResumeFeature => f.type === 'resume') ?? []}
+          icon={DocumentTextIcon}
           fallbackEyebrow="Professional Resume Writing"
           fallbackTitle="Your experience deserves more than a “good” resume"
           fallbackCta="Transform My Resume"
@@ -130,10 +146,11 @@ export default async function Home() {
           id="coaching"
           content={coaching}
           features={coachingContent?.features?.filter((f): f is CoachingFeature => f.type === 'coaching') ?? []}
+          icon={AcademicCapIcon}
+          cardIcons={[EyeIcon, PuzzlePieceIcon, LanguageIcon, FlagIcon, ChatBubbleLeftRightIcon]}
           fallbackEyebrow="Customer Success Career Coaching"
           fallbackTitle="Break into Customer Success"
           fallbackCta="Start My CS Transition"
-          numbered
         />
 
         {jobSearchContent && (
@@ -152,18 +169,28 @@ export default async function Home() {
                 </Reveal>
               )}
               <Reveal delay={0.1}>
-                <SectionHeader eyebrow={jobSearchContent.subtitle} title={jobSearchContent.title} description={jobSearchContent.description} />
+                <SectionHeader icon={MagnifyingGlassIcon} eyebrow={jobSearchContent.subtitle} title={jobSearchContent.title} description={jobSearchContent.description} />
                 <ul role="list" className="mt-10 divide-y divide-line border-y border-line">
                   {jobSearchContent.features
                     ?.filter((f): f is JobSearchFeature => f.type === 'jobSearch')
-                    .map((feature) => (
-                      <li key={feature.title} className="py-5">
-                        <Heading as="h3" size="xs">
-                          {feature.title}
-                        </Heading>
-                        <p className="mt-1 text-small text-muted">{feature.description}</p>
-                      </li>
-                    ))}
+                    .map((feature, index) => {
+                      const Icon = [MapIcon, MicrophoneIcon, DocumentCheckIcon][index];
+                      return (
+                        <li key={feature.title} className="flex gap-4 py-5">
+                          {Icon && (
+                            <span aria-hidden="true" className="flex size-10 flex-none items-center justify-center rounded-control bg-lavender/60 text-primary">
+                              <Icon className="size-5" />
+                            </span>
+                          )}
+                          <div>
+                            <Heading as="h3" size="xs">
+                              {feature.title}
+                            </Heading>
+                            <p className="mt-1 text-small text-muted">{feature.description}</p>
+                          </div>
+                        </li>
+                      );
+                    })}
                 </ul>
               </Reveal>
             </Container>

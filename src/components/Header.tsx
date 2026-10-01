@@ -90,14 +90,6 @@ function socialIcon(platform: string) {
   }
 }
 
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join('');
-}
-
 const linkClass = (active: boolean) =>
   `inline-flex items-center gap-x-1.5 rounded-control py-2 text-small font-medium transition-colors ${
     active ? 'bg-primary/8 text-primary' : 'text-ink hover:bg-ink/5'

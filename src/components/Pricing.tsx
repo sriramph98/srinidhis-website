@@ -3,6 +3,7 @@ import { RichText } from '@/components/RichText';
 import { Container, Heading, Section, SectionHeader, buttonClass } from '@/components/ui';
 import type { PricingTier } from '@/utils/types';
 import { CheckIcon } from '@heroicons/react/20/solid';
+import { TagIcon } from '@heroicons/react/24/outline';
 import { FaLinkedin } from 'react-icons/fa6';
 
 interface PricingProps {
@@ -19,7 +20,7 @@ export function Pricing({ eyebrow, title, description, tiers }: PricingProps) {
       <div aria-hidden="true" className="glow absolute inset-x-0 top-0 h-[640px]" />
       <Container className="relative">
         <Reveal>
-          <SectionHeader eyebrow={eyebrow} title={title} description={description} dark align="center" />
+          <SectionHeader icon={TagIcon} eyebrow={eyebrow} title={title} description={description} dark align="center" />
         </Reveal>
 
         <ul role="list" className="mt-14 grid grid-cols-1 gap-4 lg:grid-cols-3">

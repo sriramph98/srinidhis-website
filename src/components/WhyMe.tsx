@@ -3,6 +3,7 @@
 import { Reveal } from '@/components/Reveal';
 import { Container, Section, SectionHeader } from '@/components/ui';
 import type { Section as SectionContent } from '@/utils/types';
+import { BriefcaseIcon, HeartIcon, MegaphoneIcon, UsersIcon } from '@heroicons/react/24/outline';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import { useRef } from 'react';
@@ -38,6 +39,7 @@ export function WhyMe({ content, fallbackPhoto, name }: { content: SectionConten
         )}
         <Reveal delay={0.1}>
           <SectionHeader
+            icon={HeartIcon}
             eyebrow={content?.subtitle || 'Why work with me'}
             title={content?.title || 'Why work with me'}
             description={content?.description}
@@ -45,12 +47,15 @@ export function WhyMe({ content, fallbackPhoto, name }: { content: SectionConten
           >
             {!!content?.callouts?.length && (
               <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                {content.callouts.map((callout, index) => (
-                  <li key={callout} className="border-t border-primary/25 pt-4">
-                    <span className="text-caption font-medium text-muted tabular-nums">{String(index + 1).padStart(2, '0')}</span>
-                    <p className="mt-2 text-small font-semibold">{callout}</p>
-                  </li>
-                ))}
+                {content.callouts.map((callout, index) => {
+                  const Icon = [BriefcaseIcon, MegaphoneIcon, UsersIcon][index];
+                  return (
+                    <li key={callout} className="border-t border-primary/25 pt-4">
+                      {Icon && <Icon aria-hidden="true" className="size-6 text-primary" />}
+                      <p className="mt-3 text-small font-semibold">{callout}</p>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </SectionHeader>

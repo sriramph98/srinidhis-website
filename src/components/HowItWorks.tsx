@@ -3,6 +3,7 @@
 import { Reveal } from '@/components/Reveal';
 import { Button, Container, Heading, Label, Section, SectionHeader } from '@/components/ui';
 import type { Section as SectionContent, StandardFeature } from '@/utils/types';
+import { QueueListIcon } from '@heroicons/react/24/outline';
 import { motion, useInView, useReducedMotion, useScroll, useSpring } from 'framer-motion';
 import { useRef } from 'react';
 
@@ -55,6 +56,7 @@ export function HowItWorks({ content, ctaText }: { content: SectionContent | nul
       <Container className="grid grid-cols-1 items-start gap-x-16 gap-y-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         <Reveal className="lg:sticky lg:top-28">
           <SectionHeader
+            icon={QueueListIcon}
             eyebrow={content?.subtitle || 'How it works'}
             title={content?.title || 'How it works'}
             description={content?.description || `${steps.length} simple steps, from your first message to results.`}

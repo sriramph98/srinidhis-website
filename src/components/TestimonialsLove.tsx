@@ -2,6 +2,7 @@
 
 import { Eyebrow, Heading, buttonClass, iconButtonClass } from '@/components/ui';
 import type { Testimonial } from '@/utils/types';
+import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/outline';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
@@ -262,7 +263,7 @@ export function TestimonialsLove({ eyebrow, title, ribbonText, testimonials, lin
           </motion.div>
 
           <motion.div style={{ opacity: headingOpacity }} className="relative z-20 flex max-w-3xl flex-col items-center gap-6 px-6 text-center">
-            <Eyebrow>{eyebrow}</Eyebrow>
+            <Eyebrow icon={ChatBubbleBottomCenterTextIcon}>{eyebrow}</Eyebrow>
             <Heading size="xl">{title}</Heading>
           </motion.div>
 

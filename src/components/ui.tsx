@@ -1,5 +1,7 @@
 import { RichText, renderInline } from '@/components/RichText';
-import type { ReactNode } from 'react';
+import type { ComponentType, ReactNode } from 'react';
+
+export type IconType = ComponentType<{ className?: string }>;
 
 /*
  * Design-system primitives. Every section, title, button and icon button on the site is built
@@ -47,8 +49,31 @@ export function Section({
   );
 }
 
-export function Eyebrow({ children, dark = false, className = '' }: { children: ReactNode; dark?: boolean; className?: string }) {
-  return <p className={`text-lg font-medium sm:text-xl ${dark ? 'text-white/70' : 'text-muted'} ${className}`}>{children}</p>;
+export function Eyebrow({
+  children,
+  icon: Icon,
+  dark = false,
+  className = '',
+}: {
+  children: ReactNode;
+  /** A Heroicon shown before the label. */
+  icon?: IconType;
+  dark?: boolean;
+  className?: string;
+}) {
+  return (
+    <p className={`flex items-center gap-2.5 text-lg font-medium sm:text-xl ${dark ? 'text-white/70' : 'text-muted'} ${className}`}>
+      {Icon && (
+        <span
+          aria-hidden="true"
+          className={`flex size-9 flex-none items-center justify-center rounded-control ${dark ? 'bg-white/15 text-white' : 'bg-lavender/60 text-primary'}`}
+        >
+          <Icon className="size-5" />
+        </span>
+      )}
+      {children}
+    </p>
+  );
 }
 
 const headingSize = {
@@ -96,6 +121,7 @@ export function Heading({
 /** Eyebrow, title and description, always spaced the same: 24px, then 32px, then 40px before actions. */
 export function SectionHeader({
   eyebrow,
+  icon,
   title,
   description,
   dark = false,
@@ -107,6 +133,8 @@ export function SectionHeader({
   children,
 }: {
   eyebrow?: string;
+  /** Heroicon shown before the eyebrow. */
+  icon?: IconType;
   title: string;
   description?: string;
   dark?: boolean;
@@ -121,7 +149,11 @@ export function SectionHeader({
 }) {
   return (
     <div className={`${align === 'center' ? 'mx-auto max-w-3xl text-center' : ''} ${className}`}>
-      {eyebrow && <Eyebrow dark={dark}>{eyebrow}</Eyebrow>}
+      {eyebrow && (
+        <Eyebrow dark={dark} icon={icon} className={align === 'center' ? 'justify-center' : ''}>
+          {eyebrow}
+        </Eyebrow>
+      )}
       <Heading as={as} size={size} dark={dark} className={eyebrow ? 'mt-6' : ''}>
         {title}
       </Heading>

@@ -2,7 +2,7 @@ import { FeaturedTestimonial } from '@/components/FeaturedTestimonial';
 import { ImageCarousel } from '@/components/ImageCarousel';
 import { Reveal } from '@/components/Reveal';
 import { RichText, renderInline } from '@/components/RichText';
-import { Button, Container, Heading, Section, SectionHeader } from '@/components/ui';
+import { Button, Container, Heading, Section, SectionHeader, type IconType } from '@/components/ui';
 import type { Section as SectionContent, StandardFeature } from '@/utils/types';
 import Image from 'next/image';
 
@@ -16,11 +16,13 @@ function imageAlt(image?: string | { url: string; alt?: string }) {
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
-function FeatureCard({ feature, index, numbered }: { feature: StandardFeature; index: number; numbered: boolean }) {
+function FeatureCard({ feature, index, Icon }: { feature: StandardFeature; index: number; Icon?: IconType }) {
   return (
     <div className="flex h-full flex-col rounded-card bg-white p-6 shadow-card sm:p-8">
       <span className="flex size-10 items-center justify-center rounded-control bg-accent-soft text-primary">
-        {numbered || !feature.icon ? (
+        {Icon ? (
+          <Icon className="size-5" />
+        ) : !feature.icon ? (
           <span className="text-small font-semibold tabular-nums">{pad(index + 1)}</span>
         ) : (
           <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -66,7 +68,10 @@ interface ServiceSectionProps {
   fallbackCta: string;
   /** Visual beside the story: one image, or a carousel of several. */
   visual?: 'image' | 'carousel';
-  numbered?: boolean;
+  /** Heroicon before the eyebrow. */
+  icon?: IconType;
+  /** Heroicons for the cards, in order; replaces the icons stored in Sanity. */
+  cardIcons?: IconType[];
 }
 
 export function ServiceSection({
@@ -77,7 +82,8 @@ export function ServiceSection({
   fallbackTitle,
   fallbackCta,
   visual = 'image',
-  numbered = false,
+  icon,
+  cardIcons,
 }: ServiceSectionProps) {
   const images = content?.images ?? [];
   const firstImage = imageUrl(images[0]);
@@ -92,7 +98,7 @@ export function ServiceSection({
         {/* Title and a short story beside the visual. */}
         <div className="grid grid-cols-1 items-center gap-x-16 gap-y-12 lg:grid-cols-12">
           <Reveal className="lg:col-span-7">
-            <SectionHeader eyebrow={content?.subtitle || fallbackEyebrow} title={content?.title || fallbackTitle} description={content?.description} />
+            <SectionHeader icon={icon} eyebrow={content?.subtitle || fallbackEyebrow} title={content?.title || fallbackTitle} description={content?.description} />
           </Reveal>
           {visual === 'carousel' && images.length > 0 ? (
             <Reveal delay={0.1} className="lg:col-span-5">
@@ -128,7 +134,7 @@ export function ServiceSection({
               <ul role="list" className={`mt-12 grid grid-cols-1 gap-4 ${columns}`}>
                 {features.map((feature, index) => (
                   <Reveal as="li" key={feature.title} delay={index * 0.06} className="h-full">
-                    <FeatureCard feature={feature} index={index} numbered={numbered} />
+                    <FeatureCard feature={feature} index={index} Icon={cardIcons?.[index]} />
                   </Reveal>
                 ))}
               </ul>
