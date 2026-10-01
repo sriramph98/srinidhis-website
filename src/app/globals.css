@@ -15,6 +15,7 @@
 @theme inline {
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-display-face), ui-serif, Georgia, serif;
+  --font-hand: var(--font-hand-face), cursive;
 
   --color-ink: #1f1a33;
   --color-ink-soft: #372f55;

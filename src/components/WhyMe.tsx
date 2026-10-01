@@ -32,7 +32,7 @@ export function WhyMe({ content, fallbackPhoto, name }: { content: SectionConten
                   <Image src={photo} alt={name} fill sizes="(min-width: 1024px) 440px, 100vw" className="object-cover" />
                 </motion.div>
               </div>
-              <figcaption className="mt-4 text-center font-display text-xl font-semibold text-primary">{name}</figcaption>
+              <figcaption className="mt-4 text-center font-hand text-lg text-ink">{name}</figcaption>
             </figure>
           </Reveal>
         )}

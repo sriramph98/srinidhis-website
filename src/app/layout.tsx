@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
+import { Fraunces, Plus_Jakarta_Sans, Rock_Salt } from "next/font/google";
 import "./globals.css";
 
 // Fraunces (soft, warm serif) for headings; Plus Jakarta Sans for everything else.
 const display = Fraunces({ subsets: ["latin"], display: "swap", axes: ["SOFT", "opsz"], variable: "--font-display-face" });
+// Rock Salt: handwriting, used only for the polaroid caption.
+const hand = Rock_Salt({ subsets: ["latin"], weight: "400", display: "swap", variable: "--font-hand-face" });
 const body = Plus_Jakarta_Sans({ subsets: ["latin"], display: "swap", variable: "--font-body" });
 
 export const metadata: Metadata = {
@@ -22,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className={`${display.variable} ${body.variable} ${hand.variable}`}>
       <body className="font-sans">
         <a
           href="#main"
