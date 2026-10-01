@@ -25,11 +25,15 @@ export function WhyMe({ content, fallbackPhoto, name }: { content: SectionConten
       <Container className="grid grid-cols-1 items-center gap-x-16 gap-y-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         {photo && (
           <Reveal>
-            <div ref={frame} className="relative aspect-[4/5] overflow-hidden rounded-card bg-paper shadow-card">
-              <motion.div style={{ y }} className="absolute -inset-y-[8%] inset-x-0">
-                <Image src={photo} alt={name} fill sizes="(min-width: 1024px) 440px, 100vw" className="object-cover" />
-              </motion.div>
-            </div>
+            {/* A polaroid: white border, thicker at the bottom, a caption, and a slight tilt that straightens on hover. */}
+            <figure className="mx-auto w-full max-w-md -rotate-2 rounded-control bg-white p-3 pb-5 shadow-card transition-transform duration-500 ease-(--ease-out-soft) hover:rotate-0 sm:p-4 sm:pb-6">
+              <div ref={frame} className="relative aspect-[4/5] overflow-hidden bg-paper">
+                <motion.div style={{ y }} className="absolute -inset-y-[8%] inset-x-0">
+                  <Image src={photo} alt={name} fill sizes="(min-width: 1024px) 440px, 100vw" className="object-cover" />
+                </motion.div>
+              </div>
+              <figcaption className="mt-4 text-center font-display text-xl font-semibold text-primary">{name}</figcaption>
+            </figure>
           </Reveal>
         )}
         <Reveal delay={0.1}>

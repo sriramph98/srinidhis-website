@@ -199,13 +199,7 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
           className="relative z-10 flex items-center justify-between gap-x-16 rounded-float bg-white/85 py-1.5 pr-2 pl-3 shadow-float backdrop-blur-md sm:pl-4"
         >
           <div className="flex items-center gap-x-5">
-            <a href="#top" className="group flex items-center gap-2.5 rounded-control py-1 pr-2">
-              <span
-                aria-hidden="true"
-                className="flex size-8 items-center justify-center rounded-full bg-primary font-display text-caption font-semibold text-paper transition-transform duration-200 group-hover:scale-105"
-              >
-                {initials(name)}
-              </span>
+            <a href="#top" className="flex items-center rounded-control px-2 py-1">
               <span className="font-display text-lg font-semibold tracking-display whitespace-nowrap text-ink">{name}</span>
             </a>
 
