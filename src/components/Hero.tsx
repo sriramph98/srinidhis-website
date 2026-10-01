@@ -82,9 +82,8 @@ export function Hero({
 
   return (
     // Slides up under the floating nav bar so the scene reaches the very top of the page.
-    <section className="relative -mt-[4.5rem] flex min-h-[62rem] items-start overflow-hidden sm:h-[max(40rem,56.25vw)] sm:min-h-0">
-      {/* The scene. From sm up the section is exactly as tall as the 16:9 video is for its width, so the scene is never
-          zoomed in (that is what made the characters look huge); the subjects sit in the bottom-left corner. */}
+    <section className="relative -mt-[4.5rem] flex min-h-[62rem] items-start overflow-hidden sm:min-h-svh">
+      {/* The scene. Subjects live in the bottom-left of the frame, so keep that corner in view when cropping. */}
       <video
         aria-label="Illustration of Srinidhi reading in a Toronto park while her dog Zorro plays with butterflies"
         className="absolute inset-x-0 bottom-0 h-[52%] w-full object-cover object-[10%_bottom] sm:inset-0 sm:h-full sm:object-left-bottom"
