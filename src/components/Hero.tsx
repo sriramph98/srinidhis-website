@@ -148,8 +148,7 @@ export function Hero({
   ];
 
   return (
-    // Starts below the fixed nav bar; everything else about the panel comes from Section.
-    <div className="pt-20 sm:pt-24">
+    <div className="pt-2">
       <Section compact>
         <Container>
           <motion.div {...rise(0)}>

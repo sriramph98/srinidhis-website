@@ -1,6 +1,6 @@
 'use client';
 
-import { Label, buttonClass, iconButtonClass } from '@/components/ui';
+import { Label, buttonClass, iconButtonClass, panelGutter } from '@/components/ui';
 import type { SocialLink } from '@/utils/types';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import {
@@ -176,132 +176,141 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
   const shownIndex = menus.findIndex((menu) => menu.name === shownMenu);
 
   return (
-    <header id="top" className="fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 sm:pt-5">
-      <div
-        className="relative w-full lg:w-auto"
-        onPointerLeave={closeSoon}
-        onPointerEnter={() => clearTimeout(closeTimer.current)}
-        onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) close();
-        }}
-      >
-        {/* One floating frosted bar: brand and links on the left, actions on the right. */}
-        <nav
-          aria-label="Main"
-          className="relative z-10 flex items-center justify-between gap-x-16 rounded-float bg-white/85 py-1.5 pr-2 pl-3 shadow-float backdrop-blur-md sm:pl-4"
-        >
-          <div className="flex items-center gap-x-5">
-            <a href="#top" className="flex items-center rounded-control px-2 py-1">
-              <span className="font-display text-lg font-normal tracking-display whitespace-nowrap text-ink">{name}</span>
-            </a>
+    <>
+      {/* Announcement bar: scrolls away with the page. */}
+      <div className="bg-lavender/50 px-4 py-2.5 text-center text-small text-muted">
+        Free checklist: see which of your skills already fit Customer Success.{' '}
+        <a href="#free-checklist" className="font-medium text-ink hover:underline">
+          Get it free
+        </a>
+      </div>
 
-            <ul role="list" className="hidden items-center lg:flex">
-              {menus.map((menu) => {
-                const isOpen = openMenu === menu.name;
-                return (
-                  <li key={menu.name}>
-                    <button
-                      ref={(el) => {
-                        triggerRefs.current[menu.name] = el;
-                      }}
-                      type="button"
-                      aria-expanded={isOpen}
-                      aria-controls="nav-popup"
-                      onPointerEnter={(event) => event.pointerType === 'mouse' && open(menu.name)}
-                      onClick={() => (isOpen ? close() : open(menu.name))}
-                      className={`${linkClass(active === menu.name || isOpen)} pr-2 pl-3`}
-                    >
-                      {menu.name}
-                      <Chevron open={isOpen} />
-                    </button>
-                  </li>
-                );
-              })}
-              <li>
-                <a
-                  href="#pricing"
-                  onPointerEnter={closeSoon}
-                  aria-current={active === 'Pricing' ? 'true' : undefined}
-                  className={`${linkClass(active === 'Pricing')} px-3`}
-                >
-                  Pricing
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="flex items-center gap-x-1">
-            {linkedIn && (
-              <a
-                href={linkedIn.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className={iconButtonClass({ className: 'max-md:hidden hover:text-linkedin' })}
-              >
-                <FaLinkedin className="size-5" aria-hidden="true" />
+      <header id="top" className="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur-md">
+        <div className={panelGutter}>
+          <div className="mx-auto flex h-[58px] max-w-[1200px] items-center justify-between">
+            <div className="flex items-center gap-x-6">
+              <a href="#top" className="rounded-control py-1">
+                <span className="font-display text-lg font-normal tracking-display whitespace-nowrap text-ink">{name}</span>
               </a>
-            )}
-            <a href="#pricing" className={buttonClass({ size: 'sm', className: 'max-sm:hidden whitespace-nowrap' })}>
-              {ctaText}
-            </a>
-            <button
-              type="button"
-              onClick={() => setMenuOpen(true)}
-              className={iconButtonClass({ className: 'lg:hidden' })}
-              aria-label="Open menu"
-            >
-              <Bars2Icon className="size-6" aria-hidden="true" />
-            </button>
-          </div>
-        </nav>
 
-        {/* Dropdown: scales in under the bar; switching menus slides the content sideways. */}
-        <div
-          id="nav-popup"
-          data-open={openMenu ? 'true' : 'false'}
-          inert={!openMenu}
-          className="absolute top-[calc(100%-8px)] left-0 hidden w-full origin-top pointer-events-none scale-95 pt-5 opacity-0 transition-[opacity,scale] duration-300 ease-(--ease-out-soft) data-[open=true]:pointer-events-auto data-[open=true]:scale-100 data-[open=true]:opacity-100 motion-reduce:transition-none lg:block"
-        >
-          <div className="overflow-hidden rounded-float bg-white/85 p-1 shadow-popup backdrop-blur-md">
-            <div className="grid *:col-start-1 *:row-start-1">
-              {menus.map((menu, index) => {
-                const isShown = menu.name === shownMenu;
-                const offset = index < shownIndex ? '-translate-x-16' : index > shownIndex ? 'translate-x-16' : 'translate-x-0';
-                return (
-                  <div
-                    key={menu.name}
-                    aria-hidden={!isShown}
-                    inert={!isShown}
-                    className={`flex flex-col gap-y-1 transition-[opacity,translate] duration-300 ease-(--ease-out-soft) motion-reduce:transition-none ${offset} ${
-                      isShown ? 'opacity-100' : 'pointer-events-none opacity-0'
-                    }`}
-                  >
-                    <div className="flex flex-col gap-y-0.5 rounded-control bg-white p-1 shadow-card">
-                      {menu.items.map((item) => (
-                        <MenuItem key={item.title} item={item} onNavigate={close} />
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-x-3 py-2 pr-2 pl-3">
-                      <span className="flex size-10 flex-none items-center justify-center rounded-control bg-white text-primary ring-1 ring-line">
-                        <menu.footer.Icon className="size-5" />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-small font-semibold text-ink">{menu.footer.title}</p>
-                        <p className="truncate text-caption text-muted">{menu.footer.description}</p>
-                      </div>
-                      <a href={menu.footer.href} onClick={close} className={buttonClass({ variant: 'secondary', size: 'sm' })}>
-                        {menu.footer.cta}
-                        <ChevronRightIcon aria-hidden="true" className="size-4 text-ink/40" />
+              <div
+                className="relative hidden lg:block"
+                onPointerLeave={closeSoon}
+                onPointerEnter={() => clearTimeout(closeTimer.current)}
+                onBlur={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget as Node | null)) close();
+                }}
+              >
+                <nav aria-label="Main">
+                  <ul role="list" className="flex items-center">
+                    {menus.map((menu) => {
+                      const isOpen = openMenu === menu.name;
+                      return (
+                        <li key={menu.name}>
+                          <button
+                            ref={(el) => {
+                              triggerRefs.current[menu.name] = el;
+                            }}
+                            type="button"
+                            aria-expanded={isOpen}
+                            aria-controls="nav-popup"
+                            onPointerEnter={(event) => event.pointerType === 'mouse' && open(menu.name)}
+                            onClick={() => (isOpen ? close() : open(menu.name))}
+                            className={`${linkClass(active === menu.name || isOpen)} pr-2 pl-3`}
+                          >
+                            {menu.name}
+                            <Chevron open={isOpen} />
+                          </button>
+                        </li>
+                      );
+                    })}
+                    <li>
+                      <a
+                        href="#pricing"
+                        onPointerEnter={closeSoon}
+                        aria-current={active === 'Pricing' ? 'true' : undefined}
+                        className={`${linkClass(active === 'Pricing')} px-3`}
+                      >
+                        Pricing
                       </a>
-                    </div>
-                  </div>
-                );
-              })}
+                    </li>
+                  </ul>
+                </nav>
+
+                {/* Dropdown: scales in under the bar; switching menus slides the content sideways. */}
+            <div
+              id="nav-popup"
+              data-open={openMenu ? 'true' : 'false'}
+              inert={!openMenu}
+              className="absolute top-full left-0 hidden w-110 origin-top pointer-events-none scale-95 pt-5 opacity-0 transition-[opacity,scale] duration-300 ease-(--ease-out-soft) data-[open=true]:pointer-events-auto data-[open=true]:scale-100 data-[open=true]:opacity-100 motion-reduce:transition-none lg:block"
+            >
+              <div className="overflow-hidden rounded-float bg-white p-1 shadow-popup">
+                <div className="grid *:col-start-1 *:row-start-1">
+                  {menus.map((menu, index) => {
+                    const isShown = menu.name === shownMenu;
+                    const offset = index < shownIndex ? '-translate-x-16' : index > shownIndex ? 'translate-x-16' : 'translate-x-0';
+                    return (
+                      <div
+                        key={menu.name}
+                        aria-hidden={!isShown}
+                        inert={!isShown}
+                        className={`flex flex-col gap-y-1 transition-[opacity,translate] duration-300 ease-(--ease-out-soft) motion-reduce:transition-none ${offset} ${
+                          isShown ? 'opacity-100' : 'pointer-events-none opacity-0'
+                        }`}
+                      >
+                        <div className="flex flex-col gap-y-0.5 rounded-control bg-white p-1 shadow-card">
+                          {menu.items.map((item) => (
+                            <MenuItem key={item.title} item={item} onNavigate={close} />
+                          ))}
+                        </div>
+                        <div className="flex items-center gap-x-3 py-2 pr-2 pl-3">
+                          <span className="flex size-10 flex-none items-center justify-center rounded-control bg-white text-primary ring-1 ring-line">
+                            <menu.footer.Icon className="size-5" />
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-small font-semibold text-ink">{menu.footer.title}</p>
+                            <p className="truncate text-caption text-muted">{menu.footer.description}</p>
+                          </div>
+                          <a href={menu.footer.href} onClick={close} className={buttonClass({ variant: 'secondary', size: 'sm' })}>
+                            {menu.footer.cta}
+                            <ChevronRightIcon aria-hidden="true" className="size-4 text-ink/40" />
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-x-2">
+              {linkedIn && (
+                <a
+                  href={linkedIn.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  className={iconButtonClass({ className: 'max-md:hidden hover:text-linkedin' })}
+                >
+                  <FaLinkedin className="size-5" aria-hidden="true" />
+                </a>
+              )}
+              <a href="#pricing" className={buttonClass({ variant: 'secondary', size: 'sm', className: 'max-sm:hidden whitespace-nowrap' })}>
+                {ctaText}
+              </a>
+              <button
+                type="button"
+                onClick={() => setMenuOpen(true)}
+                className={iconButtonClass({ className: 'lg:hidden' })}
+                aria-label="Open menu"
+              >
+                <Bars2Icon className="size-6" aria-hidden="true" />
+              </button>
             </div>
           </div>
         </div>
-      </div>
 
       <Dialog open={menuOpen} onClose={setMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-50 bg-ink/20 backdrop-blur-sm" aria-hidden="true" />
@@ -360,7 +369,8 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
           )}
         </DialogPanel>
       </Dialog>
-    </header>
+      </header>
+    </>
   );
 }
 
