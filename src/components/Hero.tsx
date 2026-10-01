@@ -148,7 +148,7 @@ export function Hero({
   ];
 
   return (
-    <div className="pt-2">
+    <div>
       <Section compact>
         <Container>
           <motion.div {...rise(0)}>

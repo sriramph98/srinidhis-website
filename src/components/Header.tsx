@@ -139,6 +139,9 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
     setShownMenu(menu);
   };
   const close = () => setOpenMenu(null);
+  // After a click on a link: close only once the browser has followed it. Closing instantly marks the
+  // menu inert, which cancels the navigation.
+  const closeAfterNavigate = () => setTimeout(close, 80);
   const closeSoon = () => {
     clearTimeout(closeTimer.current);
     closeTimer.current = setTimeout(close, 140);
@@ -185,9 +188,9 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
         </a>
       </div>
 
-      <header id="top" className="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur-md">
+      <header id="top" className="sticky top-3 z-50">
         <div className={panelGutter}>
-          <div className="mx-auto flex h-[58px] max-w-[1200px] items-center justify-between">
+          <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between rounded-float bg-white/90 pr-2 pl-5 shadow-float backdrop-blur-md">
             <div className="flex items-center gap-x-6">
               <a href="#top" className="rounded-control py-1">
                 <span className="font-display text-lg font-normal tracking-display whitespace-nowrap text-ink">{name}</span>
@@ -260,7 +263,7 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
                       >
                         <div className="flex flex-col gap-y-0.5 rounded-control bg-white p-1 shadow-card">
                           {menu.items.map((item) => (
-                            <MenuItem key={item.title} item={item} onNavigate={close} />
+                            <MenuItem key={item.title} item={item} onNavigate={closeAfterNavigate} />
                           ))}
                         </div>
                         <div className="flex items-center gap-x-3 py-2 pr-2 pl-3">
@@ -271,7 +274,7 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
                             <p className="text-small font-semibold text-ink">{menu.footer.title}</p>
                             <p className="truncate text-caption text-muted">{menu.footer.description}</p>
                           </div>
-                          <a href={menu.footer.href} onClick={close} className={buttonClass({ variant: 'secondary', size: 'sm' })}>
+                          <a href={menu.footer.href} onClick={closeAfterNavigate} className={buttonClass({ variant: 'secondary', size: 'sm' })}>
                             {menu.footer.cta}
                             <ChevronRightIcon aria-hidden="true" className="size-4 text-ink/40" />
                           </a>
