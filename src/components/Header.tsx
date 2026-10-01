@@ -1,9 +1,17 @@
 'use client';
 
-import { AboutArt, CoachingArt, LinkedInArt, ResumeArt, StepsArt, StoriesArt } from '@/components/NavArt';
 import type { SocialLink } from '@/utils/types';
 import { Dialog, DialogPanel } from '@headlessui/react';
-import { ArrowDownTrayIcon, ChevronRightIcon, TagIcon } from '@heroicons/react/20/solid';
+import {
+  ArrowDownTrayIcon,
+  ChatBubbleLeftRightIcon,
+  ChevronRightIcon,
+  DocumentTextIcon,
+  ListBulletIcon,
+  StarIcon,
+  TagIcon,
+  UserCircleIcon,
+} from '@heroicons/react/20/solid';
 import { Bars2Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
 import { FaInstagram, FaLinkedin, FaThreads } from 'react-icons/fa6';
@@ -13,8 +21,7 @@ type MenuName = 'Services' | 'About';
 
 interface Menu {
   name: MenuName;
-  // First item is the tall card on the left; the next two stack on the right.
-  items: { title: string; description: string; href: string; Art: ComponentType }[];
+  items: { title: string; description: string; href: string; Icon: ComponentType<{ className?: string }> }[];
   footer: { title: string; description: string; cta: string; href: string; Icon: ComponentType<{ className?: string }> };
 }
 
@@ -26,10 +33,10 @@ const menus: Menu[] = [
         title: 'LinkedIn Optimization',
         description: 'A profile that works for you, so recruiters reach out first.',
         href: '#linkedin-optimization',
-        Art: LinkedInArt,
+        Icon: FaLinkedin,
       },
-      { title: 'Resume Writing', description: 'Show your impact clearly and get more callbacks.', href: '#resume-writing', Art: ResumeArt },
-      { title: 'Career Coaching', description: 'Break into Customer Success with a clear plan.', href: '#coaching', Art: CoachingArt },
+      { title: 'Resume Writing', description: 'Show your impact clearly and get more callbacks.', href: '#resume-writing', Icon: DocumentTextIcon },
+      { title: 'Career Coaching', description: 'Break into Customer Success with a clear plan.', href: '#coaching', Icon: ChatBubbleLeftRightIcon },
     ],
     footer: {
       title: 'Pricing & packages',
@@ -42,9 +49,9 @@ const menus: Menu[] = [
   {
     name: 'About',
     items: [
-      { title: 'About me', description: 'Why I do this, and how I work with you.', href: '#why-me', Art: AboutArt },
-      { title: 'Client stories', description: 'Recommendations from people I’ve helped.', href: '#testimonials', Art: StoriesArt },
-      { title: 'How it works', description: 'Five steps from first message to results.', href: '#how-it-works', Art: StepsArt },
+      { title: 'About me', description: 'Why I do this, and how I work with you.', href: '#why-me', Icon: UserCircleIcon },
+      { title: 'Client stories', description: 'Recommendations from people I’ve helped.', href: '#testimonials', Icon: StarIcon },
+      { title: 'How it works', description: 'Five steps from first message to results.', href: '#how-it-works', Icon: ListBulletIcon },
     ],
     footer: {
       title: 'Free checklist',
@@ -103,22 +110,16 @@ function Chevron({ open }: { open: boolean }) {
   );
 }
 
-function MenuCard({ item, tall, onNavigate }: { item: Menu['items'][number]; tall: boolean; onNavigate: () => void }) {
+function MenuItem({ item, onNavigate }: { item: Menu['items'][number]; onNavigate: () => void }) {
   return (
-    <a
-      href={item.href}
-      onClick={onNavigate}
-      className={`group/card flex flex-col overflow-hidden bg-white transition-colors hover:bg-paper/60 ${tall ? 'row-span-2' : ''}`}
-    >
-      <div className="p-4">
-        <h2 className="font-display text-[15px]/6 font-semibold text-ink">{item.title}</h2>
-        <p className="mt-1 text-xs/5 text-muted">{item.description}</p>
-      </div>
-      <div
-        className={`mt-auto px-6 transition-transform duration-300 ease-(--ease-out-soft) group-hover/card:-translate-y-1 ${tall ? 'pb-6' : 'pb-3'}`}
-      >
-        <item.Art />
-      </div>
+    <a href={item.href} onClick={onNavigate} className="group/item flex items-start gap-x-3 rounded-xl p-3 transition-colors hover:bg-paper">
+      <span className="flex size-9 flex-none items-center justify-center rounded-[10px] bg-lavender/60 text-primary transition-colors group-hover/item:bg-lavender">
+        <item.Icon className="size-[18px]" />
+      </span>
+      <span className="min-w-0">
+        <span className="block text-[14px]/5 font-semibold text-ink">{item.title}</span>
+        <span className="mt-0.5 block text-xs/5 text-muted">{item.description}</span>
+      </span>
     </a>
   );
 }
@@ -248,9 +249,10 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
                 href={linkedIn.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden rounded-[10px] px-3 py-2 text-sm/6 font-medium tracking-[-0.01em] text-ink transition-colors hover:bg-ink/5 md:inline-flex"
+                aria-label="LinkedIn"
+                className="hidden size-10 items-center justify-center rounded-[10px] text-ink transition-colors hover:bg-ink/5 hover:text-[#0A66C2] md:inline-flex"
               >
-                LinkedIn
+                <FaLinkedin className="size-5" aria-hidden="true" />
               </a>
             )}
             <a
@@ -291,9 +293,9 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
                       isShown ? 'opacity-100' : 'pointer-events-none opacity-0'
                     }`}
                   >
-                    <div className="grid grid-cols-2 gap-0.5 overflow-hidden rounded-xl bg-line shadow-[0_1px_1px_0_rgb(31_26_51/0.08),0_4px_12px_-6px_rgb(31_26_51/0.12)]">
-                      {menu.items.map((item, itemIndex) => (
-                        <MenuCard key={item.title} item={item} tall={itemIndex === 0} onNavigate={close} />
+                    <div className="flex flex-col gap-y-0.5 rounded-xl bg-white p-1 shadow-[0_1px_1px_0_rgb(31_26_51/0.08),0_4px_12px_-6px_rgb(31_26_51/0.12)]">
+                      {menu.items.map((item) => (
+                        <MenuItem key={item.title} item={item} onNavigate={close} />
                       ))}
                     </div>
                     <div className="flex items-center gap-x-3 py-2 pr-2 pl-3">
