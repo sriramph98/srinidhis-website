@@ -111,7 +111,7 @@ function MenuItem({ item, onNavigate }: { item: Menu['items'][number]; onNavigat
       </span>
       <span className="min-w-0">
         <span className="block text-small font-semibold text-ink">{item.title}</span>
-        <span className="mt-0.5 block text-caption text-muted">{item.description}</span>
+        <span className="mt-0.5 block max-w-72 text-caption text-muted">{item.description}</span>
       </span>
     </a>
   );
@@ -245,7 +245,7 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
               id="nav-popup"
               data-open={openMenu ? 'true' : 'false'}
               inert={!openMenu}
-              className="absolute top-full left-0 hidden w-110 origin-top pointer-events-none scale-95 pt-5 opacity-0 transition-[opacity,scale] duration-300 ease-(--ease-out-soft) data-[open=true]:pointer-events-auto data-[open=true]:scale-100 data-[open=true]:opacity-100 motion-reduce:transition-none lg:block"
+              className="absolute top-full left-0 hidden w-max origin-top pointer-events-none scale-95 pt-5 opacity-0 transition-[opacity,scale] duration-300 ease-(--ease-out-soft) data-[open=true]:pointer-events-auto data-[open=true]:scale-100 data-[open=true]:opacity-100 motion-reduce:transition-none lg:block"
             >
               <div className="overflow-hidden rounded-float bg-white p-1 shadow-popup">
                 <div className="grid *:col-start-1 *:row-start-1">
@@ -270,9 +270,9 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
                           <span className="flex size-10 flex-none items-center justify-center rounded-control bg-white text-primary ring-1 ring-line">
                             <menu.footer.Icon className="size-5" />
                           </span>
-                          <div className="min-w-0 flex-1">
+                          <div className="min-w-0 flex-1 pr-6">
                             <p className="text-small font-semibold text-ink">{menu.footer.title}</p>
-                            <p className="truncate text-caption text-muted">{menu.footer.description}</p>
+                            <p className="max-w-72 text-caption text-muted">{menu.footer.description}</p>
                           </div>
                           <a href={menu.footer.href} onClick={closeAfterNavigate} className={buttonClass({ variant: 'secondary', size: 'sm' })}>
                             {menu.footer.cta}
