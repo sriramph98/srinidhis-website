@@ -50,8 +50,21 @@ export function renderInline(text: string): ReactNode {
   );
 }
 
+// One text style per role, so no paragraph on the site picks its own size, spacing or colour.
+const sizeClass = {
+  /** Section copy. */
+  body: 'space-y-5 text-body',
+  /** Copy inside cards. */
+  small: 'space-y-3 text-small',
+  /** The larger line under a title. */
+  lead: 'space-y-4 text-lead',
+};
+
 interface RichTextProps {
   text?: string;
+  size?: keyof typeof sizeClass;
+  /** On a violet panel. */
+  dark?: boolean;
   className?: string;
   /** Collapse behind "Read more" on small screens when the text is longer than this. */
   collapseAfter?: number;
@@ -64,11 +77,11 @@ function hash(text: string) {
   return (h >>> 0).toString(36);
 }
 
-export function RichText({ text, className = '', collapseAfter = 320 }: RichTextProps) {
+export function RichText({ text, size = 'body', dark = false, className = '', collapseAfter = 320 }: RichTextProps) {
   if (!text?.trim()) return null;
 
   const content = (
-    <div className={`space-y-5 ${className}`}>
+    <div className={`${sizeClass[size]} ${size === 'lead' ? '' : dark ? 'text-white/75' : 'text-muted'} ${className}`}>
       {parse(text).map((block, i) => {
         if (block.kind === 'p') {
           return (
@@ -82,7 +95,7 @@ export function RichText({ text, className = '', collapseAfter = 320 }: RichText
             <ol key={i} className="space-y-3">
               {block.items.map((item, j) => (
                 <li key={j} className="flex gap-3">
-                  <span className="mt-0.5 flex size-6 flex-none items-center justify-center rounded-lg bg-accent-soft text-xs font-semibold text-accent-deep">
+                  <span className="mt-0.5 flex size-6 flex-none items-center justify-center rounded-full bg-accent-soft text-caption font-semibold text-primary">
                     {j + 1}
                   </span>
                   <span>{renderInline(item)}</span>
@@ -92,7 +105,7 @@ export function RichText({ text, className = '', collapseAfter = 320 }: RichText
           );
         }
         return (
-          <ul key={i} className="list-disc space-y-2 pl-5 marker:text-accent-deep">
+          <ul key={i} className="list-disc space-y-2 pl-5 marker:text-primary">
             {block.items.map((item, j) => (
               <li key={j}>{renderInline(item)}</li>
             ))}

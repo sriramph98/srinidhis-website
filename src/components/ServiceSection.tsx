@@ -2,7 +2,7 @@ import { FeaturedTestimonial } from '@/components/FeaturedTestimonial';
 import { ImageCarousel } from '@/components/ImageCarousel';
 import { Reveal } from '@/components/Reveal';
 import { RichText, renderInline } from '@/components/RichText';
-import { Arrow, Button, Container, Eyebrow, Heading, Section } from '@/components/ui';
+import { Button, Container, Heading, Section, SectionHeader } from '@/components/ui';
 import type { Section as SectionContent, StandardFeature } from '@/utils/types';
 import Image from 'next/image';
 
@@ -18,20 +18,20 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 function FeatureCard({ feature, index, numbered }: { feature: StandardFeature; index: number; numbered: boolean }) {
   return (
-    <div
-      className="flex h-full flex-col rounded-lg bg-white p-7 ring-1 ring-line transition-[transform,box-shadow] duration-300 ease-(--ease-out-soft) hover:-translate-y-1 hover:shadow-[0_18px_40px_-24px_rgb(14_14_16/0.35)]"
-    >
-      <span className="flex size-10 items-center justify-center rounded-lg bg-accent-soft text-accent-deep">
+    <div className="flex h-full flex-col rounded-card bg-white p-6 shadow-card sm:p-8">
+      <span className="flex size-10 items-center justify-center rounded-control bg-accent-soft text-primary">
         {numbered || !feature.icon ? (
-          <span className="text-sm font-semibold tabular-nums">{pad(index + 1)}</span>
+          <span className="text-small font-semibold tabular-nums">{pad(index + 1)}</span>
         ) : (
           <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={feature.icon} />
           </svg>
         )}
       </span>
-      <h3 className="mt-8 text-lg/7 font-semibold tracking-[-0.02em]">{feature.title}</h3>
-      <RichText text={feature.description} collapseAfter={Infinity} className="mt-3 space-y-3 text-[15px]/7 text-muted" />
+      <Heading as="h3" size="xs" className="mt-8">
+        {feature.title}
+      </Heading>
+      <RichText text={feature.description} size="small" collapseAfter={Infinity} className="mt-3" />
     </div>
   );
 }
@@ -39,18 +39,18 @@ function FeatureCard({ feature, index, numbered }: { feature: StandardFeature; i
 function Journey({ steps }: { steps: string[] }) {
   if (!steps.length) return null;
   return (
-    <ol className="relative mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+    <ol className="relative mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
       <span aria-hidden="true" className="absolute top-4 right-[12%] left-4 hidden h-px bg-line lg:block" />
       {steps.map((step, index) => (
         <li key={step} className="relative flex items-center gap-4 lg:flex-col lg:items-start">
           <span
-            className={`relative flex size-8 flex-none items-center justify-center rounded-lg text-xs font-semibold tabular-nums ${
-              index === steps.length - 1 ? 'bg-accent text-ink' : 'bg-ink text-white'
+            className={`relative flex size-8 flex-none items-center justify-center rounded-full text-caption font-semibold tabular-nums ${
+              index === steps.length - 1 ? 'bg-accent text-ink' : 'bg-primary text-white'
             }`}
           >
             {index + 1}
           </span>
-          <span className="text-[15px]/6 font-medium tracking-tight">{step}</span>
+          <span className="text-small font-medium">{step}</span>
         </li>
       ))}
     </ol>
@@ -90,10 +90,9 @@ export function ServiceSection({
     <Section id={id}>
       <Container>
         {/* Heading beside the visual, then the story in two columns across the full width. */}
-        <div className="grid grid-cols-1 items-center gap-x-16 gap-y-10 lg:grid-cols-12">
+        <div className="grid grid-cols-1 items-center gap-x-16 gap-y-12 lg:grid-cols-12">
           <Reveal className="lg:col-span-7">
-            <Eyebrow>{content?.subtitle || fallbackEyebrow}</Eyebrow>
-            <Heading className="mt-6">{content?.title || fallbackTitle}</Heading>
+            <SectionHeader eyebrow={content?.subtitle || fallbackEyebrow} title={content?.title || fallbackTitle} />
           </Reveal>
           {visual === 'carousel' && images.length > 0 ? (
             <Reveal delay={0.1} className="lg:col-span-5">
@@ -102,14 +101,14 @@ export function ServiceSection({
           ) : (
             firstImage && (
               <Reveal delay={0.1} className="lg:col-span-5">
-                <div className="overflow-hidden rounded-[20px] shadow-[0_4px_16px_rgb(69_48_125/0.08)] ring-1 ring-black/5">
+                <div className="overflow-hidden rounded-card shadow-card">
                   <Image
                     src={firstImage}
                     alt={imageAlt(images[0]) || content?.title || fallbackTitle}
                     width={1600}
                     height={1200}
                     sizes="(min-width: 1024px) 460px, 100vw"
-                    className="aspect-[4/3] h-auto w-full object-cover transition-transform duration-700 ease-(--ease-out-soft) hover:scale-[1.02]"
+                    className="aspect-[4/3] h-auto w-full object-cover"
                   />
                 </div>
               </Reveal>
@@ -119,23 +118,16 @@ export function ServiceSection({
 
         {content?.description && (
           <Reveal>
-            <RichText
-              text={content.description}
-              className="mt-14 space-y-5 text-lg/8 text-muted lg:columns-2 lg:gap-16 [&>*]:break-inside-avoid"
-            />
+            <RichText text={content.description} className="mt-14 lg:columns-2 lg:gap-16 [&>*]:break-inside-avoid" />
           </Reveal>
         )}
 
         {/* What we'll work on */}
         {(content?.intro || features.length > 0) && (
-          <div className="mt-24 border-t border-line pt-16 sm:mt-32">
+          <div className="mt-20 border-t border-line pt-14 sm:mt-24">
             {content?.intro && (
               <Reveal>
-                <RichText
-                  text={content.intro}
-                  collapseAfter={Infinity}
-                  className="max-w-3xl space-y-3 text-2xl/9 font-medium tracking-[-0.03em] sm:text-3xl/[1.3]"
-                />
+                <RichText text={content.intro} size="lead" collapseAfter={Infinity} className="max-w-3xl" />
               </Reveal>
             )}
             {features.length > 0 && (
@@ -152,7 +144,7 @@ export function ServiceSection({
         )}
 
         {/* Proof, then the ask */}
-        <div className="mt-24 grid grid-cols-1 items-center gap-12 sm:mt-32 lg:grid-cols-2 lg:gap-20">
+        <div className="mt-20 grid grid-cols-1 items-center gap-x-16 gap-y-12 sm:mt-24 lg:grid-cols-2">
           {content?.testimonial && (
             <Reveal>
               <FeaturedTestimonial testimonial={content.testimonial} />
@@ -160,19 +152,16 @@ export function ServiceSection({
           )}
           <Reveal delay={0.1} className={content?.testimonial ? '' : 'lg:col-span-2 lg:mx-auto lg:max-w-2xl lg:text-center'}>
             {closingLead && (
-              <RichText
-                text={closingLead}
-                collapseAfter={Infinity}
-                className="space-y-1 text-3xl/[1.15] font-semibold tracking-[-0.04em] text-balance sm:text-4xl/[1.1]"
-              />
+              <Heading as="h3" size="md" className="whitespace-pre-line">
+                {closingLead}
+              </Heading>
             )}
-            {closingRest && <RichText text={closingRest} collapseAfter={Infinity} className="mt-6 space-y-3 text-lg/8 text-muted" />}
+            {closingRest && <RichText text={closingRest} collapseAfter={Infinity} className="mt-6" />}
             {content?.highlightQuote && (
-              <p className="mt-6 border-l-2 border-accent pl-4 text-base/7 font-medium">{renderInline(content.highlightQuote)}</p>
+              <p className="mt-6 border-l-2 border-accent pl-4 text-body font-medium text-ink">{renderInline(content.highlightQuote)}</p>
             )}
             <Button href={content?.ctaLink || '#pricing'} className="mt-10">
               {content?.ctaText || fallbackCta}
-              <Arrow />
             </Button>
           </Reveal>
         </div>

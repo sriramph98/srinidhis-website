@@ -2,6 +2,7 @@
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { iconButtonClass } from '@/components/ui';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -41,8 +42,8 @@ export function ImageCarousel({ images, alt = 'Example' }: ImageCarouselProps) {
   };
 
   return (
-    <div className="rounded-lg bg-white p-3 ring-1 ring-line sm:p-4">
-      <div className="relative w-full overflow-hidden rounded-lg bg-paper" style={{ aspectRatio: ratios[currentIndex] ?? 3 }}>
+    <div className="rounded-card bg-white p-3 shadow-card sm:p-4">
+      <div className="relative w-full overflow-hidden rounded-control bg-paper" style={{ aspectRatio: ratios[currentIndex] ?? 3 }}>
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.a
             key={currentIndex}
@@ -80,7 +81,7 @@ export function ImageCarousel({ images, alt = 'Example' }: ImageCarouselProps) {
           <button
             type="button"
             onClick={() => goTo(currentIndex - 1)}
-            className="flex size-11 items-center justify-center rounded-lg text-muted transition-colors hover:bg-ink/5 hover:text-ink"
+            className={iconButtonClass()}
             aria-label="Previous image"
           >
             <ChevronLeftIcon aria-hidden="true" className="size-5" />
@@ -92,7 +93,7 @@ export function ImageCarousel({ images, alt = 'Example' }: ImageCarouselProps) {
                 type="button"
                 onClick={() => goTo(index)}
                 className={`h-2 rounded-full transition-[width,background-color] duration-200 ${
-                  index === currentIndex ? 'w-6 bg-accent' : 'w-2 bg-ink/15 hover:bg-ink/30'
+                  index === currentIndex ? 'w-6 bg-primary' : 'w-2 bg-ink/15 hover:bg-ink/30'
                 }`}
                 aria-label={`Show image ${index + 1}`}
                 aria-current={index === currentIndex}
@@ -102,7 +103,7 @@ export function ImageCarousel({ images, alt = 'Example' }: ImageCarouselProps) {
           <button
             type="button"
             onClick={() => goTo(currentIndex + 1)}
-            className="flex size-11 items-center justify-center rounded-lg text-muted transition-colors hover:bg-ink/5 hover:text-ink"
+            className={iconButtonClass()}
             aria-label="Next image"
           >
             <ChevronRightIcon aria-hidden="true" className="size-5" />

@@ -1,7 +1,7 @@
 'use client';
 
+import { Eyebrow, Heading, buttonClass, iconButtonClass } from '@/components/ui';
 import type { Testimonial } from '@/utils/types';
-import { HeartIcon } from '@heroicons/react/20/solid';
 import { ChevronDownIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/outline';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
@@ -46,7 +46,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
   const theme = {
     light: {
       card: 'bg-white text-ink',
-      quote: 'text-[15px]/7 text-ink/80',
+      quote: 'text-small text-ink',
       mark: 'text-accent',
       divider: 'border-line',
       muted: 'text-muted',
@@ -55,7 +55,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
     },
     accent: {
       card: 'bg-accent text-ink',
-      quote: 'text-lg/8 font-medium tracking-[-0.015em] text-ink',
+      quote: 'text-small text-ink',
       mark: 'text-ink',
       divider: 'border-ink/15',
       muted: 'text-ink/65',
@@ -65,7 +65,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
     // "dark" is kept as the stored value in Sanity; it now renders as the lavender card.
     dark: {
       card: 'bg-lavender text-ink',
-      quote: 'text-lg/8 tracking-[-0.015em] text-ink',
+      quote: 'text-small text-ink',
       mark: 'text-ink/40',
       divider: 'border-ink/10',
       muted: 'text-ink/60',
@@ -75,7 +75,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
   }[style];
 
   return (
-    <figure className={`flex flex-col rounded-[20px] p-7 shadow-[0_4px_16px_rgb(69_48_125/0.08)] ring-1 ring-black/5 sm:p-8 ${theme.card}`}>
+    <figure className={`flex flex-col rounded-card p-6 shadow-card sm:p-8 ${theme.card}`}>
       <header className="flex min-h-8 items-start justify-between gap-4">
         {testimonial.companyLogo ? (
           <Image
@@ -86,7 +86,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
             className={`h-8 w-auto max-w-[150px] object-contain object-left ${theme.logo}`}
           />
         ) : testimonial.company ? (
-          <span className="text-sm font-semibold">{testimonial.company}</span>
+          <span className="text-small font-semibold">{testimonial.company}</span>
         ) : (
           <span />
         )}
@@ -105,12 +105,12 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
         ) : (
           <span
             aria-hidden="true"
-            className={`flex size-10 flex-none items-center justify-center rounded-full text-sm font-semibold ${theme.initials}`}
+            className={`flex size-10 flex-none items-center justify-center rounded-full text-small font-semibold ${theme.initials}`}
           >
             {initials(testimonial.authorName)}
           </span>
         )}
-        <div className="min-w-0 text-sm">
+        <div className="min-w-0 text-small">
           <div className="font-semibold">
             {testimonial.linkedinUrl ? (
               <a href={testimonial.linkedinUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
@@ -183,10 +183,10 @@ function Ribbon({ text, paused }: { text: string; paused: boolean }) {
     >
       <path d={d} stroke="currentColor" strokeWidth={50} fill="none" className="text-accent" />
       <path id="testimonial-ribbon-path" ref={pathRef} d={d} fill="none" />
-      <text ref={measureRef} className="invisible fill-ink text-[15px] font-medium tracking-[0.02em]">
+      <text ref={measureRef} className="invisible fill-ink text-small font-medium tracking-wide">
         {phrase}
       </text>
-      <text className="fill-ink text-[15px] font-medium tracking-[0.02em]" dominantBaseline="middle">
+      <text className="fill-ink text-small font-medium tracking-wide" dominantBaseline="middle">
         <textPath ref={textPathRef} href="#testimonial-ribbon-path" startOffset="0">
           {phrase.repeat(repeats)}
         </textPath>
@@ -241,7 +241,7 @@ export function TestimonialsLove({ eyebrow, title, ribbonText, testimonials, lin
   const hintOpacity = useTransform(sectionProgress, (v) => clamp(1 - scrolled(v) / 200));
 
   return (
-    <section ref={sectionRef} id="testimonials" className="relative scroll-mt-20 bg-paper">
+    <section ref={sectionRef} id="testimonials" className="relative scroll-mt-24 bg-paper">
       <div className="z-0 md:sticky md:top-0">
         <div className="relative flex min-h-[520px] items-center justify-center overflow-hidden md:min-h-svh">
           <motion.div style={{ opacity: ribbonOpacity }} className="absolute inset-0">
@@ -249,13 +249,8 @@ export function TestimonialsLove({ eyebrow, title, ribbonText, testimonials, lin
           </motion.div>
 
           <motion.div style={{ opacity: headingOpacity }} className="relative z-20 flex max-w-3xl flex-col items-center gap-6 px-6 text-center">
-            <p className="inline-flex items-center gap-2 text-[13px]/5 font-medium tracking-tight text-muted">
-              <HeartIcon aria-hidden="true" className="size-4 text-accent" />
-              {eyebrow}
-            </p>
-            <h2 className="font-display text-5xl/[1.02] font-semibold tracking-[-0.025em] text-balance text-primary sm:text-6xl/[1.0] lg:text-[5.25rem]/[0.98]">
-              {title}
-            </h2>
+            <Eyebrow>{eyebrow}</Eyebrow>
+            <Heading size="xl">{title}</Heading>
           </motion.div>
 
           {!reduceMotion && (
@@ -264,7 +259,7 @@ export function TestimonialsLove({ eyebrow, title, ribbonText, testimonials, lin
               onClick={() => setRibbonPaused((paused) => !paused)}
               aria-pressed={ribbonPaused}
               aria-label={ribbonPaused ? 'Play Ribbon Animation' : 'Pause Ribbon Animation'}
-              className="absolute right-4 bottom-6 z-30 inline-flex size-10 items-center justify-center rounded-lg bg-white/80 text-muted ring-1 ring-line backdrop-blur transition-colors hover:text-ink sm:right-6"
+              className={iconButtonClass({ variant: 'solid', className: 'absolute right-4 bottom-6 z-30 sm:right-6' })}
             >
               {ribbonPaused ? <PlayIcon aria-hidden="true" className="size-4" /> : <PauseIcon aria-hidden="true" className="size-4" />}
             </button>
@@ -292,9 +287,9 @@ export function TestimonialsLove({ eyebrow, title, ribbonText, testimonials, lin
               href={`${linkedInProfile.replace(/\/$/, '')}/details/recommendations/`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-12 items-center gap-2 rounded-lg bg-white px-5 text-[15px] font-medium tracking-tight text-ink ring-1 ring-line transition-colors hover:bg-paper"
+              className={buttonClass({ variant: 'secondary' })}
             >
-              <FaLinkedin aria-hidden="true" className="size-4 text-[#0A66C2]" />
+              <FaLinkedin aria-hidden="true" className="size-4 text-linkedin" />
               Read All Recommendations on LinkedIn
             </a>
           </div>

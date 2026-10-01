@@ -6,10 +6,9 @@ import { HowItWorks } from '@/components/HowItWorks';
 import { LeadMagnet } from '@/components/LeadMagnet';
 import { Pricing } from '@/components/Pricing';
 import { Reveal } from '@/components/Reveal';
-import { RichText } from '@/components/RichText';
 import { ServiceSection } from '@/components/ServiceSection';
 import { TestimonialsLove } from '@/components/TestimonialsLove';
-import { Container, Eyebrow, Heading, Section } from '@/components/ui';
+import { Container, Heading, Section, SectionHeader } from '@/components/ui';
 import { WhyMe } from '@/components/WhyMe';
 import {
   getCoachingSection,
@@ -139,23 +138,30 @@ export default async function Home() {
 
         {jobSearchContent && (
           <Section id="job-search">
-            <Container className="grid grid-cols-1 items-center gap-x-20 gap-y-12 lg:grid-cols-2">
+            <Container className="grid grid-cols-1 items-center gap-x-16 gap-y-12 lg:grid-cols-2">
               {jobSearchImage && (
-                <Reveal className="overflow-hidden rounded-lg">
-                  <Image src={jobSearchImage} alt={(typeof jobSearch?.images?.[0] === 'object' && jobSearch.images[0].alt) || jobSearchContent.title} width={1600} height={1100} sizes="(min-width: 1024px) 540px, 100vw" className="h-auto w-full object-cover" />
+                <Reveal className="overflow-hidden rounded-card shadow-card">
+                  <Image
+                    src={jobSearchImage}
+                    alt={(typeof jobSearch?.images?.[0] === 'object' && jobSearch.images[0].alt) || jobSearchContent.title}
+                    width={1600}
+                    height={1100}
+                    sizes="(min-width: 1024px) 540px, 100vw"
+                    className="h-auto w-full object-cover"
+                  />
                 </Reveal>
               )}
               <Reveal delay={0.1}>
-                {jobSearchContent.subtitle && <Eyebrow>{jobSearchContent.subtitle}</Eyebrow>}
-                <Heading className="mt-6">{jobSearchContent.title}</Heading>
-                <RichText text={jobSearchContent.description} className="mt-8 space-y-4 text-lg/8 text-muted" />
+                <SectionHeader eyebrow={jobSearchContent.subtitle} title={jobSearchContent.title} description={jobSearchContent.description} />
                 <ul role="list" className="mt-10 divide-y divide-line border-y border-line">
                   {jobSearchContent.features
                     ?.filter((f): f is JobSearchFeature => f.type === 'jobSearch')
                     .map((feature) => (
                       <li key={feature.title} className="py-5">
-                        <h3 className="text-[17px]/7 font-semibold tracking-[-0.02em]">{feature.title}</h3>
-                        <p className="mt-1 text-[15px]/7 text-muted">{feature.description}</p>
+                        <Heading as="h3" size="xs">
+                          {feature.title}
+                        </Heading>
+                        <p className="mt-1 text-small text-muted">{feature.description}</p>
                       </li>
                     ))}
                 </ul>

@@ -1,5 +1,6 @@
 'use client';
 
+import { Label, buttonClass, iconButtonClass } from '@/components/ui';
 import type { SocialLink } from '@/utils/types';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import {
@@ -98,7 +99,7 @@ function initials(name: string) {
 }
 
 const linkClass = (active: boolean) =>
-  `inline-flex items-center gap-x-1.5 rounded-[10px] py-2 text-sm/6 font-medium tracking-[-0.01em] transition-colors ${
+  `inline-flex items-center gap-x-1.5 rounded-control py-2 text-small font-medium transition-colors ${
     active ? 'bg-primary/8 text-primary' : 'text-ink hover:bg-ink/5'
   }`;
 
@@ -112,13 +113,13 @@ function Chevron({ open }: { open: boolean }) {
 
 function MenuItem({ item, onNavigate }: { item: Menu['items'][number]; onNavigate: () => void }) {
   return (
-    <a href={item.href} onClick={onNavigate} className="group/item flex items-start gap-x-3 rounded-xl p-3 transition-colors hover:bg-paper">
-      <span className="flex size-9 flex-none items-center justify-center rounded-[10px] bg-lavender/60 text-primary transition-colors group-hover/item:bg-lavender">
-        <item.Icon className="size-[18px]" />
+    <a href={item.href} onClick={onNavigate} className="group/item flex items-start gap-x-3 rounded-control p-3 transition-colors hover:bg-paper">
+      <span className="flex size-10 flex-none items-center justify-center rounded-control bg-lavender/60 text-primary transition-colors group-hover/item:bg-lavender">
+        <item.Icon className="size-5" />
       </span>
       <span className="min-w-0">
-        <span className="block text-[14px]/5 font-semibold text-ink">{item.title}</span>
-        <span className="mt-0.5 block text-xs/5 text-muted">{item.description}</span>
+        <span className="block text-small font-semibold text-ink">{item.title}</span>
+        <span className="mt-0.5 block text-caption text-muted">{item.description}</span>
       </span>
     </a>
   );
@@ -195,17 +196,17 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
         {/* One floating frosted bar: brand and links on the left, actions on the right. */}
         <nav
           aria-label="Main"
-          className="relative z-10 flex items-center justify-between gap-x-16 rounded-2xl bg-white/85 py-1.5 pr-2 pl-3 shadow-[0_1px_1px_0_rgb(31_26_51/0.10),0_0_0_1px_rgb(31_26_51/0.04),0_2px_12px_-4px_rgb(31_26_51/0.16)] backdrop-blur-md sm:pl-4"
+          className="relative z-10 flex items-center justify-between gap-x-16 rounded-float bg-white/85 py-1.5 pr-2 pl-3 shadow-float backdrop-blur-md sm:pl-4"
         >
           <div className="flex items-center gap-x-5">
-            <a href="#top" className="group flex items-center gap-2.5 rounded-[10px] py-1 pr-2">
+            <a href="#top" className="group flex items-center gap-2.5 rounded-control py-1 pr-2">
               <span
                 aria-hidden="true"
-                className="flex size-8 items-center justify-center rounded-full bg-primary font-display text-xs font-semibold text-paper transition-transform duration-200 group-hover:scale-105"
+                className="flex size-8 items-center justify-center rounded-full bg-primary font-display text-caption font-semibold text-paper transition-transform duration-200 group-hover:scale-105"
               >
                 {initials(name)}
               </span>
-              <span className="font-display text-[17px] font-semibold tracking-[-0.01em] whitespace-nowrap text-ink">{name}</span>
+              <span className="font-display text-lg font-semibold tracking-display whitespace-nowrap text-ink">{name}</span>
             </a>
 
             <ul role="list" className="hidden items-center lg:flex">
@@ -250,21 +251,18 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="hidden size-10 items-center justify-center rounded-[10px] text-ink transition-colors hover:bg-ink/5 hover:text-[#0A66C2] md:inline-flex"
+                className={iconButtonClass({ className: 'max-md:hidden hover:text-linkedin' })}
               >
                 <FaLinkedin className="size-5" aria-hidden="true" />
               </a>
             )}
-            <a
-              href="#pricing"
-              className="hidden min-h-10 items-center rounded-xl bg-linear-to-b from-primary-soft to-primary px-4 text-[15px] font-medium whitespace-nowrap text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.22),0_1px_2px_rgb(31_26_51/0.25),0_0_0_1px_rgb(69_48_125/0.9)] transition-[filter] hover:brightness-110 sm:inline-flex"
-            >
+            <a href="#pricing" className={buttonClass({ size: 'sm', className: 'max-sm:hidden whitespace-nowrap' })}>
               {ctaText}
             </a>
             <button
               type="button"
               onClick={() => setMenuOpen(true)}
-              className="inline-flex size-10 items-center justify-center rounded-[10px] text-ink hover:bg-ink/5 lg:hidden"
+              className={iconButtonClass({ className: 'lg:hidden' })}
               aria-label="Open menu"
             >
               <Bars2Icon className="size-6" aria-hidden="true" />
@@ -279,7 +277,7 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
           inert={!openMenu}
           className="absolute top-[calc(100%-8px)] left-0 hidden w-full origin-top pointer-events-none scale-95 pt-5 opacity-0 transition-[opacity,scale] duration-300 ease-(--ease-out-soft) data-[open=true]:pointer-events-auto data-[open=true]:scale-100 data-[open=true]:opacity-100 motion-reduce:transition-none lg:block"
         >
-          <div className="overflow-hidden rounded-2xl bg-white/85 p-1 shadow-[0_24px_40px_-20px_rgb(31_26_51/0.3),0_10px_24px_0_rgb(31_26_51/0.06),0_1px_1px_0_rgb(31_26_51/0.16),0_0_0_1px_rgb(31_26_51/0.05)] backdrop-blur-md">
+          <div className="overflow-hidden rounded-float bg-white/85 p-1 shadow-popup backdrop-blur-md">
             <div className="grid *:col-start-1 *:row-start-1">
               {menus.map((menu, index) => {
                 const isShown = menu.name === shownMenu;
@@ -293,24 +291,20 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
                       isShown ? 'opacity-100' : 'pointer-events-none opacity-0'
                     }`}
                   >
-                    <div className="flex flex-col gap-y-0.5 rounded-xl bg-white p-1 shadow-[0_1px_1px_0_rgb(31_26_51/0.08),0_4px_12px_-6px_rgb(31_26_51/0.12)]">
+                    <div className="flex flex-col gap-y-0.5 rounded-control bg-white p-1 shadow-card">
                       {menu.items.map((item) => (
                         <MenuItem key={item.title} item={item} onNavigate={close} />
                       ))}
                     </div>
                     <div className="flex items-center gap-x-3 py-2 pr-2 pl-3">
-                      <span className="flex size-9 flex-none items-center justify-center rounded-[10px] bg-white text-primary ring-1 ring-line">
-                        <menu.footer.Icon className="size-4" />
+                      <span className="flex size-10 flex-none items-center justify-center rounded-control bg-white text-primary ring-1 ring-line">
+                        <menu.footer.Icon className="size-5" />
                       </span>
                       <div className="min-w-0 flex-1">
-                        <p className="text-[13px]/5 font-semibold text-ink">{menu.footer.title}</p>
-                        <p className="truncate text-xs/5 text-muted">{menu.footer.description}</p>
+                        <p className="text-small font-semibold text-ink">{menu.footer.title}</p>
+                        <p className="truncate text-caption text-muted">{menu.footer.description}</p>
                       </div>
-                      <a
-                        href={menu.footer.href}
-                        onClick={close}
-                        className="inline-flex items-center gap-x-1 rounded-[10px] bg-white py-1.5 pr-2 pl-3 text-[13px]/6 font-medium text-ink ring-1 ring-line transition-colors hover:bg-paper"
-                      >
+                      <a href={menu.footer.href} onClick={close} className={buttonClass({ variant: 'secondary', size: 'sm' })}>
                         {menu.footer.cta}
                         <ChevronRightIcon aria-hidden="true" className="size-4 text-ink/40" />
                       </a>
@@ -325,13 +319,13 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
 
       <Dialog open={menuOpen} onClose={setMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-50 bg-ink/20 backdrop-blur-sm" aria-hidden="true" />
-        <DialogPanel className="fixed inset-x-3 top-3 z-50 max-h-[calc(100dvh-1.5rem)] overflow-y-auto overscroll-contain rounded-2xl bg-white p-4 shadow-2xl">
+        <DialogPanel className="fixed inset-x-3 top-3 z-50 max-h-[calc(100dvh-1.5rem)] overflow-y-auto overscroll-contain rounded-float bg-white p-4 shadow-popup">
           <div className="flex h-10 items-center justify-between pl-1">
-            <span className="font-display text-[17px] font-semibold tracking-[-0.01em]">{name}</span>
+            <span className="font-display text-lg font-semibold tracking-display">{name}</span>
             <button
               type="button"
               onClick={() => setMenuOpen(false)}
-              className="inline-flex size-10 items-center justify-center rounded-lg hover:bg-ink/5"
+              className={iconButtonClass()}
               aria-label="Close menu"
             >
               <XMarkIcon className="size-6" aria-hidden="true" />
@@ -341,9 +335,9 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
             <MobileGroup key={menu.name} title={menu.name}>
               {menu.items.map((item) => (
                 <li key={item.title}>
-                  <a href={item.href} onClick={() => setMenuOpen(false)} className="block rounded-[10px] px-2 py-2.5 hover:bg-paper">
-                    <span className="block text-base font-medium text-ink">{item.title}</span>
-                    <span className="block text-[13px]/5 text-muted">{item.description}</span>
+                  <a href={item.href} onClick={() => setMenuOpen(false)} className="block rounded-control px-2 py-2.5 hover:bg-paper">
+                    <span className="block text-body font-medium text-ink">{item.title}</span>
+                    <span className="block text-caption text-muted">{item.description}</span>
                   </a>
                 </li>
               ))}
@@ -352,15 +346,11 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
           <a
             href="#pricing"
             onClick={() => setMenuOpen(false)}
-            className="mt-3 flex min-h-11 items-center rounded-[10px] px-2 text-base font-medium text-ink hover:bg-paper"
+            className="mt-3 flex min-h-11 items-center rounded-control px-2 text-body font-medium text-ink hover:bg-paper"
           >
             Pricing
           </a>
-          <a
-            href="#pricing"
-            onClick={() => setMenuOpen(false)}
-            className="mt-4 flex min-h-12 items-center justify-center rounded-xl bg-linear-to-b from-primary-soft to-primary text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.22)]"
-          >
+          <a href="#pricing" onClick={() => setMenuOpen(false)} className={buttonClass({ className: 'mt-4 w-full' })}>
             {ctaText}
           </a>
           {socialLinks.length > 0 && (
@@ -374,7 +364,7 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={link.label}
-                    className="inline-flex size-11 items-center justify-center rounded-lg text-muted ring-1 ring-line hover:text-ink"
+                    className={iconButtonClass({ variant: 'solid' })}
                   >
                     <Icon className="size-5" aria-hidden="true" />
                   </a>
@@ -391,7 +381,7 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
 function MobileGroup({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="mt-4 border-t border-line pt-3">
-      <p className="px-2 text-xs font-semibold tracking-[0.08em] text-muted uppercase">{title}</p>
+      <Label className="px-2">{title}</Label>
       <ul role="list" className="mt-1">
         {children}
       </ul>

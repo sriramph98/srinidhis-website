@@ -27,7 +27,7 @@ export function ExpandableText({ id, children }: { id: string; children: ReactNo
         onClick={() => setExpanded((v) => !v)}
         aria-expanded={expanded}
         aria-controls={regionId}
-        className="mt-3 inline-flex min-h-[44px] items-center gap-1 text-sm font-semibold text-accent-deep transition-colors hover:text-ink sm:hidden"
+        className="mt-3 inline-flex min-h-[44px] items-center gap-1 text-small font-semibold text-primary transition-colors hover:text-primary-soft sm:hidden"
       >
         {expanded ? 'Show less' : 'Read more'}
         <ChevronDownIcon

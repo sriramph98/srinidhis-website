@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 /*
- * Design tokens: a soft pastel palette. Lavender-mist page, white panels,
- * deep violet for headings and actions, and five pastels for cards and highlights.
+ * THE design system. Every colour, corner, shadow and text size on the site comes from
+ * this block; components use these tokens and never invent their own values
+ * (`npm run lint` fails on one-off radii, shadows, text sizes and colours).
+ *
+ *   Colour   lavender-mist page, white panels, deep-violet actions, pastel cards.
+ *   Corners  control 12px (buttons, inputs, icon tiles) · float 16px (nav bar + dropdown)
+ *            card 20px (panels, cards, images) · full (avatars, badges, dots, chips).
+ *   Shadow   card (resting card) · float (nav bar) · popup (dropdown) · button · chip.
+ *   Type     Heading sizes (ui.tsx) for every title; text-body / text-small / text-caption
+ *            for everything else. Titles are Fraunces, all other text Plus Jakarta Sans.
  */
 @theme inline {
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
@@ -16,15 +24,37 @@
   --color-secondary: #3a3550;
   --color-muted: #625c78;
   --color-line: rgb(69 48 125 / 0.12);
+  --color-linkedin: #0a66c2;
+  --color-danger: #b42318;
   /* Pastels. "accent" is the blush. */
   --color-accent: #fbd3dc;
   --color-accent-soft: #fdecf0;
-  --color-accent-deep: #45307d;
   --color-peach: #ffdcc4;
   --color-lavender: #ddd5fb;
   --color-sky: #cfe5fb;
   --color-mint: #cdeedc;
   --color-butter: #fbeba8;
+
+  --radius-control: 12px;
+  --radius-float: 16px;
+  --radius-card: 20px;
+
+  /* Shadows are written in rgb because Tailwind composes them; the values mirror
+     --color-primary (69 48 125) and --color-ink (31 26 51). */
+  --shadow-card: 0 4px 16px rgb(69 48 125 / 0.08), 0 0 0 1px rgb(69 48 125 / 0.06);
+  --shadow-float: 0 1px 1px rgb(31 26 51 / 0.1), 0 0 0 1px rgb(31 26 51 / 0.04), 0 2px 12px -4px rgb(31 26 51 / 0.16);
+  --shadow-popup: 0 24px 40px -20px rgb(31 26 51 / 0.3), 0 10px 24px rgb(31 26 51 / 0.06), 0 1px 1px rgb(31 26 51 / 0.16), 0 0 0 1px rgb(31 26 51 / 0.05);
+  --shadow-button: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 1px 2px rgb(31 26 51 / 0.25), 0 0 0 1px rgb(69 48 125 / 0.9);
+  --shadow-chip: 0 2px 8px rgb(31 26 51 / 0.1), 0 1px 2px rgb(31 26 51 / 0.06), inset 0 1px 0 #fff;
+
+  --text-body: 1.125rem;
+  --text-body--line-height: 2rem;
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.7;
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.25rem;
+
+  --tracking-display: -0.025em;
 
   --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -54,18 +84,6 @@
   }
 }
 
-/* Hero glow eases into place once on load (no endless loop). */
-@keyframes settle {
-  from {
-    opacity: 0;
-    transform: translate3d(-6%, 8%, 0) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -80,10 +98,29 @@
 /* The white panel every section sits in, with a faint violet dot texture. */
 @utility surface {
   position: relative;
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   background-image:
     radial-gradient(circle, rgb(69 48 125 / 0.1) 1.2px, transparent 1.2px),
     linear-gradient(to bottom right, rgb(255 255 255 / 0.9), rgb(255 255 255 / 0.72));
   background-size: 22px 22px, 100% 100%;
   box-shadow: 0 1px 2px rgb(69 48 125 / 0.04);
+}
+
+/* Soft light behind the centred headings of the violet panels, and on the video placeholder. */
+@utility glow {
+  background-image: radial-gradient(45% 55% at 50% 45%, color-mix(in oklab, var(--color-accent) 18%, transparent), transparent 70%);
+}
+@utility glow-white {
+  background-image: radial-gradient(80% 60% at 50% 40%, rgb(255 255 255 / 0.14), transparent);
+}
+
+/* The larger, medium-weight line under a title: the hero intro and "what we'll work on". */
+@utility text-lead {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--color-secondary);
+  @media (min-width: 48rem) {
+    font-size: 1.5rem;
+  }
 }

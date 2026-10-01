@@ -2,14 +2,15 @@
 
 import { Reveal } from '@/components/Reveal';
 import { RichText } from '@/components/RichText';
-import { Container, Eyebrow, Heading, Section } from '@/components/ui';
+import { Container, Heading, Section, SectionHeader, buttonClass } from '@/components/ui';
 import type { Section as SectionContent } from '@/utils/types';
 import { ArrowDownTrayIcon, CalendarDaysIcon, CheckCircleIcon } from '@heroicons/react/20/solid';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 
+// Inputs stay 16px on phones so iOS doesn't zoom in on focus.
 const fieldClass =
-  'mt-2 block w-full rounded-lg border-0 bg-white px-3.5 py-3 text-base text-ink ring-1 ring-line ring-inset placeholder:text-muted/60 focus:ring-2 focus:ring-ink focus:outline-none sm:text-[15px]';
-const labelClass = 'block text-sm font-medium tracking-tight';
+  'mt-2 block w-full rounded-control border-0 bg-white px-3.5 py-3 text-base text-ink ring-1 ring-line ring-inset placeholder:text-muted/60 focus:ring-2 focus:ring-primary focus:outline-none sm:text-small';
+const labelClass = 'block text-small font-medium text-ink';
 
 export function LeadMagnet({ content }: { content: SectionContent }) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
@@ -43,29 +44,26 @@ export function LeadMagnet({ content }: { content: SectionContent }) {
 
   return (
     <Section id="free-checklist">
-      <Container className="grid grid-cols-1 items-start gap-x-20 gap-y-12 lg:grid-cols-2">
+      <Container className="grid grid-cols-1 items-start gap-x-16 gap-y-12 lg:grid-cols-2">
         <Reveal className="lg:sticky lg:top-28">
-          {content.subtitle && <Eyebrow>{content.subtitle}</Eyebrow>}
-          <Heading className="mt-6">{content.title}</Heading>
-          <RichText text={content.description} collapseAfter={Infinity} className="mt-8 space-y-4 text-lg/8 text-muted" />
+          <SectionHeader eyebrow={content.subtitle} title={content.title} description={content.description} />
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="rounded-lg bg-white p-7 ring-1 ring-line sm:p-10">
+          <div className="rounded-card bg-white p-6 shadow-card sm:p-8">
             <p role="status" aria-live="polite" className="sr-only">
               {status === 'sending' ? 'Sending…' : status === 'done' ? content.successTitle || 'Thank you!' : ''}
             </p>
             {status === 'done' ? (
               <div>
-                <CheckCircleIcon aria-hidden="true" className="size-10 text-accent" />
-                <h3 className="mt-6 text-2xl/tight font-semibold tracking-[-0.035em]">{content.successTitle || 'Thank you!'}</h3>
-                <RichText text={content.successMessage} collapseAfter={Infinity} className="mt-4 space-y-3 text-[15px]/7 text-muted" />
+                <CheckCircleIcon aria-hidden="true" className="size-10 text-primary" />
+                <Heading as="h3" size="md" className="mt-6">
+                  {content.successTitle || 'Thank you!'}
+                </Heading>
+                <RichText text={content.successMessage} size="small" collapseAfter={Infinity} className="mt-4" />
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   {content.checklistUrl && (
-                    <a
-                      href={`${content.checklistUrl}?dl=`}
-                      className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-ink px-5 text-[15px] font-medium text-white hover:bg-ink-soft"
-                    >
+                    <a href={`${content.checklistUrl}?dl=`} className={buttonClass()}>
                       <ArrowDownTrayIcon aria-hidden="true" className="size-4" />
                       Download the Checklist
                     </a>
@@ -75,7 +73,7 @@ export function LeadMagnet({ content }: { content: SectionContent }) {
                       href={content.bookingUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-[15px] font-medium ring-1 ring-line ring-inset hover:bg-paper"
+                      className={buttonClass({ variant: 'secondary' })}
                     >
                       <CalendarDaysIcon aria-hidden="true" className="size-4" />
                       {content.bookingText || 'Book a Call'}
@@ -122,15 +120,11 @@ export function LeadMagnet({ content }: { content: SectionContent }) {
                   <input id="lead-company" name="company" type="text" tabIndex={-1} autoComplete="off" />
                 </div>
                 {status === 'error' && (
-                  <p id="lead-error" ref={errorRef} tabIndex={-1} role="alert" className="rounded-lg text-sm font-medium text-red-700">
+                  <p id="lead-error" ref={errorRef} tabIndex={-1} role="alert" className="rounded-control text-small font-medium text-danger">
                     {error}
                   </p>
                 )}
-                <button
-                  type="submit"
-                  disabled={status === 'sending'}
-                  className="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-ink px-5 text-[15px] font-medium tracking-tight text-white transition-colors hover:bg-ink-soft disabled:opacity-60"
-                >
+                <button type="submit" disabled={status === 'sending'} className={buttonClass({ className: 'w-full' })}>
                   {status === 'sending' ? 'Sending…' : content.ctaText || 'Send Me the Free Checklist'}
                 </button>
               </form>

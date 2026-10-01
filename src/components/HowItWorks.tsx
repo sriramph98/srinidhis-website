@@ -1,14 +1,14 @@
 'use client';
 
 import { Reveal } from '@/components/Reveal';
-import { Arrow, Button, Container, Eyebrow, Heading, Section } from '@/components/ui';
+import { Button, Container, Heading, Label, Section, SectionHeader } from '@/components/ui';
 import type { Section as SectionContent, StandardFeature } from '@/utils/types';
 import { motion, useInView, useReducedMotion, useScroll, useSpring } from 'framer-motion';
 import { useRef } from 'react';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
-// One step on the timeline: its marker turns yellow once the reader reaches it.
+// One step on the timeline: its marker turns violet once the reader reaches it.
 function Step({ step, index, total }: { step: StandardFeature; index: number; total: number }) {
   const ref = useRef<HTMLLIElement>(null);
   const reached = useInView(ref, { margin: '0px 0px -45% 0px' });
@@ -17,21 +17,23 @@ function Step({ step, index, total }: { step: StandardFeature; index: number; to
     <li ref={ref} className="relative grid grid-cols-[3rem_minmax(0,1fr)] gap-x-5 pb-12 last:pb-0 sm:grid-cols-[3.5rem_minmax(0,1fr)] sm:gap-x-8">
       <span
         aria-hidden="true"
-        className={`relative z-10 flex size-12 items-center justify-center rounded-lg text-sm font-semibold tabular-nums outline-4 outline-white transition-colors duration-500 sm:size-14 sm:text-base ${
-          reached ? 'bg-primary text-paper' : 'bg-white text-muted ring-1 ring-line'
+        className={`relative z-10 flex size-12 items-center justify-center rounded-full text-small font-semibold tabular-nums outline-4 outline-white transition-colors duration-500 sm:size-14 ${
+          reached ? 'bg-primary text-paper' : 'bg-white text-muted ring-1 ring-inset ring-line'
         }`}
       >
         {pad(index + 1)}
       </span>
 
       <Reveal delay={0.05}>
-        <div className="rounded-[20px] bg-white p-6 shadow-[0_4px_16px_rgb(69_48_125/0.06)] ring-1 ring-black/5 sm:p-8">
-          <p className="text-xs font-medium tracking-[0.08em] text-muted uppercase">
+        <div className="rounded-card bg-white p-6 shadow-card sm:p-8">
+          <Label>
             Step {index + 1} of {total}
-          </p>
-          <h3 className="mt-3 text-xl/7 font-semibold tracking-[-0.025em] sm:text-2xl/8">{step.title}</h3>
-          {step.description && <p className="mt-1 text-[15px]/6 font-medium text-accent-deep">{step.description}</p>}
-          {step.subtitle && <p className="mt-4 text-[15px]/7 text-muted">{step.subtitle}</p>}
+          </Label>
+          <Heading as="h3" size="sm" className="mt-3">
+            {step.title}
+          </Heading>
+          {step.description && <p className="mt-1 text-small font-medium text-primary">{step.description}</p>}
+          {step.subtitle && <p className="mt-4 text-small text-muted">{step.subtitle}</p>}
         </div>
       </Reveal>
     </li>
@@ -50,17 +52,15 @@ export function HowItWorks({ content, ctaText }: { content: SectionContent | nul
 
   return (
     <Section id="how-it-works">
-      <Container className="grid grid-cols-1 items-start gap-x-20 gap-y-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+      <Container className="grid grid-cols-1 items-start gap-x-16 gap-y-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         <Reveal className="lg:sticky lg:top-28">
-          <Eyebrow>{content?.subtitle || 'How it works'}</Eyebrow>
-          <Heading className="mt-6">{content?.title || 'How it works'}</Heading>
-          <p className="mt-6 text-lg/8 text-muted">
-            {content?.description || `${steps.length} simple steps, from your first message to results.`}
-          </p>
-          <Button href="#pricing" className="mt-10">
-            {ctaText}
-            <Arrow />
-          </Button>
+          <SectionHeader
+            eyebrow={content?.subtitle || 'How it works'}
+            title={content?.title || 'How it works'}
+            description={content?.description || `${steps.length} simple steps, from your first message to results.`}
+          >
+            <Button href="#pricing">{ctaText}</Button>
+          </SectionHeader>
         </Reveal>
 
         <ol ref={listRef} role="list" className="relative">

@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
+  // style-check: ignore (the browser needs a literal colour here; it mirrors --color-paper)
   themeColor: "#f6f2fb",
 };
 
@@ -25,7 +26,7 @@ export default function RootLayout({
       <body className="font-sans">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-lg focus:bg-ink focus:px-4 focus:py-3 focus:text-sm focus:font-medium focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-control focus:bg-ink focus:px-4 focus:py-3 focus:text-small focus:font-medium focus:text-white"
         >
           Skip to Content
         </a>
