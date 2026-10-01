@@ -10,7 +10,7 @@
  *            card 20px (panels, cards, images) · full (avatars, badges, dots, chips).
  *   Shadow   card (resting card) · float (nav bar) · popup (dropdown) · button · chip.
  *   Type     Heading sizes (ui.tsx) for every title; text-body / text-small / text-caption
- *            for everything else. Titles are Fraunces, all other text Plus Jakarta Sans.
+ *            for everything else. Titles are Hedvig Letters Serif, all other text Inter with tight spacing.
  */
 @theme inline {
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
@@ -56,6 +56,7 @@
   --text-caption--line-height: 1.25rem;
 
   --tracking-display: -0.025em;
+  --tracking-body: -0.015em;
 
   --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -70,6 +71,7 @@
 
   body {
     @apply bg-paper text-ink;
+    letter-spacing: var(--tracking-body); /* tight, like the titles */
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent; /* every control has its own hover/active state */
   }

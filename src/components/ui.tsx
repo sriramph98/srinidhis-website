@@ -91,7 +91,7 @@ const headingSize = {
   price: 'text-5xl/none tabular-nums',
 };
 
-/** The only way to render a title. Fraunces, violet (white on a violet panel), one tracking value. */
+/** The only way to render a title. Hedvig Letters Serif, violet (white on a violet panel), one tracking value. */
 export function Heading({
   as: Tag = 'h2',
   size = 'lg',
@@ -111,7 +111,7 @@ export function Heading({
   return (
     <Tag
       id={id}
-      className={`font-display font-semibold tracking-display text-balance ${dark ? 'text-white' : 'text-primary'} ${headingSize[size]} ${className}`}
+      className={`font-display font-normal tracking-display text-balance ${dark ? 'text-white' : 'text-primary'} ${headingSize[size]} ${className}`}
     >
       {typeof children === 'string' ? renderInline(children) : children}
     </Tag>

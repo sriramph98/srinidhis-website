@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Plus_Jakarta_Sans, Rock_Salt } from "next/font/google";
+import { Hedvig_Letters_Serif, Inter, Rock_Salt } from "next/font/google";
 import "./globals.css";
 
-// Fraunces (soft, warm serif) for headings; Plus Jakarta Sans for everything else.
-const display = Fraunces({ subsets: ["latin"], display: "swap", axes: ["SOFT", "opsz"], variable: "--font-display-face" });
+// Hedvig Letters Serif for headings; Inter (a variable font, one file for every weight) for everything else.
+const display = Hedvig_Letters_Serif({ subsets: ["latin"], weight: "400", display: "swap", variable: "--font-display-face" });
 // Rock Salt: handwriting, used only for the polaroid caption.
 const hand = Rock_Salt({ subsets: ["latin"], weight: "400", display: "swap", variable: "--font-hand-face" });
-const body = Plus_Jakarta_Sans({ subsets: ["latin"], display: "swap", variable: "--font-body" });
+const body = Inter({ subsets: ["latin"], display: "swap", variable: "--font-body" });
 
 export const metadata: Metadata = {
   title: "Srinidhi Narayana",

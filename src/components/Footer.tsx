@@ -46,7 +46,7 @@ export function Footer({ content }: { content: FooterContent | null }) {
           </a>
         </div>
 
-        <p aria-hidden="true" className="mt-16 font-display text-[10.5vw] leading-[0.85] font-semibold tracking-display whitespace-nowrap text-primary xl:text-9xl">
+        <p aria-hidden="true" className="mt-16 font-display text-[10.5vw] leading-[0.85] font-normal tracking-display whitespace-nowrap text-primary xl:text-9xl">
           {name}
         </p>
         <p className="mt-8 text-caption text-muted">

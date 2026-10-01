@@ -192,7 +192,7 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
         >
           <div className="flex items-center gap-x-5">
             <a href="#top" className="flex items-center rounded-control px-2 py-1">
-              <span className="font-display text-lg font-semibold tracking-display whitespace-nowrap text-ink">{name}</span>
+              <span className="font-display text-lg font-normal tracking-display whitespace-nowrap text-ink">{name}</span>
             </a>
 
             <ul role="list" className="hidden items-center lg:flex">
@@ -307,7 +307,7 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
         <div className="fixed inset-0 z-50 bg-ink/20 backdrop-blur-sm" aria-hidden="true" />
         <DialogPanel className="fixed inset-x-3 top-3 z-50 max-h-[calc(100dvh-1.5rem)] overflow-y-auto overscroll-contain rounded-float bg-white p-4 shadow-popup">
           <div className="flex h-10 items-center justify-between pl-1">
-            <span className="font-display text-lg font-semibold tracking-display">{name}</span>
+            <span className="font-display text-lg font-normal tracking-display">{name}</span>
             <button
               type="button"
               onClick={() => setMenuOpen(false)}
