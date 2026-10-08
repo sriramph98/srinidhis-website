@@ -144,7 +144,7 @@ export function ServiceSection({
         )}
 
         {/* Proof, then the ask */}
-        <div className="mt-20 grid grid-cols-1 items-center gap-x-16 gap-y-12 sm:mt-24 lg:grid-cols-2">
+        <div className="mt-20 grid grid-cols-1 items-center gap-x-16 gap-y-12 sm:mt-24 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
           {content?.testimonial && (
             <Reveal>
               <FeaturedTestimonial testimonial={content.testimonial} />
@@ -160,9 +160,16 @@ export function ServiceSection({
             {content?.highlightQuote && (
               <p className="mt-6 border-l-2 border-accent pl-4 text-body font-medium text-ink">{renderInline(content.highlightQuote)}</p>
             )}
-            <Button href={content?.ctaLink || '#pricing'} className="mt-10">
-              {content?.ctaText || fallbackCta}
-            </Button>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Button href={content?.ctaLink || '#pricing'} className="whitespace-nowrap">
+                {content?.ctaText || fallbackCta}
+              </Button>
+              {content?.secondaryCtaText && content.secondaryCtaLink && (
+                <Button href={content.secondaryCtaLink} variant="secondary" className="whitespace-nowrap">
+                  {content.secondaryCtaText}
+                </Button>
+              )}
+            </div>
           </Reveal>
         </div>
       </Container>
