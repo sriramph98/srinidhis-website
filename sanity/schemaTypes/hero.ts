@@ -8,6 +8,7 @@ export const hero = defineType({
     { name: "content", title: "Content", default: true },
     { name: "profile", title: "Profile" },
     { name: "cards", title: "Cards & video" },
+    { name: "banner", title: "Top banner" },
   ],
   fields: [
     defineField({
@@ -95,6 +96,36 @@ export const hero = defineType({
       description:
         "Shown as chips at the end of the Intro Line. Each links to its section (labels mentioning Resume, LinkedIn or Coaching).",
       group: "content",
+    }),
+    defineField({
+      name: "bannerEnabled",
+      title: "Show Top Banner",
+      type: "boolean",
+      description: "The small floating banner above the navigation bar. Turn it off to hide it.",
+      initialValue: true,
+      group: "banner",
+    }),
+    defineField({
+      name: "bannerText",
+      title: "Banner Text",
+      type: "string",
+      description: "e.g. “Free checklist: see which of your skills already fit Customer Success.”",
+      group: "banner",
+    }),
+    defineField({
+      name: "bannerLinkText",
+      title: "Banner Link Text",
+      type: "string",
+      description: "The bold link after the text, e.g. “Get it free”. Leave empty for no link.",
+      group: "banner",
+    }),
+    defineField({
+      name: "bannerLink",
+      title: "Banner Link",
+      type: "string",
+      description: "A section on the page (e.g. #free-checklist) or a full URL.",
+      initialValue: "#free-checklist",
+      group: "banner",
     }),
     defineField({
       name: "introVideo",

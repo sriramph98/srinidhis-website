@@ -82,6 +82,7 @@ export interface HeroContent {
   intro?: string;
   cards: HeroCard[];
   video?: { url: string; poster?: string };
+  banner?: { text: string; linkText?: string; href?: string };
 }
 
 export interface HeroCard {

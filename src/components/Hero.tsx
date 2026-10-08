@@ -100,7 +100,7 @@ function GreetingWithPhoto({ greeting, photo }: { greeting: string; photo?: stri
   return (
     <>
       {match[1]}{' '}
-      <span className="relative mx-[0.06em] inline-block h-[0.8em] w-[1.9em] -rotate-3 overflow-hidden rounded-full bg-lavender align-[-0.08em] shadow-card">
+      <span className="relative mx-[0.06em] inline-block h-[0.8em] max-sm:hidden w-[1.9em] -rotate-3 overflow-hidden rounded-full bg-lavender align-[-0.08em] shadow-card">
         <Image src={photo} alt="" fill sizes="220px" className="origin-[50%_62%] scale-[2] object-cover object-[50%_34%]" />
       </span>{' '}
       {match[2]}

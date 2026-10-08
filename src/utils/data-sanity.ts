@@ -55,6 +55,10 @@ export async function getHeroContent(): Promise<HeroContent | null> {
     cards?: { title?: string; text?: string; buttonText?: string; buttonLink?: string; color?: HeroCard["color"] }[];
     videoUrl?: string;
     videoPoster?: string;
+    bannerEnabled?: boolean;
+    bannerText?: string;
+    bannerLinkText?: string;
+    bannerLink?: string;
   }>(
     `*[_type == "hero"][0]{
       _id,
@@ -70,7 +74,11 @@ export async function getHeroContent(): Promise<HeroContent | null> {
       intro,
       cards[]{ title, text, buttonText, buttonLink, color },
       "videoUrl": introVideo.asset->url,
-      "videoPoster": introVideoPoster.asset->url
+      "videoPoster": introVideoPoster.asset->url,
+      bannerEnabled,
+      bannerText,
+      bannerLinkText,
+      bannerLink
     }`,
   );
 
@@ -97,6 +105,11 @@ export async function getHeroContent(): Promise<HeroContent | null> {
         buttonLink: card.buttonLink || undefined,
         color: card.color || "peach",
       })),
+    // Shown unless the editor switched it off; documents saved before the field existed count as on.
+    banner:
+      hero.bannerEnabled !== false && hero.bannerText
+        ? { text: hero.bannerText, linkText: hero.bannerLinkText || undefined, href: hero.bannerLink || undefined }
+        : undefined,
     video: hero.videoUrl ? { url: hero.videoUrl, poster: hero.videoPoster || undefined } : undefined,
   };
 

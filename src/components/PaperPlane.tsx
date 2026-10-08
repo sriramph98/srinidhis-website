@@ -5,15 +5,23 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 type Size = { width: number; height: number; viewport: number };
 
-// A paper plane glides down the whole page as you scroll, leaving a dotted trail. The plane stays at a fixed
-// height on screen and swings left and right along a long S-curve; the trail is a page-long path that scrolls with
-// the content, so it looks like the plane is flying through every section.
+// A paper plane glides down the whole page as you scroll, leaving a dotted trail. It keeps to the right-hand page
+// margin (the empty strip beside the content panels), so it never crosses the text. The plane stays at a fixed height
+// on screen and sways gently; the trail is a page-long path that scrolls with the content.
+// Margins only exist on wide screens, so below this width the plane is not shown at all.
 const PLANE_HEIGHT = 0.6; // where the plane sits on screen, as a share of the viewport height
+const MIN_WIDTH = 1024;
+const PANEL_MAX = 1200;
+const PANEL_GUTTER = 40;
 
-function curve(y: number, width: number, viewport: number) {
-  const period = Math.max(1200, viewport * 1.6);
-  const swing = width * (width < 640 ? 0.36 : 0.4);
-  return width / 2 + swing * Math.sin((y / period) * Math.PI * 2 - 0.9);
+/** Width of the empty strip beside the panels. */
+function margin(width: number) {
+  return Math.max(PANEL_GUTTER, (width - PANEL_MAX) / 2);
+}
+
+function curve(y: number, width: number) {
+  const m = margin(width);
+  return width - m / 2 + m * 0.26 * Math.sin((y / 720) * Math.PI * 2);
 }
 
 export function PaperPlane() {
@@ -45,10 +53,10 @@ export function PaperPlane() {
 
   // Document-space y of the plane, and the matching screen position and heading.
   const planeY = useTransform(scrollY, (v) => v + dims.current.viewport * PLANE_HEIGHT);
-  const x = useTransform(planeY, (y) => curve(y, dims.current.width, dims.current.viewport));
+  const x = useTransform(planeY, (y) => curve(y, dims.current.width));
   const rotate = useTransform(planeY, (y) => {
-    const { width, viewport } = dims.current;
-    const dx = curve(y + 24, width, viewport) - curve(y, width, viewport);
+    const { width } = dims.current;
+    const dx = curve(y + 24, width) - curve(y, width);
     // The art points right, so 90° points the nose down the page; it leans into each turn and banks gently.
     return (Math.atan2(24, dx) * 180) / Math.PI + Math.sin(y / 140) * 3;
   });
@@ -63,12 +71,13 @@ export function PaperPlane() {
     if (!size) return '';
     const points: string[] = [];
     for (let y = -40; y <= size.height + 40; y += 24) {
-      points.push(`${points.length ? 'L' : 'M'}${curve(y, size.width, size.viewport).toFixed(1)} ${y}`);
+      points.push(`${points.length ? 'L' : 'M'}${curve(y, size.width).toFixed(1)} ${y}`);
     }
     return points.join(' ');
   }, [size]);
 
-  if (reduceMotion || !size) return null;
+  if (reduceMotion || !size || size.width < MIN_WIDTH) return null;
+  const planeWidth = Math.min(56, Math.max(34, margin(size.width) * 0.7));
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-30 overflow-hidden">
@@ -90,8 +99,8 @@ export function PaperPlane() {
       </motion.svg>
 
       <motion.div
-        style={{ x, top: `${PLANE_HEIGHT * 100}%`, rotate }}
-        className="absolute left-0 -mt-4 -ml-7 h-8 w-14"
+        style={{ x, top: `${PLANE_HEIGHT * 100}%`, rotate, width: planeWidth, height: planeWidth * 0.57, marginLeft: -planeWidth / 2, marginTop: -planeWidth * 0.285 }}
+        className="absolute left-0"
       >
         <svg viewBox="0 0 56 32" className="size-full" fill="none">
           {/* Origami paper plane, nose to the right: upper wing, lower wing and the centre fold. */}

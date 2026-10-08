@@ -2,6 +2,7 @@
 
 import { Label, buttonClass, iconButtonClass, panelGutter } from '@/components/ui';
 import type { SocialLink } from '@/utils/types';
+import { stegaClean } from 'next-sanity';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import {
   ArrowDownTrayIcon,
@@ -121,9 +122,11 @@ interface HeaderProps {
   name?: string;
   socialLinks: SocialLink[];
   ctaText?: string;
+  /** The floating banner above the nav; omitted when switched off in Sanity. */
+  banner?: { text: string; linkText?: string; href?: string };
 }
 
-export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Find the Right Service' }: HeaderProps) {
+export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Find the Right Service', banner }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState('');
   // The dropdown that's open (null = closed) and the last one shown, so content stays put while it fades out.
@@ -181,14 +184,21 @@ export function Header({ name = 'Srinidhi Narayana', socialLinks, ctaText = 'Fin
   return (
     <>
       {/* Announcement banner: a floating rounded pill above the nav; it scrolls away with the page. */}
-      <div className={`pt-3 pb-3 ${panelGutter}`}>
-        <div className="mx-auto max-w-[1200px] rounded-float bg-lavender/60 px-4 py-2.5 text-center text-small text-muted shadow-float">
-          Free checklist: see which of your skills already fit Customer Success.{' '}
-          <a href="#free-checklist" className="font-medium text-ink hover:underline">
-            Get it free
-          </a>
+      {banner && (
+        <div className={`pt-3 pb-3 ${panelGutter}`}>
+          <div className="mx-auto max-w-[1200px] rounded-float bg-lavender/60 px-4 py-2.5 text-center text-small text-muted shadow-float">
+            {banner.text}
+            {banner.linkText && banner.href && (
+              <>
+                {' '}
+                <a href={stegaClean(banner.href)} className="font-medium text-ink hover:underline">
+                  {banner.linkText}
+                </a>
+              </>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       <header id="top" className="sticky top-3 z-50">
         <div className={panelGutter}>

@@ -117,7 +117,7 @@ export default async function Home() {
 
   return (
     <>
-      <Header name={name} socialLinks={footerContent?.socialLinks || []} ctaText={heroCta} />
+      <Header name={name} socialLinks={footerContent?.socialLinks || []} ctaText={heroCta} banner={heroContent?.banner} />
 
       <main id="main">
         <Hero content={heroContent} ctaText={heroCta} />
