@@ -93,15 +93,15 @@ function CardFace({ card }: { card: HeroCard }) {
 
 // Hero: a white panel with a big two-line greeting, an intro line with
 // service chips, and a row of tilted pastel cards with a video in the middle.
-// "Hi, I'm [photo] Srinidhi.": a small photo capsule sits inline between the words of the greeting.
+// "Hi, I'm [photo] Srinidhi.": a round photo of her sits inline between the words of the greeting.
 function GreetingWithPhoto({ greeting, photo }: { greeting: string; photo?: string }) {
   const match = photo ? greeting.match(/^([\s\S]*?[Ii][’'‘]m)\s+(\S[\s\S]*)$/) : null;
   if (!match || !photo) return <>{greeting}</>;
   return (
     <>
       {match[1]}{' '}
-      <span className="relative mx-[0.06em] inline-block h-[0.8em] max-sm:hidden w-[1.9em] -rotate-3 overflow-hidden rounded-full bg-lavender align-[-0.08em] shadow-card">
-        <Image src={photo} alt="" fill sizes="220px" className="origin-[50%_62%] scale-[2] object-cover object-[50%_34%]" />
+      <span className="relative mx-[0.08em] inline-block size-[0.92em] overflow-hidden rounded-full bg-lavender align-[-0.1em] shadow-card max-sm:hidden">
+        <Image src={photo} alt="" fill sizes="120px" className="origin-center scale-[1.6] object-cover object-[50%_9%]" />
       </span>{' '}
       {match[2]}
     </>
