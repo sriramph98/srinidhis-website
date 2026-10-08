@@ -1,4 +1,4 @@
-import { sanityFetch } from "@/lib/live";
+import { CONTENT_TAG, sanityFetch } from "@/lib/live";
 import {
   FooterContent,
   HeroCard,
@@ -19,7 +19,7 @@ async function fetchSingleton<T>(
   params?: Record<string, unknown>,
 ): Promise<T | null> {
   try {
-    const { data } = await sanityFetch({ query, params });
+    const { data } = await sanityFetch({ query, params, tags: [CONTENT_TAG] });
     return data as T;
   } catch (error) {
     return handleFetchError(error, query);
@@ -31,7 +31,7 @@ async function fetchMany<T>(
   params?: Record<string, unknown>,
 ): Promise<T[]> {
   try {
-    const { data } = await sanityFetch({ query, params });
+    const { data } = await sanityFetch({ query, params, tags: [CONTENT_TAG] });
     return (data as T[] | null) ?? [];
   } catch (error) {
     handleFetchError(error, query);

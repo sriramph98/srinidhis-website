@@ -29,4 +29,5 @@ Rules:
 
 - Dataset is public, so private records (form leads) use dotted IDs (`lead.<uuid>`).
 - Live preview: Studio's Presentation tool (`/api/draft-mode/*`). Needs `SANITY_API_TOKEN`.
+- Content refresh: every Sanity fetch is tagged `CONTENT_TAG` (`src/lib/live.ts`). A Sanity webhook (project `wksee1zw`, dataset `production`, POST `https://www.srinidhinarayana.com/api/revalidate`, create/update/delete, filter `!(_id in path("lead.**"))`) calls `src/app/api/revalidate/route.ts`, which revalidates that tag. The webhook secret must equal `SANITY_REVALIDATE_SECRET` in Vercel (all environments) and `.env.local`.
 - After changing CSS tokens, if the dev server shows old colours, delete `.next/dev` and restart it.
