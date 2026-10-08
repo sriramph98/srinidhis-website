@@ -2,7 +2,8 @@
 
 import { Button, Container, Heading, Section, buttonClass, isExternal } from '@/components/ui';
 import type { HeroCard, HeroContent } from '@/utils/types';
-import { ChatBubbleLeftRightIcon, DocumentTextIcon, PlayIcon } from '@heroicons/react/20/solid';
+import { ChatBubbleLeftRightIcon, DocumentTextIcon } from '@heroicons/react/20/solid';
+import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { stegaClean } from 'next-sanity';
 import { Fragment, type ComponentType, type SVGProps } from 'react';
@@ -90,34 +91,23 @@ function CardFace({ card }: { card: HeroCard }) {
   );
 }
 
-// The video card: her intro video once it's uploaded in Sanity, a quiet placeholder until then.
-function VideoFace({ video, name }: { video?: HeroContent['video']; name: string }) {
+// Hero: a white panel with a big two-line greeting, an intro line with
+// service chips, and a row of tilted pastel cards with a video in the middle.
+// "Hi, I'm [photo] Srinidhi.": a small photo capsule sits inline between the words of the greeting.
+function GreetingWithPhoto({ greeting, photo }: { greeting: string; photo?: string }) {
+  const match = photo ? greeting.match(/^([\s\S]*?[Ii][’'‘]m)\s+(\S[\s\S]*)$/) : null;
+  if (!match || !photo) return <>{greeting}</>;
   return (
-    <div className="relative size-full overflow-hidden rounded-card bg-primary shadow-card">
-      {video ? (
-        <video
-          src={video.url}
-          poster={video.poster}
-          className="size-full object-cover"
-          controls
-          playsInline
-          preload="metadata"
-          aria-label={`Intro video from ${name}`}
-        />
-      ) : (
-        <div className="glow-white flex size-full flex-col items-center justify-center gap-4 text-white">
-          <span className="flex size-14 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/25">
-            <PlayIcon aria-hidden="true" className="size-6 translate-x-px" />
-          </span>
-          <span className="text-small font-medium text-white/75">Intro video coming soon</span>
-        </div>
-      )}
-    </div>
+    <>
+      {match[1]}{' '}
+      <span className="relative mx-[0.06em] inline-block h-[0.8em] w-[1.9em] -rotate-3 overflow-hidden rounded-full bg-lavender align-[-0.08em] shadow-card">
+        <Image src={photo} alt="" fill sizes="220px" className="origin-[50%_62%] scale-[2] object-cover object-[50%_34%]" />
+      </span>{' '}
+      {match[2]}
+    </>
   );
 }
 
-// Hero: a white panel with a big two-line greeting, an intro line with
-// service chips, and a row of tilted pastel cards with a video in the middle.
 export function Hero({
   content,
   ctaText,
@@ -138,14 +128,10 @@ export function Hero({
   const role = content?.role || 'Customer Success Career Coach.';
   const intro = content?.intro || 'I help Customer Success professionals build a career story that gets noticed, with';
   const labels = content?.serviceLabels ?? [];
+  const firstPhoto = content?.profileImage?.[0];
+  const photo = typeof firstPhoto === 'string' ? firstPhoto : firstPhoto?.url;
   const cards = content?.cards ?? [];
 
-  // Slots in order: first card, video, then the rest.
-  const slots: ({ kind: 'card'; card: HeroCard } | { kind: 'video' })[] = [
-    ...cards.slice(0, 1).map((card) => ({ kind: 'card' as const, card })),
-    { kind: 'video' },
-    ...cards.slice(1).map((card) => ({ kind: 'card' as const, card })),
-  ];
 
   return (
     <div>
@@ -153,7 +139,7 @@ export function Hero({
         <Container>
           <motion.div {...rise(0)}>
             <Heading as="h1" size="xl">
-              {greeting}
+              <GreetingWithPhoto greeting={greeting} photo={photo} />
               <br />
               <span className="bg-linear-to-r from-primary to-primary/70 bg-clip-text text-transparent">{role}</span>
             </Heading>
@@ -183,20 +169,20 @@ export function Hero({
             role="list"
             className="-mx-6 mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pt-4 pb-6 [scrollbar-width:none] md:-mx-10 md:px-10 lg:mx-0 lg:h-[380px] lg:snap-none lg:items-center lg:justify-center lg:gap-0 lg:overflow-visible lg:p-0"
           >
-            {slots.map((slot, index) => (
+            {cards.map((card, index) => (
               <motion.li
-                key={slot.kind === 'video' ? 'video' : `${slot.card.title}-${index}`}
+                key={`${card.title}-${index}`}
                 initial={reduceMotion ? false : { opacity: 0, y: 40, rotate: 0 }}
                 animate={{ opacity: 1, y: 0, rotate: 0 }}
                 transition={{ duration: 0.9, delay: 0.25 + index * 0.08, ease }}
-                className="relative h-[300px] w-[256px] flex-none snap-start lg:-mr-6 lg:h-[340px] lg:w-[min(25%,280px)] lg:flex-1 lg:last:mr-0 lg:hover:z-10"
+                className="relative h-[300px] w-[256px] flex-none snap-start lg:-mr-6 lg:h-[340px] lg:w-[min(28%,300px)] lg:flex-none lg:last:mr-0 lg:hover:z-10"
               >
                 {/* The tilt lives on an inner wrapper so hover can straighten it without fighting the entrance. */}
                 <div
                   style={{ '--tilt': `${TILT[index % TILT.length]}deg` } as React.CSSProperties}
                   className="size-full p-0 transition-transform duration-500 ease-(--ease-out-soft) lg:rotate-(--tilt) lg:p-3 lg:hover:-translate-y-2 lg:hover:rotate-0"
                 >
-                  {slot.kind === 'video' ? <VideoFace video={content?.video} name={name} /> : <CardFace card={slot.card} />}
+                  <CardFace card={card} />
                 </div>
               </motion.li>
             ))}

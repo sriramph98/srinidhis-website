@@ -1,5 +1,6 @@
 import { FinalCta } from '@/components/FinalCta';
 import { Footer } from '@/components/Footer';
+import { PaperPlane } from '@/components/PaperPlane';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { HowItWorks } from '@/components/HowItWorks';
@@ -222,6 +223,8 @@ export default async function Home() {
       </main>
 
       <Footer content={footerContent} />
+
+      <PaperPlane />
 
       {/* Live updates on publish; click-to-edit overlays only inside Sanity's Presentation tool. */}
       <SanityLive />
